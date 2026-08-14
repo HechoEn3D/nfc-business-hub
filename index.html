@@ -237,6 +237,8 @@ main,.nav,.footer{position:relative;z-index:1}
 
 /* =========================================================
    PUBLIC BUSINESS PAGE — /b/:slug
+/* =========================================================
+   PUBLIC BUSINESS PAGE — /b/:slug
 ========================================================= */
 .public-business-page{display:none;min-height:100vh;background:var(--bg);padding-bottom:80px}
 .public-business-page.show{display:block}
@@ -269,6 +271,180 @@ main,.nav,.footer{position:relative;z-index:1}
 .public-menu-card.is-unavailable{opacity:.45}
 select{font:inherit}
 
+
+/* =========================================================
+   NFC BUSINESS HUB — MOBILE EXPERIENCE V2
+   Responsive overhaul. Desktop styles remain intact.
+========================================================= */
+.mobile-menu-btn{display:none;border:1px solid var(--line);background:#fff;color:#171714;width:42px;height:42px;border-radius:13px;align-items:center;justify-content:center;font-size:19px;cursor:pointer;flex:0 0 auto}
+.mobile-menu{display:none}
+
+@media(max-width:900px){
+  .container{width:min(100% - 32px,1160px)}
+  .nav-inner{height:68px}
+  .brand{font-size:14px}
+  .nav-links{display:none!important}
+  .mobile-menu-btn{display:flex}
+  .nav .auth-actions{margin-left:auto;gap:7px}
+  .nav-cta{display:none}
+  .auth-btn{padding:10px 12px;font-size:12px}
+
+  .mobile-menu{position:fixed;top:68px;left:12px;right:12px;z-index:29;display:flex;flex-direction:column;gap:5px;padding:10px;background:rgba(255,255,255,.97);backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:18px;box-shadow:0 20px 55px rgba(20,20,16,.14);opacity:0;transform:translateY(-8px);pointer-events:none;transition:opacity .2s ease,transform .2s ease}
+  .mobile-menu.show{opacity:1;transform:none;pointer-events:auto}
+  .mobile-menu a{padding:13px 14px;border-radius:12px;font-size:14px;font-weight:800;color:#4f4d47}
+  .mobile-menu a:active{background:#f2f0ea}
+  .mobile-menu-cta{background:#171714!important;color:#fff!important;text-align:center;margin-top:4px}
+
+  .hero{padding:54px 0 48px;min-height:auto}
+  .hero-grid{display:grid;grid-template-columns:1fr;gap:30px;padding-left:0}
+  .hero-copy-reveal{width:100%}
+  .eyebrow{font-size:10px;max-width:100%;letter-spacing:.075em;padding:8px 10px}
+  h1{font-size:clamp(44px,12vw,64px);line-height:.94;margin:18px 0 16px}
+  .hero p{font-size:16px;line-height:1.55}
+  .hero .actions{display:grid;grid-template-columns:1fr;gap:9px;margin-top:22px}
+  .hero .actions .btn{width:100%;min-height:50px;padding:14px 16px}
+  .hero-copy-reveal>p:last-child{font-size:12px!important;line-height:1.5;text-align:center;margin:13px 0 0!important}
+
+  .nfc-card{min-height:410px;height:410px;padding:18px;border-radius:26px}
+  .nfc-base{width:220px;height:255px;bottom:52px;border-radius:25px}
+  .nfc-disc{width:184px;height:184px}
+  .nfc-disc strong{font-size:18px}
+  .nfc-symbol{font-size:23px}
+  .nfc-caption{left:16px;right:16px;bottom:15px;text-align:center;font-size:10px;line-height:1.45}
+
+  .scroll-experience{height:190vh}
+  .scroll-sticky{height:100vh}
+  .scroll-inner{width:100%}
+  .scroll-copy{left:50%;top:7%;width:calc(100% - 36px);text-align:center;transform:translateX(-50%)}
+  .scroll-copy h2{font-size:clamp(42px,12vw,54px);margin-bottom:12px}
+  .scroll-copy p{font-size:14px;line-height:1.55;margin:0 auto;max-width:330px}
+  .joy-pill{font-size:11px;margin:14px auto 0}
+  .scroll-phone{left:50%;top:59%;width:225px;height:445px;transform:translate(-50%,-50%) scale(.95) rotate(-2deg)}
+  .scroll-phone-top{height:47px;padding:0 13px;font-size:9px}
+  .scroll-phone-cover{height:120px;padding:16px}
+  .scroll-phone-cover strong{font-size:20px}
+  .scroll-phone-cover small{font-size:9px}
+  .scroll-phone-content{height:calc(100% - 167px);padding:10px}
+  .scroll-actions{gap:5px}
+  .scroll-actions div{padding:8px 3px;font-size:11px;border-radius:10px}
+  .scroll-actions span{font-size:8px}
+  .scroll-menu-item{padding:9px;font-size:9px;border-radius:11px}
+  .scroll-caption{display:none}
+
+  .section{padding:68px 0}
+  .section-head{margin-bottom:28px}
+  h2{font-size:clamp(34px,9vw,48px)}
+  .features,.pricing{grid-template-columns:1fr}
+  .feature,.price-card{padding:20px}
+  .demo-shell{border-radius:24px;padding:10px}
+  .demo-phone{border-radius:24px}
+
+  .dashboard-wrap{grid-template-columns:1fr;padding:10px;border-radius:22px;gap:10px}
+  .sidebar{display:flex;gap:6px;overflow-x:auto;padding:8px;border-radius:15px;scrollbar-width:none}
+  .sidebar::-webkit-scrollbar{display:none}
+  .side-brand{display:none}
+  .side-item{flex:0 0 auto;margin:0;padding:10px 12px;white-space:nowrap;font-size:11px}
+  .dash-main{padding:14px;border-radius:16px}
+  .dash-top{align-items:stretch;flex-direction:column;gap:12px}
+  .dashboard-actions{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .dashboard-actions .btn{width:100%;min-height:46px;padding:11px 10px;font-size:12px}
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .stat{padding:13px}
+  .stat b{font-size:22px}
+  .chart{padding:13px}
+  .bars{height:125px;gap:5px}
+  .editor{grid-template-columns:1fr;gap:12px}
+  .panel{padding:14px;border-radius:15px}
+  .mini-table{font-size:11px;display:block;overflow-x:auto}
+  .mini-table td{padding:10px}
+  .menu-item-card,.promo-card{flex-direction:column;align-items:stretch;gap:12px}
+  .menu-item-actions,.promo-actions{justify-content:flex-start}
+  .menu-item-actions .btn,.promo-actions .btn{flex:1}
+
+  .modal{padding:12px}
+  .modal-box{padding:18px;border-radius:20px;max-height:90vh;overflow:auto}
+  .toast{left:12px;right:12px;bottom:12px;text-align:center}
+
+  .public-topbar{padding:16px 0}
+  .public-card{border-radius:22px}
+  .public-cover{padding:28px 20px 24px}
+  .public-cover h1{font-size:clamp(38px,11vw,56px)}
+  .public-actions{grid-template-columns:repeat(2,1fr);gap:8px;padding:12px}
+  .public-action{padding:13px 7px}
+  .public-content{padding:16px}
+}
+
+@media(max-width:620px){
+  .container{width:calc(100% - 24px)}
+  .nav-inner{height:62px}
+  .mobile-menu{top:62px}
+  .brand{gap:8px;font-size:12px;min-width:0}
+  .brand-mark{width:34px;height:34px;border-radius:10px;font-size:15px}
+  .auth-btn{font-size:10px;padding:9px 10px;border-radius:11px}
+  .mobile-menu-btn{width:38px;height:38px;border-radius:11px;font-size:17px}
+
+  .hero{padding:40px 0 34px}
+  .hero-grid{gap:24px}
+  .eyebrow{font-size:9px}
+  h1{font-size:clamp(43px,13vw,55px)}
+  .hero p{font-size:15px}
+  .nfc-card{height:370px;min-height:370px}
+  .nfc-base{width:190px;height:220px;bottom:48px}
+  .nfc-disc{width:158px;height:158px}
+  .nfc-disc strong{font-size:15px}
+  .nfc-symbol{font-size:20px;margin-bottom:7px}
+  .nfc-disc span{font-size:8px}
+
+  .scroll-experience{height:180vh}
+  .scroll-copy{top:6%;width:calc(100% - 28px)}
+  .scroll-copy h2{font-size:41px}
+  .scroll-copy p{font-size:13px;max-width:310px}
+  .scroll-phone{top:59%;width:205px;height:405px}
+  .scroll-phone-shell{padding:8px;border-radius:32px}
+  .scroll-phone-screen{border-radius:26px}
+  .dynamic-island{width:66px;height:19px;top:7px}
+  .scroll-phone-cover{height:110px;padding:13px}
+  .scroll-phone-cover strong{font-size:18px}
+  .scroll-phone-content{height:calc(100% - 157px);padding:8px}
+  .scroll-menu-item{margin-top:6px}
+
+  .section{padding:56px 0}
+  .section-head{margin-bottom:22px}
+  .features,.pricing{gap:12px}
+  .feature,.price-card{border-radius:18px}
+  .price{font-size:40px}
+  .quick{grid-template-columns:repeat(2,1fr)}
+
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .dashboard-actions{grid-template-columns:1fr}
+  .dashboard-actions .btn{width:100%}
+  .dash-top h3{font-size:19px!important}
+  .bars{height:105px}
+
+  .field input,.field textarea{font-size:16px}
+  .promo-card{padding:13px}
+  .promo-actions{width:100%}
+  .promo-actions .btn{width:100%}
+
+  .public-topbar{gap:8px}
+  .public-brand{font-size:12px}
+  .public-status{font-size:10px;padding:7px 9px}
+  .public-cover h1{font-size:42px}
+  .public-cover p{font-size:13px}
+  .public-action{font-size:12px}
+  .public-menu-card{padding:13px;gap:10px}
+}
+
+@media(max-width:380px){
+  .auth-btn{font-size:9px;padding:8px 8px}
+  .brand span:last-child{max-width:108px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  h1{font-size:41px}
+  .nfc-card{height:350px;min-height:350px}
+  .nfc-base{width:175px;height:205px}
+  .nfc-disc{width:145px;height:145px}
+  .scroll-phone{width:190px;height:375px}
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -279,6 +455,7 @@ select{font:inherit}
     <nav class="nav-links">
       <a href="#demo">Demo</a><a href="#como">Cómo funciona</a><a href="#planes">Planes</a><a href="#dashboard">Dashboard</a>
     </nav>
+    <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Abrir menú" aria-expanded="false" onclick="toggleMobileMenu()">☰</button>
     <div class="auth-actions">
       <span class="auth-user-badge" id="authUserBadge"></span>
       <button class="btn auth-btn" id="loginBtn" type="button" onclick="openLogin()">Acceso negocio</button>
@@ -288,6 +465,13 @@ select{font:inherit}
   </div>
 </header>
 
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <a href="#demo" onclick="closeMobileMenu()">Demo</a>
+  <a href="#como" onclick="closeMobileMenu()">Cómo funciona</a>
+  <a href="#planes" onclick="closeMobileMenu()">Planes</a>
+  <a href="#dashboard" onclick="closeMobileMenu()">Dashboard</a>
+  <a class="mobile-menu-cta" href="#contacto" onclick="closeMobileMenu()">Quiero mi NFC →</a>
+</div>
 
 <div id="publicBusinessPage" class="public-business-page">
   <div class="container public-topbar">
@@ -339,7 +523,7 @@ select{font:inherit}
     <div class="nfc-card hero-card-reveal">
       <div class="nfc-base">
         <div class="nfc-disc">
-          <div class="nfc-symbol">)))</div><small>NFC</small><strong>MEDITERRÁNEO</strong><span>ACERCA TU MÓVIL</span>
+          <div class="nfc-symbol">)))</div><small>NFC</small><strong>TU NEGOCIO AQUÍ</strong><span>ACERCA TU MÓVIL</span>
         </div>
       </div>
       <div class="nfc-caption">Placa/soporte 3D personalizable · logo · color · URL NFC</div>
@@ -361,8 +545,8 @@ select{font:inherit}
         <div class="scroll-phone-shell">
           <div class="scroll-phone-screen">
             <div class="dynamic-island"></div>
-            <div class="scroll-phone-top"><strong id="scrollPhoneName">MEDITERRÁNEO</strong><span>● Abierto</span></div>
-            <div class="scroll-phone-cover"><div><strong>MEDITERRÁNEO</strong><small>Cocina mediterránea · Madrid</small></div></div>
+            <div class="scroll-phone-top"><strong id="scrollPhoneName">TU NEGOCIO AQUÍ</strong><span>● Abierto</span></div>
+            <div class="scroll-phone-cover"><div><strong>TU NEGOCIO AQUÍ</strong><small>Cocina mediterránea · Madrid</small></div></div>
             <div class="scroll-phone-content">
               <div class="scroll-actions"><div>🍽️<span>Carta</span></div><div>💬<span>WhatsApp</span></div><div>📅<span>Reservar</span></div><div>⭐<span>Reseña</span></div></div>
               <div class="scroll-menu-item"><div><strong>Ensalada burrata</strong><small>Tomate, pesto, rúcula</small></div><b>14,50 €</b></div>
@@ -396,8 +580,8 @@ select{font:inherit}
     <div class="section-head reveal-left"><div class="kicker">Demo real</div><h2>Así lo ve el cliente.</h2><p>Esta demo usa un restaurante ficticio. Cada negocio tendría su propia página, logo, colores y contenido.</p></div>
     <div class="demo-shell reveal-right">
       <div class="demo-phone">
-        <div class="phone-top"><strong>MEDITERRÁNEO</strong><span style="font-size:12px;color:#6d6a63">● Abierto</span></div>
-        <div class="biz-cover"><div><div class="biz-title" id="bizName">MEDITERRÁNEO</div><div class="biz-meta">Cocina mediterránea · Madrid</div></div></div>
+        <div class="phone-top"><strong>TU NEGOCIO AQUÍ</strong><span style="font-size:12px;color:#6d6a63">● Abierto</span></div>
+        <div class="biz-cover"><div><div class="biz-title" id="bizName">TU NEGOCIO AQUÍ</div><div class="biz-meta">Cocina mediterránea · Madrid</div></div></div>
         <div class="quick stagger reveal">
           <button class="qbtn" onclick="notify('Abriendo carta…')">🍽️<br>Carta</button><button class="qbtn" onclick="notify('Abriendo WhatsApp…')">💬<br>WhatsApp</button><button class="qbtn" onclick="notify('Abriendo Instagram…')">📸<br>Instagram</button><button class="qbtn" onclick="notify('Abriendo reservas…')">📅<br>Reservar</button>
           <button class="qbtn" onclick="notify('Abriendo Google Maps…')">📍<br>Cómo llegar</button><button class="qbtn" onclick="notify('Abriendo TikTok…')">🎵<br>TikTok</button><button class="qbtn" onclick="notify('Abriendo reseñas…')">⭐<br>Reseña</button><button class="qbtn" onclick="notify('Copiado: Mediterra_5G')">📶<br>Wi‑Fi</button>
@@ -712,7 +896,7 @@ async function initSupabase(){
 
 function applyBusinessToUI(data){
   if(!data) return;
-  const name=(data.name || 'MEDITERRÁNEO').toUpperCase();
+  const name=(data.name || 'TU NEGOCIO AQUÍ').toUpperCase();
   const description=data.description || 'Cocina mediterránea · Madrid';
 
   const textMap={
@@ -1003,7 +1187,7 @@ async function saveDemo(){
     }
   }
 
-  const name=document.getElementById('editName').value.trim() || 'MEDITERRÁNEO';
+  const name=document.getElementById('editName').value.trim() || 'TU NEGOCIO AQUÍ';
   const description=document.getElementById('editDesc').value.trim() || 'Cocina mediterránea · Madrid';
   const instagram=document.getElementById('editInstagram')?.value.trim() || '';
   const whatsapp=document.getElementById('editWhatsapp')?.value.trim() || '';
@@ -1333,6 +1517,33 @@ window.NFCBusinessHub={supabaseClient,loadPublicBusiness,loadOwnerBusiness};
     }
   });
 })();
+
+
+function toggleMobileMenu(){
+  const menu=document.getElementById('mobileMenu');
+  const btn=document.getElementById('mobileMenuBtn');
+  if(!menu||!btn)return;
+  const open=!menu.classList.contains('show');
+  menu.classList.toggle('show',open);
+  menu.setAttribute('aria-hidden',String(!open));
+  btn.setAttribute('aria-expanded',String(open));
+  btn.textContent=open?'✕':'☰';
+}
+function closeMobileMenu(){
+  const menu=document.getElementById('mobileMenu');
+  const btn=document.getElementById('mobileMenuBtn');
+  if(!menu||!btn)return;
+  menu.classList.remove('show');
+  menu.setAttribute('aria-hidden','true');
+  btn.setAttribute('aria-expanded','false');
+  btn.textContent='☰';
+}
+document.addEventListener('click',function(e){
+  const menu=document.getElementById('mobileMenu');
+  const btn=document.getElementById('mobileMenuBtn');
+  if(!menu||!btn)return;
+  if(menu.classList.contains('show') && !menu.contains(e.target) && !btn.contains(e.target)) closeMobileMenu();
+});
 </script>
 </body>
 </html>
