@@ -25,7 +25,7 @@ img{max-width:100%;display:block}
 .nav-links{display:flex;gap:24px;color:#66645e;font-size:14px}
 .nav-cta{padding:11px 16px;background:#171714;color:#fff;border-radius:999px;font-weight:700}
 .hero{padding:84px 0 62px;min-height:90vh;display:flex;align-items:center}
-.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center;width:100%}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center;width:100%;padding-left:70px}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:#5d5b55}
 .dot{width:7px;height:7px;border-radius:50%;background:#4bb381;box-shadow:0 0 0 6px rgba(75,179,129,.08)}
 h1{font-size:clamp(48px,6vw,84px);line-height:.96;letter-spacing:-.065em;margin:20px 0}
@@ -220,7 +220,7 @@ main,.nav,.footer{position:relative;z-index:1}
 .footer{padding:40px 0 60px;border-top:1px solid var(--line);color:#77746d;font-size:13px}.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}.modal.show{display:flex}.modal-box{width:min(520px,100%);background:#fff;border-radius:24px;padding:24px;box-shadow:var(--shadow)}.close{float:right;border:0;background:#f0eee8;border-radius:50%;width:34px;height:34px;cursor:pointer}.toast{position:fixed;right:20px;bottom:20px;background:#171714;color:#fff;padding:14px 16px;border-radius:14px;display:none;z-index:60;font-size:13px}.toast.show{display:block}
 
 @media(max-width:900px){
-  .hero{padding-top:48px}.hero-grid,.dashboard-wrap,.editor{grid-template-columns:1fr}.features,.pricing{grid-template-columns:1fr 1fr}.nav-links{display:none}
+  .hero{padding-top:48px}.hero-grid,.dashboard-wrap,.editor{grid-template-columns:1fr;padding-left:0}.features,.pricing{grid-template-columns:1fr 1fr}.nav-links{display:none}
   .scroll-copy{left:50%;top:8%;width:90%;transform:translateX(-50%);text-align:center}.scroll-copy p{margin-left:auto;margin-right:auto}.scroll-phone{left:50%;top:58%;width:250px;height:500px}
 }
 @media(max-width:620px){
@@ -1043,6 +1043,9 @@ window.NFCBusinessHub={supabaseClient,loadPublicBusiness,loadOwnerBusiness};
     }
   });
 })();
+</script>
+</body>
+</html>
 </script>
 </body>
 </html>
