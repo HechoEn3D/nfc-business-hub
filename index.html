@@ -358,15 +358,48 @@ function sendLead(){
 function saveDemo(){
   const name=document.getElementById('editName').value.trim()||'MEDITERRÁNEO';
   const upper=name.toUpperCase();
+
   document.getElementById('bizName').textContent=upper;
   document.getElementById('nfcName').textContent=upper;
-  const phoneName=document.getElementById('scrollPhoneName'); if(phoneName) phoneName.textContent=upper;
-  const coverStrong=document.querySelector('.scroll-phone-cover strong'); if(coverStrong) coverStrong.textContent=upper; const phoneTop=document.querySelector('.scroll-phone-top strong'); if(phoneTop) phoneTop.textContent=upper;
+
+  const phoneName=document.getElementById('scrollPhoneName');
+  if(phoneName) phoneName.textContent=upper;
+
+  const coverStrong=document.querySelector('.scroll-phone-cover strong');
+  if(coverStrong) coverStrong.textContent=upper;
+
+  const phoneTop=document.querySelector('.scroll-phone-top strong');
+  if(phoneTop) phoneTop.textContent=upper;
+
   notify('Cambios guardados y reflejados en la demo ✓');
 }
 
+async function loadBusiness(){
+  const { data, error } = await client
+    .from('businesses')
+    .select('name, description, instagram, whatsapp, phone, city')
+    .eq('slug', 'mediterraneo')
+    .single();
 
+  if(error){
+    console.error('Error cargando negocio:', error);
+    return;
+  }
 
+  const name = data.name || 'MEDITERRÁNEO';
+  const description = data.description || '';
+
+  document.getElementById('bizName').textContent = name.toUpperCase();
+  document.getElementById('nfcName').textContent = name.toUpperCase();
+
+  const heroName = document.querySelector('.nfc-disc strong');
+  if(heroName) heroName.textContent = name.toUpperCase();
+
+  const descriptionEl = document.querySelector('.biz-meta');
+  if(descriptionEl) descriptionEl.textContent = description;
+}
+
+loadBusiness();
 /* ---------------------------------------------------------
    Premium pointer depth — subtle, only on pointer devices
 --------------------------------------------------------- */
