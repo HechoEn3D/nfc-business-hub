@@ -359,47 +359,13 @@ function saveDemo(){
   const name=document.getElementById('editName').value.trim()||'MEDITERRÁNEO';
   const upper=name.toUpperCase();
 
-  document.getElementById('bizName').textContent=upper;
-  document.getElementById('nfcName').textContent=upper;
+  document.querySelectorAll('#bizName,#nfcName,#scrollPhoneName,.phone-top strong,.scroll-phone-top strong,.nfc-disc strong,.scroll-phone-cover strong,.dash-top h3').forEach(el=>{
+    el.textContent=upper;
+  });
 
-  const phoneName=document.getElementById('scrollPhoneName');
-  if(phoneName) phoneName.textContent=upper;
-
-  const coverStrong=document.querySelector('.scroll-phone-cover strong');
-  if(coverStrong) coverStrong.textContent=upper;
-
-  const phoneTop=document.querySelector('.scroll-phone-top strong');
-  if(phoneTop) phoneTop.textContent=upper;
-
-  notify('Cambios guardados y reflejados en la demo ✓');
+  notify('Cambios reflejados en la demo ✓');
 }
 
-async function loadBusiness(){
-  const { data, error } = await client
-    .from('businesses')
-    .select('name, description, instagram, whatsapp, phone, city')
-    .eq('slug', 'mediterraneo')
-    .single();
-
-  if(error){
-    console.error('Error cargando negocio:', error);
-    return;
-  }
-
-  const name = data.name || 'MEDITERRÁNEO';
-  const description = data.description || '';
-
-  document.getElementById('bizName').textContent = name.toUpperCase();
-  document.getElementById('nfcName').textContent = name.toUpperCase();
-
-  const heroName = document.querySelector('.nfc-disc strong');
-  if(heroName) heroName.textContent = name.toUpperCase();
-
-  const descriptionEl = document.querySelector('.biz-meta');
-  if(descriptionEl) descriptionEl.textContent = description;
-}
-
-loadBusiness();
 /* ---------------------------------------------------------
    Premium pointer depth — subtle, only on pointer devices
 --------------------------------------------------------- */
@@ -513,78 +479,95 @@ window.addEventListener('resize',updateScrollExperience);
 updateScrollExperience();
 </script>
 
+
+
+
 <script>
 /* =========================================================
    SUPABASE — REAL BUSINESS DATA
-   Paste ONLY your public API URL and Publishable key here.
-   Never paste a Secret key or service_role key.
+   Public frontend key only. RLS controls access.
 ========================================================= */
-const NFC_SUPABASE_URL = 'https://znegwqcdaxqfzbjyzija.supabase.co/rest/v1/';
+const NFC_SUPABASE_URL = 'https://znegwqcdaxqfzbjyzija.supabase.co';
 const NFC_SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_OxUV1v29_QwhZQyy7Skg3w_-f1gTcre';
 
-(async function loadBusinessFromSupabase(){
-  const isConfigured =
-    NFC_SUPABASE_URL.startsWith('http') &&
-    NFC_SUPABASE_PUBLISHABLE_KEY.startsWith('sb_');
+let supabaseClient = null;
 
-  if (!isConfigured || !window.supabase) return;
-
-  const client = window.supabase.createClient(
-    NFC_SUPABASE_URL,
-    NFC_SUPABASE_PUBLISHABLE_KEY
-  );
-
-  const { data, error } = await client
-    .from('businesses')
-    .select('name, slug, description, instagram, whatsapp, phone, city')
-    .eq('slug', 'mediterraneo')
-    .maybeSingle();
-
-  if (error) {
-    console.error('Supabase:', error.message);
-    return;
-  }
-
-  if (!data) return;
-
-  const name = (data.name || 'MEDITERRÁNEO').toUpperCase();
-  const description = data.description || 'Cocina mediterránea · Madrid';
-
-  // Update visible demo elements without changing the visual design.
-  const map = {
-    '#bizName': name,
-    '#nfcName': name,
-    '#phoneName': name,
-    '#phoneTop': name
-  };
-
-  Object.entries(map).forEach(([selector, value])=>{
-    const el=document.querySelector(selector);
-    if(el) el.textContent=value;
-  });
-
-  const bizMeta=document.querySelector('.biz-meta');
-  if(bizMeta) bizMeta.textContent=description;
-
-  const scrollCoverSmall=document.querySelector('.scroll-phone-cover small');
-  if(scrollCoverSmall) scrollCoverSmall.textContent=description;
-
-  const editName=document.querySelector('#editName');
-  if(editName) editName.value=data.name || '';
-
-  const editDesc=document.querySelector('#editDesc');
-  if(editDesc) editDesc.value=description;
-
-  const instagramInputs=document.querySelectorAll('input');
-  instagramInputs.forEach(input=>{
-    if(input.value.includes('mediterraneo_demo') && data.instagram){
-      input.value=data.instagram;
+async function loadBusinessFromSupabase(){
+  try {
+    if (!window.supabase) {
+      console.error('Supabase SDK no está disponible.');
+      return;
     }
-  });
 
-  console.log('NFC Business Hub · negocio cargado desde Supabase ✓');
-})();
+    supabaseClient = window.supabase.createClient(
+      NFC_SUPABASE_URL,
+      NFC_SUPABASE_PUBLISHABLE_KEY
+    );
+
+    const { data, error } = await supabaseClient
+      .from('businesses')
+      .select('name, slug, description, instagram, whatsapp, phone, city')
+      .eq('slug', 'mediterraneo')
+      .maybeSingle();
+
+    if (error) {
+      console.error('Supabase:', error.message);
+      return;
+    }
+
+    if (!data) {
+      console.warn('No se encontró el negocio con slug "mediterraneo".');
+      return;
+    }
+
+    const name = (data.name || 'MEDITERRÁNEO').toUpperCase();
+    const description = data.description || 'Cocina mediterránea · Madrid';
+
+    const textMap = {
+      '#bizName': name,
+      '#nfcName': name,
+      '#scrollPhoneName': name,
+      '.phone-top strong': name,
+      '.scroll-phone-top strong': name,
+      '.nfc-disc strong': name,
+      '.scroll-phone-cover strong': name,
+      '.dash-top h3': name
+    };
+
+    Object.entries(textMap).forEach(([selector, value])=>{
+      document.querySelectorAll(selector).forEach(el=>{
+        el.textContent = value;
+      });
+    });
+
+    document.querySelectorAll('.biz-meta').forEach(el=>{
+      el.textContent = description;
+    });
+
+    const scrollCoverSmall = document.querySelector('.scroll-phone-cover small');
+    if (scrollCoverSmall) scrollCoverSmall.textContent = description;
+
+    const editName = document.querySelector('#editName');
+    if (editName) editName.value = data.name || '';
+
+    const editDesc = document.querySelector('#editDesc');
+    if (editDesc) editDesc.value = description;
+
+    document.querySelectorAll('input').forEach(input=>{
+      if (input.value.includes('mediterraneo_demo') && data.instagram) {
+        input.value = data.instagram;
+      }
+    });
+
+    console.log('NFC Business Hub · negocio cargado desde Supabase ✓');
+  } catch (err) {
+    console.error('NFC Business Hub · error de conexión con Supabase:', err);
+  }
+}
+
+window.NFCBusinessHub = { supabaseClient, loadBusinessFromSupabase };
+loadBusinessFromSupabase();
 </script>
-
+<!-- Supabase connection loaded above -->
 </body>
 </html>
