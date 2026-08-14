@@ -183,6 +183,10 @@ main,.nav,.footer{position:relative;z-index:1}
 .empty-panel{padding:26px;border:1px dashed #d8d2c5;border-radius:18px;background:#fbfaf7;text-align:center;color:#77746d}
 .empty-panel strong{display:block;color:#171714;font-size:16px;margin-bottom:6px}
 @keyframes dashViewIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* Nuevos módulos del owner: diseño, enlaces y horarios */
+.mini-preview{display:flex;justify-content:center;padding:8px 0}.mini-preview-phone{width:230px;min-height:410px;border:8px solid #111;border-radius:28px;background:#fff;overflow:hidden;box-shadow:0 18px 45px rgba(20,20,16,.16)}.mini-preview-cover{height:125px;background:linear-gradient(135deg,#292925,#6d6b61);display:flex;align-items:flex-end;padding:15px;color:#fff;font-weight:900}.mini-preview-body{padding:14px}.mini-preview-body strong{display:block;font-size:15px}.mini-preview-body small{display:block;color:#777;font-size:9px;line-height:1.5;margin-top:5px}.mini-preview-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:12px}.mini-preview-actions span{border:1px solid var(--line);border-radius:9px;padding:7px 2px;text-align:center;font-size:8px;font-weight:800}.mini-preview-card{margin-top:9px;padding:12px;border-radius:11px;background:#f6f5f1;font-size:9px;color:#666}.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:14px 0;border-bottom:1px solid var(--line);font-size:13px}.toggle-row:last-child{border-bottom:0}.toggle-row input{width:18px;height:18px;accent-color:#171714}.hours-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.hours-grid>div{display:flex;justify-content:space-between;gap:12px;align-items:center;border:1px solid var(--line);border-radius:13px;padding:13px;background:#faf9f5;font-size:12px}.hours-grid strong{font-size:12px}.hours-grid span{color:#777;text-align:right}
+
 @media(max-width:900px){.dashboard-grid-2{grid-template-columns:1fr}.dashboard-actions{justify-content:flex-start}}
 
 /* AUTH UI — añadido sin cambiar el diseño general */
@@ -445,6 +449,77 @@ select{font:inherit}
   .scroll-phone{width:190px;height:375px}
 }
 
+
+/* =========================================================
+   NFC BUSINESS HUB — v3 MULTI-NEGOCIO + MOBILE FIX
+========================================================= */
+.business-type-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.business-type-card{border:1px solid var(--line);background:#fff;border-radius:16px;padding:14px;cursor:pointer;transition:.2s;text-align:left}
+.business-type-card:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(20,20,16,.07)}
+.business-type-card.active{border:2px solid var(--accent);background:#faf9f5}
+.business-type-card .bt-icon{font-size:25px;margin-bottom:8px}
+.business-type-card strong{display:block;font-size:13px}
+.business-type-card small{display:block;color:#858179;margin-top:4px;line-height:1.35}
+.module-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.module-chip{padding:12px;border:1px solid var(--line);border-radius:14px;background:#faf9f5;font-size:12px;font-weight:800}
+.module-chip span{display:block;color:#8a877f;font-weight:500;margin-top:4px}
+.public-hero-extra{padding:18px 20px;background:linear-gradient(135deg,#171714,#34322c);color:#fff}
+.public-hero-extra h2{font-size:27px;margin:0 0 7px;color:#fff}
+.public-hero-extra p{margin:0;color:rgba(255,255,255,.72);font-size:13px;line-height:1.55}
+.public-highlight{margin:0 0 18px;padding:16px;border-radius:18px;background:linear-gradient(135deg,#fff8e9,#fff);border:1px solid #eadfc9}
+.public-highlight .ph-label{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:#a27d3d}
+.public-highlight strong{display:block;font-size:19px;margin-top:4px}
+.public-highlight p{margin:5px 0 0;color:#706c63;font-size:12px;line-height:1.5}
+.public-section-divider{height:1px;background:var(--line);margin:20px 0}
+.public-promo-card{position:relative;overflow:hidden}
+.public-promo-card::before{content:"🔥";position:absolute;right:14px;top:12px;font-size:20px;opacity:.55}
+.public-category-tabs{display:flex;gap:8px;overflow:auto;padding:2px 0 12px;scrollbar-width:none}
+.public-category-tabs::-webkit-scrollbar{display:none}
+.public-category-tabs button{white-space:nowrap;border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 13px;font-size:11px;font-weight:800}
+.public-category-tabs button.active{background:#171714;color:#fff;border-color:#171714}
+.design-presets{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.design-preset{height:48px;border:1px solid var(--line);border-radius:14px;cursor:pointer;font-weight:800;font-size:11px}
+.design-preset.dark{background:#171714;color:#fff}
+.design-preset.clean{background:#fff;color:#171714}
+.design-preset.warm{background:#f5ead4;color:#6f5428}
+@media(max-width:900px){
+  .business-type-grid{grid-template-columns:repeat(2,1fr)}
+  .module-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:620px){
+  .business-type-grid{grid-template-columns:1fr 1fr}
+  .module-grid{grid-template-columns:1fr}
+  .design-presets{grid-template-columns:1fr 1fr 1fr}
+  /* Fix the scroll phone: keep the complete device inside the viewport */
+  .scroll-sticky{min-height:100svh}
+  .scroll-inner{width:100%;max-width:100%;overflow:hidden}
+  .scroll-phone{
+    width:190px!important;
+    height:380px!important;
+    left:50%!important;
+    top:61%!important;
+    transform:translate(-50%,-50%) scale(1)!important;
+  }
+  .scroll-phone-shell{padding:7px;border-radius:31px}
+  .scroll-phone-screen{border-radius:25px}
+  .dynamic-island{width:58px;height:16px;top:6px}
+  .scroll-phone-top{height:35px;padding:0 10px;font-size:7px}
+  .scroll-phone-cover{height:105px;padding:12px}
+  .scroll-phone-cover strong{font-size:17px}
+  .scroll-phone-cover small{font-size:8px}
+  .scroll-phone-content{height:calc(100% - 140px);padding:8px}
+  .scroll-actions{gap:4px}
+  .scroll-actions div{padding:6px 2px;font-size:9px;border-radius:8px}
+  .scroll-actions span{font-size:7px;margin-top:2px}
+  .scroll-menu-item{margin-top:5px;padding:7px;font-size:7px;border-radius:9px}
+  .scroll-menu-item small{font-size:6px}
+  .scroll-copy{top:5%!important;width:calc(100% - 28px)!important}
+  .scroll-copy h2{font-size:36px!important}
+  .scroll-copy p{font-size:12px!important;line-height:1.45}
+  .joy-pill{font-size:10px;padding:7px 10px}
+  .scroll-caption{bottom:12px;font-size:8px}
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -494,13 +569,30 @@ select{font:inherit}
         <button class="public-action" id="publicPhone">📞<span>Llamar</span></button>
         <button class="public-action" id="publicMaps">📍<span>Cómo llegar</span></button>
       </div>
+      <div class="public-hero-extra">
+        <h2 id="publicWelcomeTitle">Todo lo que necesitas.</h2>
+        <p id="publicWelcomeText">Consulta información, descubre promociones y accede rápidamente a lo importante.</p>
+      </div>
       <div class="public-content">
+        <div id="publicHighlight" class="public-highlight">
+          <div class="ph-label">Experiencia digital</div>
+          <strong>Todo el negocio, en un toque.</strong>
+          <p>Información actualizada directamente por el negocio. Sin app y sin buscar por internet.</p>
+        </div>
         <div class="public-section-title">Información</div>
         <div id="publicCity" style="color:#66645e;line-height:1.6">—</div>
-        <div style="height:22px"></div>
-        <div id="publicPromotionsSection" style="display:none"><div class="public-section-title">🔥 Promociones</div><div id="publicPromotionList"></div><div style="height:22px"></div></div>
-        <div class="public-section-title">Carta</div>
-        <div id="publicMenuList"><div style="color:#8a877f">Cargando carta…</div></div>
+        <div class="public-section-divider"></div>
+        <div id="publicPromotionsSection" style="display:none">
+          <div class="public-section-title">🔥 Ofertas y promociones</div>
+          <div id="publicPromotionList"></div>
+          <div style="height:22px"></div>
+        </div>
+        <div class="public-section-title">Carta / Servicios</div>
+        <div class="public-category-tabs" id="publicCategoryTabs">
+          <button class="active" type="button">Destacados</button>
+          <button type="button">Todo</button>
+        </div>
+        <div id="publicMenuList"><div style="color:#8a877f">Cargando contenido…</div></div>
       </div>
       <div class="public-footer">Powered by NFC Business Hub</div>
     </div>
@@ -546,7 +638,7 @@ select{font:inherit}
           <div class="scroll-phone-screen">
             <div class="dynamic-island"></div>
             <div class="scroll-phone-top"><strong id="scrollPhoneName">TU NEGOCIO AQUÍ</strong><span>● Abierto</span></div>
-            <div class="scroll-phone-cover"><div><strong>TU NEGOCIO AQUÍ</strong><small>Cocina mediterránea · Madrid</small></div></div>
+            <div class="scroll-phone-cover"><div><strong>TU NEGOCIO AQUÍ</strong><small>Tu negocio · Madrid</small></div></div>
             <div class="scroll-phone-content">
               <div class="scroll-actions"><div>🍽️<span>Carta</span></div><div>💬<span>WhatsApp</span></div><div>📅<span>Reservar</span></div><div>⭐<span>Reseña</span></div></div>
               <div class="scroll-menu-item"><div><strong>Ensalada burrata</strong><small>Tomate, pesto, rúcula</small></div><b>14,50 €</b></div>
@@ -581,11 +673,12 @@ select{font:inherit}
     <div class="demo-shell reveal-right">
       <div class="demo-phone">
         <div class="phone-top"><strong>TU NEGOCIO AQUÍ</strong><span style="font-size:12px;color:#6d6a63">● Abierto</span></div>
-        <div class="biz-cover"><div><div class="biz-title" id="bizName">TU NEGOCIO AQUÍ</div><div class="biz-meta">Cocina mediterránea · Madrid</div></div></div>
+        <div class="biz-cover"><div><div class="biz-title" id="bizName">TU NEGOCIO AQUÍ</div><div class="biz-meta">Tu negocio · Madrid</div></div></div>
         <div class="quick stagger reveal">
           <button class="qbtn" onclick="notify('Abriendo carta…')">🍽️<br>Carta</button><button class="qbtn" onclick="notify('Abriendo WhatsApp…')">💬<br>WhatsApp</button><button class="qbtn" onclick="notify('Abriendo Instagram…')">📸<br>Instagram</button><button class="qbtn" onclick="notify('Abriendo reservas…')">📅<br>Reservar</button>
           <button class="qbtn" onclick="notify('Abriendo Google Maps…')">📍<br>Cómo llegar</button><button class="qbtn" onclick="notify('Abriendo TikTok…')">🎵<br>TikTok</button><button class="qbtn" onclick="notify('Abriendo reseñas…')">⭐<br>Reseña</button><button class="qbtn" onclick="notify('Copiado: Mediterra_5G')">📶<br>Wi‑Fi</button>
         </div>
+        <div class="public-highlight" style="margin:14px 18px 0"><div class="ph-label">Oferta destacada</div><strong>2x1 en tu promoción favorita</strong><p>Las promociones pueden actualizarse desde el dashboard y aparecer automáticamente en la web del cliente.</p></div>
         <div class="menu-preview reveal"><div style="display:flex;justify-content:space-between;align-items:end;margin-bottom:10px"><div><strong style="font-size:18px">Carta</strong><div style="font-size:12px;color:#8a877f">Lo más pedido</div></div><button class="btn" style="padding:8px 10px;font-size:12px" onclick="notify('Carta completa abierta')">Ver todo</button></div>
           <div class="menu-card"><div><b>Ensalada burrata</b><span>Tomate, pesto, rúcula</span></div><strong>14,50 €</strong></div><div class="menu-card"><div><b>Arroz mediterráneo</b><span>Verduras, gambón, azafrán</span></div><strong>22,90 €</strong></div><div class="menu-card"><div><b>Tarta de limón</b><span>Merengue tostado</span></div><strong>7,50 €</strong></div>
         </div>
@@ -616,6 +709,9 @@ select{font:inherit}
         <div class="side-item" data-dash-section="negocio">Mi negocio</div>
         <div class="side-item" data-dash-section="carta">Carta</div>
         <div class="side-item" data-dash-section="promociones">Promociones</div>
+        <div class="side-item" data-dash-section="diseno">Diseño</div>
+        <div class="side-item" data-dash-section="enlaces">Enlaces</div>
+        <div class="side-item" data-dash-section="horarios">Horarios</div>
         <div class="side-item" data-dash-section="placas">Placas NFC</div>
         <div class="side-item" data-dash-section="analitica">Analítica</div>
       </aside>
@@ -638,7 +734,7 @@ select{font:inherit}
           </div>
           <div class="chart reveal" data-chart><strong>Interacciones · últimos 30 días</strong><div class="bars"><div class="bar" style="height:42%"></div><div class="bar" style="height:58%"></div><div class="bar" style="height:48%"></div><div class="bar" style="height:70%"></div><div class="bar" style="height:61%"></div><div class="bar" style="height:83%"></div><div class="bar" style="height:92%"></div><div class="bar" style="height:74%"></div><div class="bar" style="height:88%"></div><div class="bar" style="height:96%"></div></div></div>
           <div class="dashboard-grid-2" style="margin-top:14px">
-            <div class="panel"><h3 style="margin-top:0">Acciones rápidas</h3><div class="actions" style="margin-top:14px"><button class="btn" onclick="switchDashboardSection('negocio')">Editar negocio</button><button class="btn" onclick="switchDashboardSection('carta')">Gestionar carta</button><button class="btn" onclick="switchDashboardSection('placas')">Ver placas</button></div></div>
+            <div class="panel"><h3 style="margin-top:0">Acciones rápidas</h3><div class="actions" style="margin-top:14px"><button class="btn" onclick="switchDashboardSection('negocio')">Editar negocio</button><button class="btn" onclick="switchDashboardSection('carta')">Gestionar carta</button><button class="btn" onclick="switchDashboardSection('diseno')">Personalizar web</button><button class="btn" onclick="switchDashboardSection('placas')">Ver placas</button></div></div>
             <div class="panel"><h3 style="margin-top:0">Página pública</h3><p class="small">Tu URL pública aparece aquí cuando inicias sesión.</p><button class="btn primary" type="button" onclick="openBusinessPage()">Abrir página ↗</button></div>
           </div>
         </div>
@@ -650,7 +746,7 @@ select{font:inherit}
               <h3 style="margin-top:0">Información</h3>
               <div class="field"><label>Nombre</label><input id="editName" value="TU NEGOCIO AQUÍ" /></div>
               <div class="field"><label>Descripción</label><textarea id="editDesc">Añade aquí una descripción de tu negocio</textarea></div>
-              <div class="field"><label>Instagram</label><input id="editInstagram" value="@mediterraneo_demo" /></div>
+              <div class="field"><label>Instagram</label><input id="editInstagram" placeholder="@tu_negocio" /></div>
             </div>
             <div class="panel">
               <h3 style="margin-top:0">Contacto</h3>
@@ -661,7 +757,35 @@ select{font:inherit}
           </div>
         </div>
 
-        <div class="dash-view" data-dash-view="carta">
+        
+        <div class="dash-view" data-dash-view="tipo">
+          <div class="dash-view-head">
+            <div><h3>Tipo de negocio</h3><p>Elige el tipo de negocio para preparar automáticamente las herramientas que tendrá tu página.</p></div>
+            <button class="btn primary" type="button" onclick="saveBusinessType()">Guardar configuración</button>
+          </div>
+          <div class="panel" style="margin-top:16px">
+            <div class="business-type-grid" id="businessTypeGrid">
+              <button class="business-type-card active" data-business-type="restaurant" type="button" onclick="selectBusinessType('restaurant')"><div class="bt-icon">🍽️</div><strong>Restaurante</strong><small>Carta, promociones, reservas, horarios y reseñas.</small></button>
+              <button class="business-type-card" data-business-type="gym" type="button" onclick="selectBusinessType('gym')"><div class="bt-icon">🏋️</div><strong>Gimnasio</strong><small>Clases, horarios, servicios, entrenadores y contacto.</small></button>
+              <button class="business-type-card" data-business-type="barbershop" type="button" onclick="selectBusinessType('barbershop')"><div class="bt-icon">💈</div><strong>Barbería / Peluquería</strong><small>Servicios, precios, reservas y profesionales.</small></button>
+              <button class="business-type-card" data-business-type="beauty" type="button" onclick="selectBusinessType('beauty')"><div class="bt-icon">✨</div><strong>Estética</strong><small>Tratamientos, precios, reservas y promociones.</small></button>
+              <button class="business-type-card" data-business-type="shop" type="button" onclick="selectBusinessType('shop')"><div class="bt-icon">🛍️</div><strong>Tienda</strong><small>Catálogo, novedades, ubicación y contacto.</small></button>
+              <button class="business-type-card" data-business-type="bazaar" type="button" onclick="selectBusinessType('bazaar')"><div class="bt-icon">🏪</div><strong>Bazar / Comercio</strong><small>Productos, ofertas, horarios y ubicación.</small></button>
+              <button class="business-type-card" data-business-type="hotel" type="button" onclick="selectBusinessType('hotel')"><div class="bt-icon">🏨</div><strong>Hotel / Alojamiento</strong><small>Servicios, habitaciones, recepción y ubicación.</small></button>
+              <button class="business-type-card" data-business-type="other" type="button" onclick="selectBusinessType('other')"><div class="bt-icon">➕</div><strong>Otro negocio</strong><small>Configuración flexible para cualquier actividad.</small></button>
+            </div>
+            <div id="businessTypeModules" class="module-grid">
+              <div class="module-chip">🍽️ Carta<span>Productos y categorías</span></div>
+              <div class="module-chip">🔥 Promociones<span>Ofertas visibles en la web</span></div>
+              <div class="module-chip">📅 Reservas<span>Preparado para conectar reservas</span></div>
+              <div class="module-chip">⭐ Reseñas<span>Acceso a opiniones</span></div>
+              <div class="module-chip">📍 Ubicación<span>Mapa y cómo llegar</span></div>
+              <div class="module-chip">📊 Analítica<span>Visitas e interacciones</span></div>
+            </div>
+          </div>
+        </div>
+
+<div class="dash-view" data-dash-view="carta">
           <div class="dash-view-head">
             <div><h3>Carta</h3><p>Gestiona tus platos. Los cambios aparecerán automáticamente en tu página pública.</p></div>
             <button class="btn primary" type="button" onclick="openMenuEditor()">Añadir plato</button>
@@ -680,13 +804,71 @@ select{font:inherit}
           <div class="panel"><div id="promotionLoading" class="empty-panel"><strong>Cargando promociones…</strong>Estamos leyendo tus ofertas.</div><div id="promotionEmpty" class="empty-panel" style="display:none"><strong>Aún no hay promociones</strong>Crea tu primera oferta y aparecerá automáticamente en tu página pública.</div><div id="promotionList" style="display:none"></div></div>
         </div>
 
+        <div class="dash-view" data-dash-view="diseno">
+          <div class="dash-view-head"><div><h3>Diseño de tu web</h3><p>Personaliza la apariencia de tu página sin tocar código.</p></div><button class="btn primary" type="button" onclick="notify('Editor visual: guardado real en el siguiente bloque ✓')">Guardar diseño</button></div>
+          <div class="editor" style="margin-top:0">
+            <div class="panel">
+              <h3 style="margin-top:0">Estilo</h3>
+              <div class="field"><label>Color principal</label><input id="designAccent" type="color" value="#171714" style="height:46px;padding:5px;cursor:pointer"></div>
+              <div class="field"><label>Color de fondo</label><input id="designBackground" type="color" value="#f6f5f1" style="height:46px;padding:5px;cursor:pointer"></div>
+              <div class="field"><label>Radio de bordes</label><input id="designRadius" type="range" min="8" max="32" value="22"></div>
+              <div class="field"><label>Presets rápidos</label>
+              <div class="design-presets">
+                <button type="button" class="design-preset dark" onclick="applyDesignPreset('dark')">Dark</button>
+                <button type="button" class="design-preset clean" onclick="applyDesignPreset('clean')">Clean</button>
+                <button type="button" class="design-preset warm" onclick="applyDesignPreset('warm')">Warm</button>
+              </div>
+            </div>
+            <div class="field"><label>Estilo de botones</label><select id="designButtons" style="width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:12px;background:#faf9f5"><option>Redondeados</option><option>Compactos</option><option>Elegantes</option></select></div>
+            </div>
+            <div class="panel">
+              <h3 style="margin-top:0">Preview móvil</h3>
+              <div class="mini-preview">
+                <div class="mini-preview-phone">
+                  <div class="mini-preview-cover"><span>Tu negocio</span></div>
+                  <div class="mini-preview-body"><strong>TU NEGOCIO AQUÍ</strong><small>Tu descripción y propuesta de valor.</small><div class="mini-preview-actions"><span>WhatsApp</span><span>Mapa</span><span>Carta</span></div><div class="mini-preview-card">Carta · Promociones · Información</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-view" data-dash-view="enlaces">
+          <div class="dash-view-head"><div><h3>Enlaces y contacto</h3><p>Reúne en un solo lugar los canales que quieres mostrar al cliente.</p></div><button class="btn primary" type="button" onclick="notify('Enlaces: configuración lista para conectar ✓')">Guardar enlaces</button></div>
+          <div class="editor" style="margin-top:0">
+            <div class="panel">
+              <h3 style="margin-top:0">Canales</h3>
+              <div class="field"><label>Instagram</label><input placeholder="@tu_negocio"></div>
+              <div class="field"><label>WhatsApp</label><input placeholder="612 345 678"></div>
+              <div class="field"><label>Google Maps</label><input placeholder="Enlace a tu ubicación"></div>
+            </div>
+            <div class="panel">
+              <h3 style="margin-top:0">Acciones visibles</h3>
+              <label class="toggle-row"><span>Mostrar WhatsApp</span><input type="checkbox" checked></label>
+              <label class="toggle-row"><span>Mostrar Instagram</span><input type="checkbox" checked></label>
+              <label class="toggle-row"><span>Mostrar Maps</span><input type="checkbox" checked></label>
+              <label class="toggle-row"><span>Mostrar botón de reserva</span><input type="checkbox"></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-view" data-dash-view="horarios">
+          <div class="dash-view-head"><div><h3>Horarios</h3><p>Configura cuándo está abierto tu negocio y qué información verá el cliente.</p></div><button class="btn primary" type="button" onclick="notify('Horarios: configuración lista para conectar ✓')">Guardar horarios</button></div>
+          <div class="panel">
+            <div class="hours-grid">
+              <div><strong>Lunes</strong><span>09:00 — 20:00</span></div><div><strong>Martes</strong><span>09:00 — 20:00</span></div><div><strong>Miércoles</strong><span>09:00 — 20:00</span></div><div><strong>Jueves</strong><span>09:00 — 20:00</span></div><div><strong>Viernes</strong><span>09:00 — 22:00</span></div><div><strong>Sábado</strong><span>10:00 — 22:00</span></div><div><strong>Domingo</strong><span>Cerrado</span></div>
+            </div>
+            <div class="empty-panel" style="margin-top:14px"><strong>Estado visible</strong>La página pública podrá mostrar automáticamente “Abierto ahora” o “Cerrado” cuando conectemos estos horarios.</div>
+          </div>
+        </div>
+
         <div class="dash-view" data-dash-view="placas">
           <div class="dash-view-head"><div><h3>Placas NFC</h3><p>Gestiona las placas asociadas a tu negocio.</p></div><button class="btn primary" onclick="notify('Gestión de placas: siguiente bloque ✓')">Añadir placa</button></div>
           <div class="panel">
             <div class="info-list">
               <div class="info-row"><span>Mesa 1</span><strong>MESA-01</strong></div>
               <div class="info-row"><span>Estado</span><strong style="color:#1d7b57">Activa</strong></div>
-              <div class="info-row"><span>URL</span><strong id="dashboardNfcUrl">/b/mediterraneo</strong></div>
+              <div class="info-row"><span>URL</span><strong id="dashboardNfcUrl">/b/tu-negocio</strong></div>
             </div>
             <div class="empty-panel" style="margin-top:14px"><strong>Próximo paso: nfc_tags</strong>Conectaremos esta sección a la tabla de placas y a las estadísticas por placa.</div>
           </div>
@@ -897,7 +1079,7 @@ async function initSupabase(){
 function applyBusinessToUI(data){
   if(!data) return;
   const name=(data.name || 'TU NEGOCIO AQUÍ').toUpperCase();
-  const description=data.description || 'Cocina mediterránea · Madrid';
+  const description=data.description || 'Tu negocio · Madrid';
 
   const textMap={
     '#bizName':name,
@@ -1188,7 +1370,7 @@ async function saveDemo(){
   }
 
   const name=document.getElementById('editName').value.trim() || 'TU NEGOCIO AQUÍ';
-  const description=document.getElementById('editDesc').value.trim() || 'Cocina mediterránea · Madrid';
+  const description=document.getElementById('editDesc').value.trim() || 'Tu negocio · Madrid';
   const instagram=document.getElementById('editInstagram')?.value.trim() || '';
   const whatsapp=document.getElementById('editWhatsapp')?.value.trim() || '';
   const phone=document.getElementById('editPhone')?.value.trim() || '';
@@ -1466,6 +1648,73 @@ async function deletePromotion(id){const client=await initSupabase();if(!client|
 function editPromotion(id){const p=promotions.find(x=>x.id===id);if(p)openPromotionEditor(p)}
 async function loadPublicPromotions(businessId){const client=await initSupabase();if(!client)return[];const {data,error}=await client.from('business_promotions').select('id,title,description,promo_type,value,starts_at,ends_at,active').eq('business_id',businessId).eq('active',true).order('id',{ascending:false});if(error){console.error('Public promos:',error.message);return[]}const out=[];for(const p of data||[]){const startOk=!p.starts_at||new Date(p.starts_at+'T00:00:00')<=new Date();const endOk=!p.ends_at||new Date(p.ends_at+'T23:59:59')>=new Date();if(!startOk||!endOk)continue;const {data:links}=await client.from('promotion_items').select('menu_item_id').eq('promotion_id',p.id);const names=menuItems.filter(m=>(links||[]).map(x=>x.menu_item_id).includes(m.id)).map(m=>m.name);out.push({...p,product_names:names})}renderPublicPromotions(out);return out}
 function renderPublicPromotions(promos){const section=document.getElementById('publicPromotionsSection'),box=document.getElementById('publicPromotionList');if(!section||!box)return;if(!promos.length){section.style.display='none';return}section.style.display='block';box.innerHTML=promos.map(p=>`<div class="public-promo-card"><strong>${escapeHtml(p.title)}</strong><p>${escapeHtml(p.description||promoTypeLabel(p.promo_type,p.value))}</p><div class="public-promo-meta">${escapeHtml(promoTypeLabel(p.promo_type,p.value))}${p.product_names?.length?' · '+escapeHtml(p.product_names.join(', ')):''}</div></div>`).join('')}
+
+
+
+const BUSINESS_MODULES = {
+  restaurant:[
+    ['🍽️','Carta','Productos y categorías'],['🔥','Promociones','Ofertas visibles'],['📅','Reservas','Preparado para reservas'],['⭐','Reseñas','Opiniones'],['📍','Ubicación','Cómo llegar'],['📊','Analítica','Visitas e interacciones']
+  ],
+  gym:[
+    ['🏋️','Clases','Horarios y actividades'],['👤','Entrenadores','Equipo y perfiles'],['💳','Planes','Membresías y precios'],['🔥','Promociones','Ofertas'],['📍','Ubicación','Cómo llegar'],['📊','Analítica','Visitas e interacciones']
+  ],
+  barbershop:[
+    ['✂️','Servicios','Cortes y precios'],['📅','Reservas','Citas'],['👤','Profesionales','Equipo'],['🔥','Promociones','Ofertas'],['📍','Ubicación','Cómo llegar'],['📊','Analítica','Visitas e interacciones']
+  ],
+  beauty:[
+    ['✨','Tratamientos','Servicios y precios'],['📅','Reservas','Citas'],['👤','Profesionales','Equipo'],['🔥','Promociones','Ofertas'],['📍','Ubicación','Cómo llegar'],['📊','Analítica','Visitas e interacciones']
+  ],
+  shop:[
+    ['🛍️','Catálogo','Productos'],['🔥','Ofertas','Promociones'],['🆕','Novedades','Destacados'],['📍','Ubicación','Cómo llegar'],['💬','Contacto','WhatsApp y teléfono'],['📊','Analítica','Visitas e interacciones']
+  ],
+  bazaar:[
+    ['🏪','Productos','Catálogo'],['🔥','Ofertas','Promociones'],['🕐','Horarios','Apertura y cierre'],['📍','Ubicación','Cómo llegar'],['💬','Contacto','WhatsApp y teléfono'],['📊','Analítica','Visitas e interacciones']
+  ],
+  hotel:[
+    ['🛏️','Alojamiento','Habitaciones y servicios'],['🍽️','Servicios','Desayuno y extras'],['📅','Reservas','Preparado para reservas'],['📍','Ubicación','Cómo llegar'],['💬','Recepción','Contacto'],['📊','Analítica','Visitas e interacciones']
+  ],
+  other:[
+    ['📄','Información','Contenido personalizado'],['🔥','Promociones','Ofertas'],['🔗','Enlaces','Redes y contacto'],['📍','Ubicación','Cómo llegar'],['📅','Reservas','Preparado para reservas'],['📊','Analítica','Visitas e interacciones']
+  ]
+};
+let selectedBusinessType = localStorage.getItem('nfcBusinessType') || 'restaurant';
+
+function selectBusinessType(type){
+  selectedBusinessType=type;
+  document.querySelectorAll('.business-type-card').forEach(c=>c.classList.toggle('active',c.dataset.businessType===type));
+  const box=document.getElementById('businessTypeModules');
+  if(box){
+    box.innerHTML=(BUSINESS_MODULES[type]||BUSINESS_MODULES.other).map(m=>`<div class="module-chip">${m[0]} ${m[1]}<span>${m[2]}</span></div>`).join('');
+  }
+  localStorage.setItem('nfcBusinessType',type);
+  const labels={restaurant:'Restaurante',gym:'Gimnasio',barbershop:'Barbería / Peluquería',beauty:'Estética',shop:'Tienda',bazaar:'Bazar / Comercio',hotel:'Hotel / Alojamiento',other:'Otro negocio'};
+  const welcome=document.getElementById('publicWelcomeTitle');
+  if(welcome) welcome.textContent=(labels[type]||'Negocio')+' · todo en un toque';
+}
+function saveBusinessType(){ localStorage.setItem('nfcBusinessType',selectedBusinessType); notify('Tipo de negocio guardado ✓'); }
+function applyDesignPreset(preset){
+  const a=document.getElementById('designAccent'),b=document.getElementById('designBackground'),r=document.getElementById('designRadius');
+  if(!a||!b||!r)return;
+  if(preset==='dark'){a.value='#171714';b.value='#f6f5f1';r.value=22}
+  if(preset==='clean'){a.value='#2563eb';b.value='#f7f9fc';r.value=16}
+  if(preset==='warm'){a.value='#b7791f';b.value='#fffaf0';r.value=24}
+  a.dispatchEvent(new Event('input',{bubbles:true}));
+  b.dispatchEvent(new Event('input',{bubbles:true}));
+  r.dispatchEvent(new Event('input',{bubbles:true}));
+}
+selectBusinessType(selectedBusinessType);
+
+function initDesignPreview(){
+  const accent=document.getElementById('designAccent');
+  const bg=document.getElementById('designBackground');
+  const radius=document.getElementById('designRadius');
+  const preview=document.querySelector('.mini-preview-phone');
+  const cover=document.querySelector('.mini-preview-cover');
+  if(!accent||!bg||!radius||!preview||!cover)return;
+  const update=()=>{cover.style.background=accent.value;preview.style.background=bg.value;preview.style.borderRadius=radius.value+'px';};
+  [accent,bg,radius].forEach(el=>el.addEventListener('input',update));
+}
+initDesignPreview();
 
 function switchDashboardSection(section){
   const items=document.querySelectorAll('.side-item[data-dash-section]');
