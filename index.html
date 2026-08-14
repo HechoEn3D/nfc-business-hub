@@ -202,6 +202,34 @@ main,.nav,.footer{position:relative;z-index:1}
   .scroll-copy{top:6%}.scroll-copy h2{font-size:42px}.scroll-copy p{font-size:14px}.scroll-phone{top:56%;width:215px;height:425px}.scroll-phone-cover{height:125px}.scroll-phone-content{height:calc(100% - 177px)}.scroll-actions div{padding:8px 3px;font-size:11px}.scroll-menu-item{font-size:9px}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.nfc-base{animation:none}.btn,.feature,.price-card{transition:none}.scroll-experience{height:auto}.scroll-sticky{position:relative;height:auto;padding:80px 0}.scroll-phone{position:relative;left:auto;top:auto;transform:none!important;margin:120px auto 80px}.scroll-copy{position:relative;left:auto;top:auto;transform:none!important;width:auto;text-align:center}.scroll-copy p{margin-inline:auto}}
+
+/* =========================================================
+   PUBLIC BUSINESS PAGE — /b/:slug
+========================================================= */
+.public-business-page{display:none;min-height:100vh;background:var(--bg);padding-bottom:80px}
+.public-business-page.show{display:block}
+.public-topbar{padding:24px 0;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.public-brand{font-weight:900;display:flex;align-items:center;gap:10px}
+.public-brand .brand-mark{width:34px;height:34px;border-radius:10px}
+.public-status{font-size:12px;font-weight:800;color:#1d7b57;background:#eaf7f1;border:1px solid #cfeadd;padding:8px 12px;border-radius:999px}
+.public-card{width:min(720px,calc(100% - 24px));margin:16px auto 0;background:#fff;border:1px solid var(--line);border-radius:30px;overflow:hidden;box-shadow:0 24px 80px rgba(20,20,16,.09)}
+.public-cover{padding:36px 28px 30px;background:linear-gradient(135deg,#2b3129,#6c705d);color:#fff;position:relative;overflow:hidden}
+.public-cover::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 20%,rgba(216,182,117,.25),transparent 35%)}
+.public-cover-content{position:relative;z-index:1}
+.public-cover h1{font-size:clamp(38px,8vw,68px);margin:0 0 8px;letter-spacing:-.06em}
+.public-cover p{margin:0;opacity:.9;font-size:15px}
+.public-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:18px;background:#fff}
+.public-action{border:1px solid var(--line);border-radius:16px;padding:14px 8px;text-align:center;background:#fff;font-weight:800;cursor:pointer;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
+.public-action:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(20,20,16,.08);border-color:#d8b675}
+.public-action span{display:block;font-size:10px;margin-top:5px;color:#77746d}
+.public-content{padding:22px}
+.public-section-title{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:#8b7a59;font-weight:900;margin-bottom:12px}
+.public-menu-card{display:flex;justify-content:space-between;gap:18px;padding:16px;border:1px solid var(--line);border-radius:18px;background:#faf9f5;margin-top:10px}
+.public-menu-card b{display:block}.public-menu-card span{display:block;color:#8a877f;font-size:12px;margin-top:4px}.public-menu-card strong{white-space:nowrap}
+.public-footer{text-align:center;color:#8a877f;font-size:12px;padding:22px}
+.public-error{width:min(620px,calc(100% - 24px));margin:100px auto;text-align:center;background:#fff;border:1px solid var(--line);border-radius:24px;padding:32px;box-shadow:var(--shadow)}
+@media(max-width:620px){.public-actions{grid-template-columns:repeat(2,1fr)}.public-cover{padding:30px 22px}.public-content{padding:18px}}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -220,6 +248,42 @@ main,.nav,.footer{position:relative;z-index:1}
     </div>
   </div>
 </header>
+
+
+<div id="publicBusinessPage" class="public-business-page">
+  <div class="container public-topbar">
+    <a class="public-brand" href="/">
+      <span class="brand-mark">N</span><span>NFC Business Hub</span>
+    </a>
+    <span class="public-status">● Abierto</span>
+  </div>
+  <div id="publicBusinessContent">
+    <div class="public-card">
+      <div class="public-cover">
+        <div class="public-cover-content">
+          <h1 id="publicBizName">Cargando…</h1>
+          <p id="publicBizDescription">Cargando información…</p>
+        </div>
+      </div>
+      <div class="public-actions">
+        <button class="public-action" id="publicWhatsApp">💬<span>WhatsApp</span></button>
+        <button class="public-action" id="publicInstagram">📸<span>Instagram</span></button>
+        <button class="public-action" id="publicPhone">📞<span>Llamar</span></button>
+        <button class="public-action" id="publicMaps">📍<span>Cómo llegar</span></button>
+      </div>
+      <div class="public-content">
+        <div class="public-section-title">Información</div>
+        <div id="publicCity" style="color:#66645e;line-height:1.6">—</div>
+        <div style="height:22px"></div>
+        <div class="public-section-title">Carta</div>
+        <div class="public-menu-card"><div><b>Ensalada burrata</b><span>Tomate, pesto, rúcula</span></div><strong>14,50 €</strong></div>
+        <div class="public-menu-card"><div><b>Arroz mediterráneo</b><span>Verduras, gambón, azafrán</span></div><strong>22,90 €</strong></div>
+        <div class="public-menu-card"><div><b>Tarta de limón</b><span>Merengue tostado</span></div><strong>7,50 €</strong></div>
+      </div>
+      <div class="public-footer">Powered by NFC Business Hub</div>
+    </div>
+  </div>
+</div>
 
 <main id="top">
 <section class="hero">
@@ -550,22 +614,79 @@ function applyBusinessToUI(data){
   currentBusiness=data;
 }
 
+function getBusinessSlugFromPath(){
+  const match=window.location.pathname.match(/^\/b\/([^/]+)\/?$/i);
+  return match ? decodeURIComponent(match[1]).toLowerCase() : null;
+}
+
+function showPublicBusinessPage(show){
+  const publicPage=document.getElementById('publicBusinessPage');
+  const main=document.getElementById('top');
+  if(!publicPage || !main) return;
+  publicPage.classList.toggle('show',show);
+  main.style.display=show ? 'none' : '';
+  document.querySelector('.nav')?.style.setProperty('display',show ? 'none' : '');
+}
+
+function setupPublicBusinessLinks(data){
+  const wa=document.getElementById('publicWhatsApp');
+  const ig=document.getElementById('publicInstagram');
+  const phone=document.getElementById('publicPhone');
+  const maps=document.getElementById('publicMaps');
+
+  if(wa){
+    wa.style.display=data.whatsapp ? '' : 'none';
+    wa.onclick=()=>window.open(`https://wa.me/${String(data.whatsapp).replace(/\D/g,'')}`,'_blank','noopener');
+  }
+  if(ig){
+    ig.style.display=data.instagram ? '' : 'none';
+    const handle=String(data.instagram || '').replace(/^@/,'');
+    ig.onclick=()=>window.open(`https://instagram.com/${handle}`,'_blank','noopener');
+  }
+  if(phone){
+    phone.style.display=data.phone ? '' : 'none';
+    phone.onclick=()=>window.location.href=`tel:${data.phone}`;
+  }
+  if(maps){
+    maps.style.display=data.city ? '' : 'none';
+    maps.onclick=()=>window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.name+' '+data.city)}`,'_blank','noopener');
+  }
+}
+
+function renderPublicBusiness(data){
+  document.getElementById('publicBizName').textContent=data.name || 'Negocio';
+  document.getElementById('publicBizDescription').textContent=data.description || 'Información del negocio';
+  document.getElementById('publicCity').textContent=data.city ? `📍 ${data.city}` : 'Información del negocio';
+  setupPublicBusinessLinks(data);
+}
+
 async function loadPublicBusiness(){
+  const slug=getBusinessSlugFromPath();
+  if(!slug) return null;
+
+  showPublicBusinessPage(true);
   const client=await initSupabase();
-  if(!client) return;
+  if(!client) return null;
 
   const {data,error}=await client
-    .from('businesses')
-    .select('id,name,slug,description,instagram,whatsapp,phone,city,owner_id')
-    .eq('slug','mediterraneo')
+    .from('business_pages')
+    .select('id,name,slug,description,instagram,whatsapp,phone,city')
+    .eq('slug',slug)
     .maybeSingle();
 
   if(error){
-    console.error('Supabase:',error.message);
-    return;
+    console.error('Public business:',error.message);
+    document.getElementById('publicBusinessContent').innerHTML='<div class="public-error"><h2>No se pudo cargar este negocio</h2><p style="color:#77746d">Comprueba la URL o inténtalo de nuevo.</p></div>';
+    return null;
   }
 
-  if(data) applyBusinessToUI(data);
+  if(!data){
+    document.getElementById('publicBusinessContent').innerHTML='<div class="public-error"><h2>Negocio no encontrado</h2><p style="color:#77746d">La dirección no corresponde a ningún negocio.</p></div>';
+    return null;
+  }
+
+  renderPublicBusiness(data);
+  return data;
 }
 
 async function loadOwnerBusiness(){
@@ -743,10 +864,14 @@ async function saveDemo(){
 window.NFCBusinessHub={supabaseClient,loadPublicBusiness,loadOwnerBusiness};
 
 (async function bootAuth(){
+  const publicSlug=getBusinessSlugFromPath();
+  if(publicSlug){
+    await loadPublicBusiness();
+    return;
+  }
+
   const client=await initSupabase();
   if(!client) return;
-
-  await loadPublicBusiness();
 
   const {data:{session}}=await client.auth.getSession();
   if(session?.user){
