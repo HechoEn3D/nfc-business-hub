@@ -13,7 +13,7 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg)}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg);overflow-x:hidden}
 button,a{font:inherit}
 a{text-decoration:none;color:inherit}
 img{max-width:100%;display:block}
@@ -24,97 +24,178 @@ img{max-width:100%;display:block}
 .brand-mark{width:38px;height:38px;border-radius:12px;background:#171714;color:#fff;display:grid;place-items:center;font-size:17px}
 .nav-links{display:flex;gap:24px;color:#66645e;font-size:14px}
 .nav-cta{padding:11px 16px;background:#171714;color:#fff;border-radius:999px;font-weight:700}
-.hero{padding:84px 0 62px}
-.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center}
+.hero{padding:84px 0 62px;min-height:90vh;display:flex;align-items:center}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center;width:100%}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:#5d5b55}
-.dot{width:7px;height:7px;border-radius:50%;background:#4bb381}
+.dot{width:7px;height:7px;border-radius:50%;background:#4bb381;box-shadow:0 0 0 6px rgba(75,179,129,.08)}
 h1{font-size:clamp(48px,6vw,84px);line-height:.96;letter-spacing:-.065em;margin:20px 0}
 .hero p{font-size:18px;line-height:1.65;color:#66645e;max-width:620px}
 .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 18px;border-radius:14px;border:1px solid var(--line);background:#fff;font-weight:800;cursor:pointer}
-.btn.primary{background:#171714;color:#fff;border-color:#171714}
-.btn.gold{background:#d8b675;border-color:#d8b675}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 18px;border-radius:14px;border:1px solid var(--line);background:#fff;font-weight:800;cursor:pointer;transition:transform .25s ease,box-shadow .25s ease,background .25s ease}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(20,20,16,.08)}
+.btn.primary{background:#171714;color:#fff;border-color:#171714}.btn.gold{background:#d8b675;border-color:#d8b675}
 .nfc-card{position:relative;background:#20201d;border-radius:32px;padding:26px;min-height:550px;box-shadow:var(--shadow);overflow:hidden}
 .nfc-card::before{content:"";position:absolute;width:430px;height:430px;border-radius:50%;background:radial-gradient(circle,#4d4b45 0,#2b2a26 44%,transparent 70%);right:-160px;top:-120px;opacity:.55}
-.nfc-base{position:absolute;left:50%;bottom:70px;transform:translateX(-50%);width:270px;height:320px;border-radius:28px;background:linear-gradient(145deg,#151513,#34342f);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06),0 30px 80px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center}
+.nfc-base{position:absolute;left:50%;bottom:70px;transform:translateX(-50%);width:270px;height:320px;border-radius:28px;background:linear-gradient(145deg,#151513,#34342f);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06),0 30px 80px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;animation:floatCard 5s ease-in-out infinite}
 .nfc-disc{width:230px;height:230px;border-radius:50%;background:radial-gradient(circle at 35% 28%,#44423b,#22211e 62%,#11110f);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 20px 40px rgba(0,0,0,.32);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-.nfc-symbol{font-size:28px;line-height:1;margin-bottom:10px}
-.nfc-disc small{font-size:9px;letter-spacing:.14em;color:#d7d5ce}
-.nfc-disc strong{font-size:23px;letter-spacing:-.04em}
-.nfc-disc span{font-size:10px;color:#b8b6ae;margin-top:8px}
-.nfc-caption{position:absolute;left:26px;bottom:22px;color:#a8a69e;font-size:12px}
-.section{padding:90px 0}
-.section-head{max-width:720px;margin-bottom:42px}
-.kicker{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:#8b7a59;font-weight:900}
-h2{font-size:clamp(36px,5vw,58px);line-height:1;letter-spacing:-.05em;margin:10px 0 14px}
-.section-head p{color:#6c6a64;line-height:1.7}
-.features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.feature{background:#fff;border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 8px 30px rgba(20,20,16,.04)}
-.feature .icon{font-size:24px;margin-bottom:26px}
-.feature h3{margin:0 0 8px;font-size:18px}
-.feature p{margin:0;color:#74726b;line-height:1.6}
-.demo-shell{background:#141412;border-radius:32px;padding:18px;box-shadow:var(--shadow)}
-.demo-phone{max-width:420px;margin:auto;background:#f9f8f4;border-radius:30px;overflow:hidden}
-.phone-top{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;background:#fff}
-.biz-cover{height:170px;background:linear-gradient(135deg,#2b3129,#6c705d);padding:22px;display:flex;align-items:flex-end}
-.biz-cover > div{color:#fff}
-.biz-title{font-size:26px;font-weight:900;letter-spacing:-.04em}
-.biz-meta{font-size:12px;opacity:.88;margin-top:5px}
-.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:14px;background:#fff}
-.qbtn{padding:12px 8px;border:1px solid var(--line);border-radius:15px;background:#fff;text-align:center;font-size:11px;font-weight:800;cursor:pointer}
-.menu-preview{padding:18px}
-.menu-card{background:#fff;border:1px solid var(--line);padding:15px;border-radius:16px;margin-bottom:10px;display:flex;justify-content:space-between;gap:12px}
-.menu-card b{display:block}
-.menu-card span{color:#8b8880;font-size:12px}
-.demo-tabs{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line);background:#fff}
-.demo-tabs button{flex:1;border:0;background:#f0eee8;border-radius:12px;padding:11px;font-weight:800;cursor:pointer}
-.pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.price-card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:26px;position:relative}
-.price-card.popular{border:2px solid #171714}
-.badge{position:absolute;top:18px;right:18px;padding:7px 10px;background:#171714;color:#fff;border-radius:999px;font-size:10px;font-weight:900}
-.price{font-size:46px;letter-spacing:-.05em;margin:18px 0 4px}
-.small{font-size:12px;color:#8a877f}
-.checks{margin:20px 0 0;padding:0;list-style:none}
-.checks li{padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
-.dashboard-wrap{display:grid;grid-template-columns:250px 1fr;gap:18px;background:#151513;border-radius:30px;padding:18px;color:#fff}
-.sidebar{background:#1c1c19;border-radius:20px;padding:18px}
-.side-brand{font-weight:900;margin-bottom:22px}
-.side-item{padding:11px 12px;border-radius:12px;color:#aaa79e;font-size:13px;cursor:pointer;margin-bottom:6px}
-.side-item.active{background:#2c2b27;color:#fff}
-.dash-main{background:#f8f7f3;color:#171714;border-radius:20px;padding:22px}
-.dash-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
-.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px}
-.stat b{font-size:25px;display:block;margin-top:6px}
-.chart{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
-.bars{height:160px;display:flex;align-items:flex-end;gap:8px;margin-top:15px}
-.bar{flex:1;background:#222;border-radius:8px 8px 0 0;min-height:12px}
-.editor{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
-.panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
-.field{margin-bottom:12px}
-.field label{display:block;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:#8a877f;margin-bottom:6px}
-.field input,.field textarea{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:12px;background:#faf9f5;outline:none}
-.field textarea{min-height:85px;resize:vertical}
-.footer{padding:40px 0 60px;border-top:1px solid var(--line);color:#77746d;font-size:13px}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
-.modal.show{display:flex}
-.modal-box{width:min(520px,100%);background:#fff;border-radius:24px;padding:24px;box-shadow:var(--shadow)}
-.close{float:right;border:0;background:#f0eee8;border-radius:50%;width:34px;height:34px;cursor:pointer}
-.toast{position:fixed;right:20px;bottom:20px;background:#171714;color:#fff;padding:14px 16px;border-radius:14px;display:none;z-index:60;font-size:13px}
-.toast.show{display:block}
+.nfc-symbol{font-size:28px;line-height:1;margin-bottom:10px}.nfc-disc small{font-size:9px;letter-spacing:.14em;color:#d7d5ce}.nfc-disc strong{font-size:23px;letter-spacing:-.04em}.nfc-disc span{font-size:10px;color:#b8b6ae;margin-top:8px}.nfc-caption{position:absolute;left:26px;bottom:22px;color:#a8a69e;font-size:12px}
+@keyframes floatCard{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-9px)}}
+
+/* =========================================================
+   PREMIUM SCROLL EXPERIENCE
+   Mantiene la estética original y añade la experiencia
+   de producto tipo startup premium.
+========================================================= */
+.scroll-experience{height:220vh;position:relative}
+.scroll-sticky{position:sticky;top:0;height:100vh;overflow:hidden;display:grid;place-items:center;background:var(--bg)}
+.scroll-sticky::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 70% 48%,rgba(216,182,117,.12),transparent 27%);pointer-events:none}
+.scroll-inner{width:min(1160px,calc(100% - 40px));height:100%;position:relative}
+.scroll-copy{position:absolute;left:0;top:20%;width:430px;z-index:8;will-change:transform,opacity}
+.scroll-kicker{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:#8b7a59;font-weight:900}
+.scroll-copy h2{font-size:clamp(42px,5vw,68px);line-height:.95;letter-spacing:-.055em;margin:12px 0 16px}.scroll-copy h2 span{color:#8b7a59}.scroll-copy p{color:#6c6a64;line-height:1.65;max-width:390px}
+.joy-pill{display:inline-flex;align-items:center;margin-top:16px;padding:9px 13px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:12px;font-weight:800;box-shadow:0 10px 28px rgba(20,20,16,.06);opacity:0;transform:translateY(10px);transition:opacity .4s ease,transform .4s ease}
+.scroll-phone{position:absolute;left:68%;top:50%;width:315px;height:630px;transform:translate(-50%,-50%) scale(.84) rotate(-4deg);z-index:7;perspective:1200px;will-change:transform;filter:drop-shadow(0 35px 55px rgba(0,0,0,.18))}
+.scroll-phone-glow{position:absolute;inset:-90px;border-radius:50%;background:radial-gradient(circle,rgba(216,182,117,.18),transparent 63%);filter:blur(10px);z-index:-1}
+.scroll-phone-shell{width:100%;height:100%;padding:10px;border-radius:44px;background:#10100f;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 25px 85px rgba(0,0,0,.28);position:relative}
+.scroll-phone-screen{width:100%;height:100%;overflow:hidden;border-radius:35px;background:#f9f8f4;position:relative}
+.dynamic-island{position:absolute;z-index:5;top:9px;left:50%;transform:translateX(-50%);width:92px;height:25px;background:#080807;border-radius:20px}
+.scroll-phone-top{height:52px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;font-size:10px;background:#fff;border-bottom:1px solid var(--line)}.scroll-phone-top span{color:#6d6a63}
+.scroll-phone-cover{height:155px;padding:20px;display:flex;align-items:flex-end;background:linear-gradient(135deg,#2b3129,#6c705d);color:#fff;position:relative}.scroll-phone-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.03),rgba(0,0,0,.18))}.scroll-phone-cover>div{position:relative;z-index:1}.scroll-phone-cover strong{display:block;font-size:25px;letter-spacing:-.04em}.scroll-phone-cover small{display:block;margin-top:5px;opacity:.86;font-size:11px}
+.scroll-phone-content{height:calc(100% - 207px);padding:13px;overflow:hidden;background:#f9f8f4}.scroll-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.scroll-actions div{padding:10px 4px;text-align:center;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:13px}.scroll-actions span{display:block;font-size:9px;font-weight:800;margin-top:4px}.scroll-menu-item{margin-top:8px;padding:11px;border:1px solid var(--line);border-radius:13px;background:#fff;display:flex;justify-content:space-between;gap:10px;font-size:10px}.scroll-menu-item strong{display:block}.scroll-menu-item small{color:#8b8880}.scroll-menu-item b{white-space:nowrap}
+.scroll-caption{position:absolute;left:50%;bottom:30px;transform:translateX(-50%);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#8a877f;z-index:15;transition:opacity .3s}
+
+/* =========================================================
+   EXTRA MOTION LAYER — keeps the original visual language
+========================================================= */
+body::before{content:"";position:fixed;top:0;left:0;width:100%;height:2px;background:#d8b675;transform-origin:left center;transform:scaleX(0);z-index:9999;pointer-events:none;opacity:.9}
+.hero-copy-reveal{opacity:0;transform:translateY(28px);animation:heroIn .9s cubic-bezier(.2,.8,.2,1) .08s forwards}
+.hero-card-reveal{opacity:0;transform:translateY(26px) scale(.97);animation:heroCardIn 1s cubic-bezier(.2,.8,.2,1) .18s forwards}
+.hero h1 span{display:inline-block;animation:goldWord 1.2s cubic-bezier(.2,.8,.2,1) .45s both}
+@keyframes heroIn{to{opacity:1;transform:none}}
+@keyframes heroCardIn{to{opacity:1;transform:none}}
+@keyframes goldWord{0%{opacity:0;filter:blur(8px);transform:translateY(18px)}100%{opacity:1;filter:none;transform:none}}
+.nav-cta{transition:transform .25s ease,box-shadow .25s ease}.nav-cta:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(20,20,16,.14)}
+.nfc-card{transition:transform .6s cubic-bezier(.2,.8,.2,1),box-shadow .6s ease}.nfc-card:hover{transform:translateY(-8px) rotateX(1deg) rotateY(-1deg);box-shadow:0 30px 90px rgba(20,20,16,.15)}
+.scroll-experience{isolation:isolate}
+.scroll-sticky::after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(216,182,117,.12),transparent 70%);right:8%;bottom:8%;filter:blur(10px);animation:ambient 6s ease-in-out infinite;pointer-events:none}
+@keyframes ambient{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(-18px,-12px,0) scale(1.08)}}
+.scroll-phone-shell{transition:box-shadow .5s ease}.scroll-phone:hover .scroll-phone-shell{box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),0 32px 100px rgba(0,0,0,.32)}
+.scroll-actions div,.scroll-menu-item{transition:transform .3s ease,box-shadow .3s ease}.scroll-actions div:hover,.scroll-menu-item:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(20,20,16,.08)}
+.scroll-caption{animation:captionBounce 1.8s ease-in-out infinite}.scroll-caption::after{content:"";display:block;width:38px;height:1px;background:#b5af9f;margin:9px auto 0;opacity:.5}
+@keyframes captionBounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-4px)}}
+.reveal{opacity:0;transform:translateY(44px);transition:opacity .85s cubic-bezier(.2,.8,.2,1),transform .85s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.reveal-left{opacity:0;transform:translateX(-45px);transition:opacity .85s cubic-bezier(.2,.8,.2,1),transform .85s cubic-bezier(.2,.8,.2,1)}
+.reveal-left.in{opacity:1;transform:none}
+.reveal-right{opacity:0;transform:translateX(45px);transition:opacity .85s cubic-bezier(.2,.8,.2,1),transform .85s cubic-bezier(.2,.8,.2,1)}
+.reveal-right.in{opacity:1;transform:none}
+.stagger>*{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1)}
+.stagger.in>*{opacity:1;transform:none}
+.stagger.in>*:nth-child(1){transition-delay:.05s}.stagger.in>*:nth-child(2){transition-delay:.14s}.stagger.in>*:nth-child(3){transition-delay:.23s}.stagger.in>*:nth-child(4){transition-delay:.32s}
+.price-card.popular::after{content:"";position:absolute;inset:-2px;border-radius:24px;border:1px solid rgba(216,182,117,.35);opacity:0;transform:scale(.98);transition:opacity .45s ease,transform .45s ease;pointer-events:none}
+.price-card.popular.highlight::after{opacity:1;transform:scale(1.02)}
+.counter{font-variant-numeric:tabular-nums}
+.stat{transition:transform .35s ease,box-shadow .35s ease}.stat:hover{transform:translateY(-4px);box-shadow:0 16px 32px rgba(20,20,16,.08)}
+.chart .bar{transform-origin:bottom center;transform:scaleY(.06);transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.chart.chart-in .bar{transform:scaleY(1)}
+.chart .bar:nth-child(1){transition-delay:.02s}.chart .bar:nth-child(2){transition-delay:.08s}.chart .bar:nth-child(3){transition-delay:.14s}.chart .bar:nth-child(4){transition-delay:.20s}.chart .bar:nth-child(5){transition-delay:.26s}.chart .bar:nth-child(6){transition-delay:.32s}.chart .bar:nth-child(7){transition-delay:.38s}.chart .bar:nth-child(8){transition-delay:.44s}.chart .bar:nth-child(9){transition-delay:.50s}.chart .bar:nth-child(10){transition-delay:.56s}
+.editor .panel{transition:transform .35s ease,box-shadow .35s ease}.editor .panel:hover{transform:translateY(-4px);box-shadow:0 16px 32px rgba(20,20,16,.06)}
+.demo-phone{transition:transform .6s cubic-bezier(.2,.8,.2,1),box-shadow .6s ease}.demo-shell:hover .demo-phone{transform:translateY(-6px) scale(1.01);box-shadow:0 24px 55px rgba(0,0,0,.13)}
+#contacto{overflow:hidden;position:relative}#contacto::before{content:"";position:absolute;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(216,182,117,.14),transparent 65%);right:-140px;top:-180px;animation:ambient 7s ease-in-out infinite}
+.cta-shine{position:relative;overflow:hidden}.cta-shine::after{content:"";position:absolute;top:-120%;left:-20%;width:22%;height:340%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);transform:rotate(18deg);animation:shine 5s ease-in-out infinite;pointer-events:none}
+@keyframes shine{0%,70%,100%{left:-30%;opacity:0}78%{opacity:.8}90%{left:125%;opacity:.18}}
+
+/* ========================= PREMIUM V4 POLISH ========================= */
+:root{--mouse-x:50vw;--mouse-y:50vh;--cursor-glow:0}
+body::after{content:"";position:fixed;left:0;top:0;width:340px;height:340px;pointer-events:none;z-index:0;border-radius:50%;background:radial-gradient(circle,rgba(216,182,117,.075),transparent 66%);transform:translate(calc(var(--mouse-x) - 170px),calc(var(--mouse-y) - 170px));opacity:var(--cursor-glow);transition:opacity .25s ease;mix-blend-mode:multiply}
+main,.nav,.footer{position:relative;z-index:1}
+.nav{box-shadow:0 8px 28px rgba(20,20,16,.025)}
+.brand{transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.brand:hover{transform:translateY(-1px)}
+.brand-mark{position:relative;overflow:hidden;transition:transform .35s ease,box-shadow .35s ease}
+.brand-mark::after{content:"";position:absolute;inset:-60%;background:linear-gradient(120deg,transparent 38%,rgba(255,255,255,.5),transparent 62%);transform:translateX(-80%) rotate(8deg);transition:transform .8s ease}
+.brand:hover .brand-mark{transform:rotate(-4deg) scale(1.04);box-shadow:0 10px 24px rgba(20,20,16,.18)}
+.brand:hover .brand-mark::after{transform:translateX(80%) rotate(8deg)}
+.hero-copy-reveal h1{text-wrap:balance}
+.hero-copy-reveal p{animation:heroPara .9s cubic-bezier(.2,.8,.2,1) .6s both}
+@keyframes heroPara{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none}}
+.nfc-card{isolation:isolate;transform-style:preserve-3d}
+.nfc-card::after{content:"";position:absolute;inset:0;background:linear-gradient(118deg,transparent 30%,rgba(255,255,255,.075) 44%,transparent 55%);transform:translateX(-120%);animation:cardSheen 7s ease-in-out infinite;pointer-events:none;z-index:3}
+@keyframes cardSheen{0%,65%{transform:translateX(-120%)}78%{transform:translateX(120%)}100%{transform:translateX(120%)}}
+.nfc-card:hover .nfc-disc{box-shadow:inset 0 0 0 1px rgba(255,255,255,.11),0 20px 55px rgba(0,0,0,.42),0 0 45px rgba(216,182,117,.07)}
+.nfc-disc{transition:transform .6s cubic-bezier(.2,.8,.2,1),box-shadow .6s ease}
+.nfc-card:hover .nfc-disc{transform:scale(1.025) rotate(-2deg)}
+.nfc-symbol{animation:signalPulse 2.6s ease-in-out infinite}
+@keyframes signalPulse{0%,100%{opacity:.72;transform:scale(.96)}50%{opacity:1;transform:scale(1.04)}}
+.scroll-sticky{isolation:isolate}
+.scroll-sticky::before{animation:scenePulse 8s ease-in-out infinite}
+@keyframes scenePulse{0%,100%{opacity:.8;transform:scale(1)}50%{opacity:1;transform:scale(1.04)}}
+.scroll-phone{transform-style:preserve-3d}
+.scroll-phone::before,.scroll-phone::after{content:"";position:absolute;border:1px solid rgba(216,182,117,.24);border-radius:50%;left:50%;top:50%;pointer-events:none;opacity:.0;z-index:-1}
+.scroll-phone::before{width:370px;height:370px;transform:translate(-50%,-50%);animation:ringWave 4.6s ease-out infinite}
+.scroll-phone::after{width:460px;height:460px;transform:translate(-50%,-50%);animation:ringWave 4.6s ease-out 1.5s infinite}
+@keyframes ringWave{0%{opacity:0;transform:translate(-50%,-50%) scale(.72)}20%{opacity:.42}100%{opacity:0;transform:translate(-50%,-50%) scale(1.12)}}
+.scroll-phone-screen{box-shadow:inset 0 0 0 1px rgba(20,20,16,.07)}
+.scroll-phone-cover{background-size:140% 140%;animation:coverShift 9s ease-in-out infinite}
+@keyframes coverShift{0%,100%{background-position:0 50%}50%{background-position:100% 50%}}
+.scroll-actions div{position:relative;overflow:hidden}
+.scroll-actions div::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent,rgba(216,182,117,.11),transparent);transform:translateX(-120%);transition:transform .8s ease}
+.scroll-actions div:hover::after{transform:translateX(120%)}
+.demo-shell{position:relative;overflow:hidden}
+.demo-shell::after{content:"";position:absolute;inset:-40% -20%;background:radial-gradient(circle at 50% 45%,rgba(216,182,117,.09),transparent 40%);pointer-events:none;animation:demoGlow 7s ease-in-out infinite}
+@keyframes demoGlow{0%,100%{transform:scale(.9);opacity:.7}50%{transform:scale(1.08);opacity:1}}
+.demo-phone{position:relative;z-index:2;box-shadow:0 24px 70px rgba(0,0,0,.16);transition:transform .6s cubic-bezier(.2,.8,.2,1),box-shadow .6s ease}
+.demo-phone:hover{transform:translateY(-8px) rotateX(1deg) rotateY(-1deg);box-shadow:0 34px 90px rgba(0,0,0,.2)}
+.biz-cover{background-size:140% 140%;animation:coverShift 10s ease-in-out infinite}
+.quick .qbtn{transition:transform .28s cubic-bezier(.2,.8,.2,1),box-shadow .28s ease,border-color .28s ease}
+.quick .qbtn:hover{transform:translateY(-5px);box-shadow:0 14px 28px rgba(20,20,16,.09);border-color:#d8b675}
+.menu-card{transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s ease,border-color .35s ease}
+.menu-card:hover{transform:translateX(5px);box-shadow:0 14px 30px rgba(20,20,16,.07);border-color:#ded6c5}
+.demo-tabs button{transition:transform .25s ease,background .25s ease}
+.demo-tabs button:hover{transform:translateY(-2px);background:#e8e3d7}
+.feature{position:relative;overflow:hidden;transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s ease,border-color .45s ease}
+.feature::before{content:"";position:absolute;width:140px;height:140px;right:-60px;top:-60px;border-radius:50%;background:radial-gradient(circle,rgba(216,182,117,.12),transparent 70%);opacity:0;transition:opacity .45s ease}
+.feature:hover{transform:translateY(-7px);box-shadow:0 22px 46px rgba(20,20,16,.09);border-color:#ddd7ca}
+.feature:hover::before{opacity:1}
+.feature .icon{transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.feature:hover .icon{transform:translateY(-3px) scale(1.07) rotate(-3deg)}
+.price-card{overflow:hidden}
+.price-card::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent,rgba(216,182,117,.08),transparent);transform:translateX(-120%);transition:transform .9s ease;pointer-events:none}
+.price-card:hover::before{transform:translateX(120%)}
+.price-card .price{transition:transform .4s ease}.price-card:hover .price{transform:translateX(3px)}
+.dashboard-wrap{position:relative;overflow:hidden;box-shadow:0 25px 70px rgba(20,20,16,.11)}
+.dashboard-wrap::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 38%,rgba(255,255,255,.035) 50%,transparent 62%);transform:translateX(-120%);animation:dashSweep 8s ease-in-out infinite}
+@keyframes dashSweep{0%,65%{transform:translateX(-120%)}78%{transform:translateX(120%)}100%{transform:translateX(120%)}}
+.side-item{position:relative;overflow:hidden}.side-item::after{content:"";position:absolute;left:-100%;top:0;width:45%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent);transition:left .55s ease}.side-item:hover::after{left:150%}
+.panel{transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s ease,border-color .4s ease}.panel:hover{transform:translateY(-5px);box-shadow:0 18px 35px rgba(20,20,16,.08);border-color:#ded8cb}
+.field input:focus,.field textarea:focus{border-color:#c5aa74;box-shadow:0 0 0 4px rgba(216,182,117,.12)}
+.cta-shine{box-shadow:0 28px 70px rgba(20,20,16,.12);transform:translateZ(0)}
+.cta-shine .btn{position:relative;z-index:2}
+.footer{background:linear-gradient(180deg,transparent,rgba(20,20,16,.018))}
+@media(max-width:900px){body::after{display:none}.scroll-phone::before,.scroll-phone::after{display:none}}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.reveal,.reveal-left,.reveal-right,.stagger>*{opacity:1!important;transform:none!important}}
+
+@media(max-width:900px){.scroll-copy{left:50%;top:9%;transform:translateX(-50%);width:90%;text-align:center}.scroll-copy p{margin-left:auto;margin-right:auto}.joy-pill{margin-left:auto;margin-right:auto}.scroll-phone{left:50%;top:59%;width:250px;height:495px}}
+@media(max-width:620px){.scroll-copy h2{font-size:42px}.scroll-copy p{font-size:14px}.scroll-phone{width:220px;height:435px;top:57%}}
+/* El resto conserva tu diseño original */
+.section{padding:90px 0}.section-head{max-width:720px;margin-bottom:42px}.kicker{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:#8b7a59;font-weight:900}h2{font-size:clamp(36px,5vw,58px);line-height:1;letter-spacing:-.05em;margin:10px 0 14px}.section-head p{color:#6c6a64;line-height:1.7}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.feature{background:#fff;border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 8px 30px rgba(20,20,16,.04);transition:transform .25s ease,box-shadow .25s ease}.feature:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(20,20,16,.08)}.feature .icon{font-size:24px;margin-bottom:26px}.feature h3{margin:0 0 8px;font-size:18px}.feature p{margin:0;color:#74726b;line-height:1.6}
+.demo-shell{background:#141412;border-radius:32px;padding:18px;box-shadow:var(--shadow)}.demo-phone{max-width:420px;margin:auto;background:#f9f8f4;border-radius:30px;overflow:hidden}.phone-top{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;background:#fff}.biz-cover{height:170px;background:linear-gradient(135deg,#2b3129,#6c705d);padding:22px;display:flex;align-items:flex-end}.biz-cover > div{color:#fff}.biz-title{font-size:26px;font-weight:900;letter-spacing:-.04em}.biz-meta{font-size:12px;opacity:.88;margin-top:5px}.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:14px;background:#fff}.qbtn{padding:12px 8px;border:1px solid var(--line);border-radius:15px;background:#fff;text-align:center;font-size:11px;font-weight:800;cursor:pointer;transition:transform .2s ease}.qbtn:hover{transform:translateY(-2px)}.menu-preview{padding:18px}.menu-card{background:#fff;border:1px solid var(--line);padding:15px;border-radius:16px;margin-bottom:10px;display:flex;justify-content:space-between;gap:12px}.menu-card b{display:block}.menu-card span{color:#8b8880;font-size:12px}.demo-tabs{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line);background:#fff}.demo-tabs button{flex:1;border:0;background:#f0eee8;border-radius:12px;padding:11px;font-weight:800;cursor:pointer}
+.pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.price-card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:26px;position:relative;transition:transform .25s ease,box-shadow .25s ease}.price-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(20,20,16,.08)}.price-card.popular{border:2px solid #171714}.badge{position:absolute;top:18px;right:18px;padding:7px 10px;background:#171714;color:#fff;border-radius:999px;font-size:10px;font-weight:900}.price{font-size:46px;letter-spacing:-.05em;margin:18px 0 4px}.small{font-size:12px;color:#8a877f}.checks{margin:20px 0 0;padding:0;list-style:none}.checks li{padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+.dashboard-wrap{display:grid;grid-template-columns:250px 1fr;gap:18px;background:#151513;border-radius:30px;padding:18px;color:#fff}.sidebar{background:#1c1c19;border-radius:20px;padding:18px}.side-brand{font-weight:900;margin-bottom:22px}.side-item{padding:11px 12px;border-radius:12px;color:#aaa79e;font-size:13px;cursor:pointer;margin-bottom:6px;transition:background .2s ease,color .2s ease}.side-item.active{background:#2c2b27;color:#fff}.side-item:hover{background:#272622;color:#fff}.dash-main{background:#f8f7f3;color:#171714;border-radius:20px;padding:22px}.dash-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px}.stat b{font-size:25px;display:block;margin-top:6px}.chart{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}.bars{height:160px;display:flex;align-items:flex-end;gap:8px;margin-top:15px}.bar{flex:1;background:#222;border-radius:8px 8px 0 0;min-height:12px}.editor{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}.panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}.field{margin-bottom:12px}.field label{display:block;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:#8a877f;margin-bottom:6px}.field input,.field textarea{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:12px;background:#faf9f5;outline:none}.field textarea{min-height:85px;resize:vertical}
+.footer{padding:40px 0 60px;border-top:1px solid var(--line);color:#77746d;font-size:13px}.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}.modal.show{display:flex}.modal-box{width:min(520px,100%);background:#fff;border-radius:24px;padding:24px;box-shadow:var(--shadow)}.close{float:right;border:0;background:#f0eee8;border-radius:50%;width:34px;height:34px;cursor:pointer}.toast{position:fixed;right:20px;bottom:20px;background:#171714;color:#fff;padding:14px 16px;border-radius:14px;display:none;z-index:60;font-size:13px}.toast.show{display:block}
+
 @media(max-width:900px){
-  .hero-grid,.dashboard-wrap,.editor{grid-template-columns:1fr}
-  .features,.pricing{grid-template-columns:1fr 1fr}
-  .nav-links{display:none}
+  .hero{padding-top:48px}.hero-grid,.dashboard-wrap,.editor{grid-template-columns:1fr}.features,.pricing{grid-template-columns:1fr 1fr}.nav-links{display:none}
+  .scroll-copy{left:50%;top:8%;width:90%;transform:translateX(-50%);text-align:center}.scroll-copy p{margin-left:auto;margin-right:auto}.scroll-phone{left:50%;top:58%;width:250px;height:500px}.scroll-orbit{left:50%;top:59%;width:520px;height:520px}.scroll-side-copy{right:6%;bottom:7%;width:220px}.scroll-progress{display:none}
+  .part-nfc{left:18%;top:50%}.part-chip{left:65%;top:46%}.part-url{left:52%;top:73%}.part-table{left:17%;top:73%}.part-ring{left:43%;top:40%}
 }
 @media(max-width:620px){
-  .container{width:min(100% - 24px,1160px)}
-  .hero{padding-top:48px}
-  .features,.pricing,.stat-grid{grid-template-columns:1fr}
-  h1{font-size:50px}
-  .quick{grid-template-columns:repeat(2,1fr)}
-  .nfc-card{min-height:470px}
+  .container{width:min(100% - 24px,1160px)}.features,.pricing,.stat-grid{grid-template-columns:1fr}h1{font-size:50px}.quick{grid-template-columns:repeat(2,1fr)}.nfc-card{min-height:470px}
+  .scroll-copy{top:6%}.scroll-copy h2{font-size:42px}.scroll-copy p{font-size:14px}.scroll-phone{top:56%;width:215px;height:425px}.scroll-orbit{width:370px;height:370px}.scroll-side-copy{display:none}.scroll-phone-cover{height:125px}.scroll-phone-content{height:calc(100% - 177px)}.scroll-actions div{padding:8px 3px;font-size:11px}.scroll-menu-item{font-size:9px}.part-nfc{left:6%;top:49%}.part-chip{left:67%;top:44%;font-size:9px;padding:12px 15px}.part-url{left:49%;top:73%;font-size:9px}.part-table{left:6%;top:74%;font-size:9px}.part-ring{left:36%;top:42%;width:62px;height:62px}
 }
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.nfc-base{animation:none}.btn,.feature,.price-card{transition:none}.scroll-experience{height:auto}.scroll-sticky{position:relative;height:auto;padding:80px 0}.scroll-phone{position:relative;left:auto;top:auto;transform:none!important;margin:120px auto 80px}.scroll-orbit,.scroll-part,.scroll-side-copy,.scroll-progress,.scroll-hint{display:none}.scroll-copy{position:relative;left:auto;top:auto;transform:none!important;width:auto;text-align:center}.scroll-copy p{margin-inline:auto}}
 </style>
 </head>
 <body>
@@ -131,23 +212,20 @@ h2{font-size:clamp(36px,5vw,58px);line-height:1;letter-spacing:-.05em;margin:10p
 <main id="top">
 <section class="hero">
   <div class="container hero-grid">
-    <div>
+    <div class="hero-copy-reveal">
       <div class="eyebrow"><span class="dot"></span> Hardware + software para negocios</div>
       <h1>Todo tu negocio.<br><span style="color:#8b7a59">En un toque.</span></h1>
       <p>Una placa NFC personalizada que abre una mini-web móvil con tu carta, reservas, WhatsApp, Instagram, TikTok, ubicación, reseñas y mucho más.</p>
       <div class="actions">
-        <a class="btn primary" href="#demo">Ver demo del cliente →</a>
+        <a class="btn primary" href="#wow">Ver cómo funciona →</a>
         <a class="btn" href="#dashboard">Ver panel del negocio</a>
       </div>
       <p style="font-size:13px;margin-top:18px">Sin app. Sin PDF olvidado. Sin tener que buscar nada.</p>
     </div>
-    <div class="nfc-card">
+    <div class="nfc-card hero-card-reveal">
       <div class="nfc-base">
         <div class="nfc-disc">
-          <div class="nfc-symbol">)))</div>
-          <small>NFC</small>
-          <strong>MEDITERRÁNEO</strong>
-          <span>ACERCA TU MÓVIL</span>
+          <div class="nfc-symbol">)))</div><small>NFC</small><strong>MEDITERRÁNEO</strong><span>ACERCA TU MÓVIL</span>
         </div>
       </div>
       <div class="nfc-caption">Placa/soporte 3D personalizable · logo · color · URL NFC</div>
@@ -155,14 +233,44 @@ h2{font-size:clamp(36px,5vw,58px);line-height:1;letter-spacing:-.05em;margin:10p
   </div>
 </section>
 
+<!-- EXPERIENCIA INTERACTIVA NUEVA -->
+<section class="scroll-experience" id="wow">
+  <div class="scroll-sticky">
+    <div class="scroll-inner">
+      <div class="scroll-copy" id="scrollCopy">
+        <div class="scroll-kicker">Un solo gesto</div>
+        <h2>Tu negocio.<br><span>Más fácil.</span></h2>
+        <p>Acerca el móvil y descubre una experiencia pensada para tus clientes. Sin apps, sin líos y con todo en un toque.</p>
+        <div class="joy-pill" id="joyPill">✨ Y aquí empieza la magia</div>
+      </div>
+      <div class="scroll-phone" id="scrollPhone">
+        <div class="scroll-phone-glow"></div>
+        <div class="scroll-phone-shell">
+          <div class="scroll-phone-screen">
+            <div class="dynamic-island"></div>
+            <div class="scroll-phone-top"><strong id="scrollPhoneName">MEDITERRÁNEO</strong><span>● Abierto</span></div>
+            <div class="scroll-phone-cover"><div><strong>MEDITERRÁNEO</strong><small>Cocina mediterránea · Madrid</small></div></div>
+            <div class="scroll-phone-content">
+              <div class="scroll-actions"><div>🍽️<span>Carta</span></div><div>💬<span>WhatsApp</span></div><div>📅<span>Reservar</span></div><div>⭐<span>Reseña</span></div></div>
+              <div class="scroll-menu-item"><div><strong>Ensalada burrata</strong><small>Tomate, pesto, rúcula</small></div><b>14,50 €</b></div>
+              <div class="scroll-menu-item"><div><strong>Arroz mediterráneo</strong><small>Verduras, gambón</small></div><b>22,90 €</b></div>
+              <div class="scroll-menu-item"><div><strong>Tarta de limón</strong><small>Merengue tostado</small></div><b>7,50 €</b></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="scroll-caption" id="scrollCaption">Desliza ↓</div>
+    </div>
+  </div>
+</section>
+
 <section class="section" id="como">
   <div class="container">
-    <div class="section-head">
-      <div class="kicker">La idea</div>
-      <h2>La placa no es el producto. La plataforma sí.</h2>
+    <div class="section-head reveal-left">
+      <div class="kicker">La idea</div><h2>La placa no es el producto. La plataforma sí.</h2>
       <p>El hardware es el acceso físico. La mini-web es el espacio digital del negocio. El dashboard permite mantenerlo actualizado y las estadísticas convierten el NFC en algo medible.</p>
     </div>
-    <div class="features">
+    <div class="features stagger reveal">
       <div class="feature"><div class="icon">⚡</div><h3>Un toque</h3><p>El cliente acerca el móvil y entra directamente a la experiencia del negocio. Sin instalar nada.</p></div>
       <div class="feature"><div class="icon">◫</div><h3>Todo en un sitio</h3><p>Carta, WhatsApp, teléfono, reservas, redes, ubicación, promociones, Wi‑Fi y reseñas.</p></div>
       <div class="feature"><div class="icon">↗</div><h3>Medible y actualizable</h3><p>El negocio puede cambiar contenidos y consultar qué acciones generan más interacciones.</p></div>
@@ -172,32 +280,17 @@ h2{font-size:clamp(36px,5vw,58px);line-height:1;letter-spacing:-.05em;margin:10p
 
 <section class="section" id="demo">
   <div class="container">
-    <div class="section-head">
-      <div class="kicker">Demo real</div>
-      <h2>Así lo ve el cliente.</h2>
-      <p>Esta demo usa un restaurante ficticio. Cada negocio tendría su propia página, logo, colores y contenido.</p>
-    </div>
-    <div class="demo-shell">
+    <div class="section-head reveal-left"><div class="kicker">Demo real</div><h2>Así lo ve el cliente.</h2><p>Esta demo usa un restaurante ficticio. Cada negocio tendría su propia página, logo, colores y contenido.</p></div>
+    <div class="demo-shell reveal-right">
       <div class="demo-phone">
         <div class="phone-top"><strong>MEDITERRÁNEO</strong><span style="font-size:12px;color:#6d6a63">● Abierto</span></div>
-        <div class="biz-cover">
-          <div><div class="biz-title" id="bizName">MEDITERRÁNEO</div><div class="biz-meta">Cocina mediterránea · Madrid</div></div>
+        <div class="biz-cover"><div><div class="biz-title" id="bizName">MEDITERRÁNEO</div><div class="biz-meta">Cocina mediterránea · Madrid</div></div></div>
+        <div class="quick stagger reveal">
+          <button class="qbtn" onclick="notify('Abriendo carta…')">🍽️<br>Carta</button><button class="qbtn" onclick="notify('Abriendo WhatsApp…')">💬<br>WhatsApp</button><button class="qbtn" onclick="notify('Abriendo Instagram…')">📸<br>Instagram</button><button class="qbtn" onclick="notify('Abriendo reservas…')">📅<br>Reservar</button>
+          <button class="qbtn" onclick="notify('Abriendo Google Maps…')">📍<br>Cómo llegar</button><button class="qbtn" onclick="notify('Abriendo TikTok…')">🎵<br>TikTok</button><button class="qbtn" onclick="notify('Abriendo reseñas…')">⭐<br>Reseña</button><button class="qbtn" onclick="notify('Copiado: Mediterra_5G')">📶<br>Wi‑Fi</button>
         </div>
-        <div class="quick">
-          <button class="qbtn" onclick="notify('Abriendo carta…')">🍽️<br>Carta</button>
-          <button class="qbtn" onclick="notify('Abriendo WhatsApp…')">💬<br>WhatsApp</button>
-          <button class="qbtn" onclick="notify('Abriendo Instagram…')">📸<br>Instagram</button>
-          <button class="qbtn" onclick="notify('Abriendo reservas…')">📅<br>Reservar</button>
-          <button class="qbtn" onclick="notify('Abriendo Google Maps…')">📍<br>Cómo llegar</button>
-          <button class="qbtn" onclick="notify('Abriendo TikTok…')">🎵<br>TikTok</button>
-          <button class="qbtn" onclick="notify('Abriendo reseñas…')">⭐<br>Reseña</button>
-          <button class="qbtn" onclick="notify('Copiado: Mediterra_5G')">📶<br>Wi‑Fi</button>
-        </div>
-        <div class="menu-preview">
-          <div style="display:flex;justify-content:space-between;align-items:end;margin-bottom:10px"><div><strong style="font-size:18px">Carta</strong><div style="font-size:12px;color:#8a877f">Lo más pedido</div></div><button class="btn" style="padding:8px 10px;font-size:12px" onclick="notify('Carta completa abierta')">Ver todo</button></div>
-          <div class="menu-card"><div><b>Ensalada burrata</b><span>Tomate, pesto, rúcula</span></div><strong>14,50 €</strong></div>
-          <div class="menu-card"><div><b>Arroz mediterráneo</b><span>Verduras, gambón, azafrán</span></div><strong>22,90 €</strong></div>
-          <div class="menu-card"><div><b>Tarta de limón</b><span>Merengue tostado</span></div><strong>7,50 €</strong></div>
+        <div class="menu-preview reveal"><div style="display:flex;justify-content:space-between;align-items:end;margin-bottom:10px"><div><strong style="font-size:18px">Carta</strong><div style="font-size:12px;color:#8a877f">Lo más pedido</div></div><button class="btn" style="padding:8px 10px;font-size:12px" onclick="notify('Carta completa abierta')">Ver todo</button></div>
+          <div class="menu-card"><div><b>Ensalada burrata</b><span>Tomate, pesto, rúcula</span></div><strong>14,50 €</strong></div><div class="menu-card"><div><b>Arroz mediterráneo</b><span>Verduras, gambón, azafrán</span></div><strong>22,90 €</strong></div><div class="menu-card"><div><b>Tarta de limón</b><span>Merengue tostado</span></div><strong>7,50 €</strong></div>
         </div>
         <div class="demo-tabs"><button onclick="notify('Inicio')">Inicio</button><button onclick="notify('Reservas')">Reservar</button><button onclick="notify('Contacto')">Contacto</button></div>
       </div>
@@ -207,12 +300,8 @@ h2{font-size:clamp(36px,5vw,58px);line-height:1;letter-spacing:-.05em;margin:10p
 
 <section class="section" id="planes">
   <div class="container">
-    <div class="section-head">
-      <div class="kicker">Modelo de negocio</div>
-      <h2>Vendes algo físico. Cobras por el valor digital.</h2>
-      <p>Precios de ejemplo para el prototipo; después los ajustamos con tus costes y con lo que el mercado responda.</p>
-    </div>
-    <div class="pricing">
+    <div class="section-head reveal-left"><div class="kicker">Modelo de negocio</div><h2>Vendes algo físico. Cobras por el valor digital.</h2><p>Precios de ejemplo para el prototipo; después los ajustamos con tus costes y con lo que el mercado responda.</p></div>
+    <div class="pricing stagger reveal">
       <div class="price-card"><h3>Básico</h3><div class="price">19€</div><div class="small">placa + configuración inicial</div><ul class="checks"><li>✓ 1 placa NFC personalizada</li><li>✓ Página móvil del negocio</li><li>✓ Carta + redes + contacto</li><li>✓ WhatsApp + Maps</li></ul></div>
       <div class="price-card popular"><div class="badge">RECOMENDADO</div><h3>PRO</h3><div class="price">39€</div><div class="small">configuración + experiencia completa</div><ul class="checks"><li>✓ Todo lo de Básico</li><li>✓ Reservas + reseñas</li><li>✓ Promociones</li><li>✓ Estadísticas demo</li><li>✓ Soporte y cambios</li></ul></div>
       <div class="price-card"><h3>Multi-local</h3><div class="price">Desde 79€</div><div class="small">para varios puntos/placas</div><ul class="checks"><li>✓ Varias placas</li><li>✓ Varias ubicaciones</li><li>✓ Panel centralizado</li><li>✓ Analítica por placa</li></ul></div>
@@ -222,48 +311,16 @@ h2{font-size:clamp(36px,5vw,58px);line-height:1;letter-spacing:-.05em;margin:10p
 
 <section class="section" id="dashboard">
   <div class="container">
-    <div class="section-head">
-      <div class="kicker">Dashboard</div>
-      <h2>El negocio puede editarlo sin saber programar.</h2>
-      <p>Este es un prototipo de lo que después podría ser el panel real del cliente.</p>
-    </div>
-    <div class="dashboard-wrap">
-      <aside class="sidebar">
-        <div class="side-brand">NFC Business Hub</div>
-        <div class="side-item active">Resumen</div>
-        <div class="side-item">Mi negocio</div>
-        <div class="side-item">Carta</div>
-        <div class="side-item">Promociones</div>
-        <div class="side-item">Placas NFC</div>
-        <div class="side-item">Analítica</div>
-      </aside>
+    <div class="section-head reveal-left"><div class="kicker">Dashboard</div><h2>El negocio puede editarlo sin saber programar.</h2><p>Este es un prototipo de lo que después podría ser el panel real del cliente.</p></div>
+    <div class="dashboard-wrap reveal-right">
+      <aside class="sidebar"><div class="side-brand">NFC Business Hub</div><div class="side-item active">Resumen</div><div class="side-item">Mi negocio</div><div class="side-item">Carta</div><div class="side-item">Promociones</div><div class="side-item">Placas NFC</div><div class="side-item">Analítica</div></aside>
       <div class="dash-main">
         <div class="dash-top"><div><div style="color:#7d7970;font-size:12px">NEGOCIO</div><h3 style="margin:4px 0;font-size:22px">MEDITERRÁNEO</h3></div><button class="btn primary" onclick="saveDemo()">Guardar cambios</button></div>
-        <div class="stat-grid">
-          <div class="stat"><span class="small">Visitas</span><b>1.284</b><span style="font-size:11px;color:#1d7b57">+18,4%</span></div>
-          <div class="stat"><span class="small">Carta</span><b>723</b><span class="small">clics</span></div>
-          <div class="stat"><span class="small">Reservas</span><b>86</b><span class="small">clics</span></div>
-          <div class="stat"><span class="small">WhatsApp</span><b>142</b><span class="small">clics</span></div>
-        </div>
-        <div class="chart"><strong>Interacciones · últimos 30 días</strong><div class="bars">
-          <div class="bar" style="height:42%"></div><div class="bar" style="height:58%"></div><div class="bar" style="height:48%"></div><div class="bar" style="height:70%"></div><div class="bar" style="height:61%"></div><div class="bar" style="height:83%"></div><div class="bar" style="height:92%"></div><div class="bar" style="height:74%"></div><div class="bar" style="height:88%"></div><div class="bar" style="height:96%"></div>
-        </div></div>
-        <div class="editor">
-          <div class="panel">
-            <h3 style="margin-top:0">Editar negocio</h3>
-            <div class="field"><label>Nombre</label><input id="editName" value="MEDITERRÁNEO" /></div>
-            <div class="field"><label>Descripción</label><textarea id="editDesc">Cocina mediterránea · Madrid</textarea></div>
-            <div class="field"><label>Instagram</label><input value="@mediterraneo_demo" /></div>
-          </div>
-          <div class="panel">
-            <h3 style="margin-top:0">Placa NFC</h3>
-            <div style="background:#1a1a17;color:#fff;border-radius:16px;padding:20px;text-align:center">
-              <div style="font-size:11px;letter-spacing:.1em;color:#aaa79e">NFC ACTIVO</div>
-              <div style="font-size:28px;font-weight:900;margin:8px 0" id="nfcName">MEDITERRÁNEO</div>
-              <div style="font-size:11px;color:#aaa79e">/b/mediterraneo · MESA-01</div>
-            </div>
-            <p class="small" style="margin-top:12px">La URL puede quedarse igual aunque cambies la carta o las redes.</p>
-          </div>
+        <div class="stat-grid"><div class="stat"><span class="small">Visitas</span><b class="counter" data-target="1284">0</b><span style="font-size:11px;color:#1d7b57">+18,4%</span></div><div class="stat"><span class="small">Carta</span><b class="counter" data-target="723">0</b><span class="small">clics</span></div><div class="stat"><span class="small">Reservas</span><b class="counter" data-target="86">0</b><span class="small">clics</span></div><div class="stat"><span class="small">WhatsApp</span><b class="counter" data-target="142">0</b><span class="small">clics</span></div></div>
+        <div class="chart reveal" data-chart><strong>Interacciones · últimos 30 días</strong><div class="bars"><div class="bar" style="height:42%"></div><div class="bar" style="height:58%"></div><div class="bar" style="height:48%"></div><div class="bar" style="height:70%"></div><div class="bar" style="height:61%"></div><div class="bar" style="height:83%"></div><div class="bar" style="height:92%"></div><div class="bar" style="height:74%"></div><div class="bar" style="height:88%"></div><div class="bar" style="height:96%"></div></div></div>
+        <div class="editor stagger reveal">
+          <div class="panel"><h3 style="margin-top:0">Editar negocio</h3><div class="field"><label>Nombre</label><input id="editName" value="MEDITERRÁNEO" /></div><div class="field"><label>Descripción</label><textarea id="editDesc">Cocina mediterránea · Madrid</textarea></div><div class="field"><label>Instagram</label><input value="@mediterraneo_demo" /></div></div>
+          <div class="panel"><h3 style="margin-top:0">Placa NFC</h3><div style="background:#1a1a17;color:#fff;border-radius:16px;padding:20px;text-align:center"><div style="font-size:11px;letter-spacing:.1em;color:#aaa79e">NFC ACTIVO</div><div style="font-size:28px;font-weight:900;margin:8px 0" id="nfcName">MEDITERRÁNEO</div><div style="font-size:11px;color:#aaa79e">/b/mediterraneo · MESA-01</div></div><p class="small" style="margin-top:12px">La URL puede quedarse igual aunque cambies la carta o las redes.</p></div>
         </div>
       </div>
     </div>
@@ -271,37 +328,19 @@ h2{font-size:clamp(36px,5vw,58px);line-height:1;letter-spacing:-.05em;margin:10p
 </section>
 
 <section class="section" id="contacto">
-  <div class="container" style="background:#171714;color:#fff;border-radius:30px;padding:48px">
-    <div style="max-width:700px">
-      <div class="kicker" style="color:#d8b675">Demo comercial</div>
-      <h2 style="margin-top:12px">¿Tu negocio, en un toque?</h2>
-      <p style="color:#b6b2aa;line-height:1.7">Este prototipo está pensado para enseñar el concepto a restaurantes, cafeterías, barberías, estéticas, tiendas y otros negocios antes de fabricar nada.</p>
-      <div class="actions"><button class="btn gold" onclick="openContact()">Solicitar demo</button><a class="btn" style="background:#fff;color:#171714" href="#demo">Ver experiencia</a></div>
-    </div>
-  </div>
+  <div class="container cta-shine" style="background:#171714;color:#fff;border-radius:30px;padding:48px"><div style="max-width:700px" class="reveal"><div class="kicker" style="color:#d8b675">Demo comercial</div><h2 style="margin-top:12px">¿Tu negocio, en un toque?</h2><p style="color:#b6b2aa;line-height:1.7">Este prototipo está pensado para enseñar el concepto a restaurantes, cafeterías, barberías, estéticas, tiendas y otros negocios antes de fabricar nada.</p><div class="actions"><button class="btn gold" onclick="openContact()">Solicitar demo</button><a class="btn" style="background:#fff;color:#171714" href="#demo">Ver experiencia</a></div></div></div>
 </section>
 
-<footer class="footer">
-  <div class="container" style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap">
-    <span>© 2026 NFC Business Hub · Prototipo</span>
-    <span>Hardware · Software · Analítica</span>
-  </div>
-</footer>
+<footer class="footer"><div class="container" style="display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap"><span>© 2026 NFC Business Hub · Prototipo</span><span>Hardware · Software · Analítica</span></div></footer>
 </main>
 
-<div class="modal" id="modal">
-  <div class="modal-box">
-    <button class="close" onclick="closeContact()">×</button>
-    <h3 style="font-size:25px;letter-spacing:-.04em">Quiero mi demo NFC</h3>
-    <p style="color:#6e6b64;line-height:1.6">En una versión real, este formulario enviaría la solicitud a tu panel o WhatsApp.</p>
-    <div class="field"><label>Nombre del negocio</label><input id="leadBiz" placeholder="Ej. Café Luna"></div>
-    <div class="field"><label>Contacto</label><input id="leadContact" placeholder="Instagram, WhatsApp o email"></div>
-    <button class="btn primary" style="width:100%" onclick="sendLead()">Enviar solicitud</button>
-  </div>
-</div>
+<div class="modal" id="modal"><div class="modal-box"><button class="close" onclick="closeContact()">×</button><h3 style="font-size:25px;letter-spacing:-.04em">Quiero mi demo NFC</h3><p style="color:#6e6b64;line-height:1.6">En una versión real, este formulario enviaría la solicitud a tu panel o WhatsApp.</p><div class="field"><label>Nombre del negocio</label><input id="leadBiz" placeholder="Ej. Café Luna"></div><div class="field"><label>Contacto</label><input id="leadContact" placeholder="Instagram, WhatsApp o email"></div><button class="btn primary" style="width:100%" onclick="sendLead()">Enviar solicitud</button></div></div>
 <div class="toast" id="toast"></div>
 
 <script>
+/* ---------------------------------------------------------
+   Helpers + demo interactions
+--------------------------------------------------------- */
 function notify(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;t.classList.add('show');
@@ -317,10 +356,127 @@ function sendLead(){
 }
 function saveDemo(){
   const name=document.getElementById('editName').value.trim()||'MEDITERRÁNEO';
-  document.getElementById('bizName').textContent=name.toUpperCase();
-  document.getElementById('nfcName').textContent=name.toUpperCase();
+  const upper=name.toUpperCase();
+  document.getElementById('bizName').textContent=upper;
+  document.getElementById('nfcName').textContent=upper;
+  const phoneName=document.getElementById('scrollPhoneName'); if(phoneName) phoneName.textContent=upper;
+  const coverStrong=document.querySelector('.scroll-phone-cover strong'); if(coverStrong) coverStrong.textContent=upper; const phoneTop=document.querySelector('.scroll-phone-top strong'); if(phoneTop) phoneTop.textContent=upper;
   notify('Cambios guardados y reflejados en la demo ✓');
 }
+
+
+
+/* ---------------------------------------------------------
+   Premium pointer depth — subtle, only on pointer devices
+--------------------------------------------------------- */
+const finePointer=window.matchMedia('(pointer:fine)').matches;
+if(finePointer){
+  window.addEventListener('pointermove',(e)=>{
+    document.documentElement.style.setProperty('--mouse-x',e.clientX+'px');
+    document.documentElement.style.setProperty('--mouse-y',e.clientY+'px');
+    document.documentElement.style.setProperty('--cursor-glow','1');
+  },{passive:true});
+  window.addEventListener('pointerleave',()=>document.documentElement.style.setProperty('--cursor-glow','0'));
+
+  const tiltTargets=document.querySelectorAll('.nfc-card,.demo-phone,.price-card');
+  tiltTargets.forEach(el=>{
+    el.addEventListener('pointermove',(e)=>{
+      const r=el.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.width-.5;
+      const y=(e.clientY-r.top)/r.height-.5;
+      const amount=el.classList.contains('nfc-card')?5:2.5;
+      el.style.transform=`translateY(-4px) rotateX(${(-y*amount).toFixed(2)}deg) rotateY(${(x*amount).toFixed(2)}deg)`;
+    });
+    el.addEventListener('pointerleave',()=>el.style.removeProperty('transform'));
+  });
+}
+
+/* ---------------------------------------------------------
+   General scroll reveals, counters and tiny interactions
+--------------------------------------------------------- */
+const revealObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){entry.target.classList.add('in');revealObserver.unobserve(entry.target)}
+  });
+},{threshold:.16,rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.stagger').forEach(el=>revealObserver.observe(el));
+
+const chartObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){entry.target.classList.add('chart-in');chartObserver.unobserve(entry.target)}
+  });
+},{threshold:.35});
+document.querySelectorAll('[data-chart]').forEach(el=>chartObserver.observe(el));
+
+let counted=false;
+const statObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(!entry.isIntersecting || counted) return;
+    counted=true;
+    document.querySelectorAll('.counter').forEach(el=>{
+      const target=Number(el.dataset.target||0);
+      const start=performance.now(),duration=1100;
+      function tick(now){
+        const t=Math.min((now-start)/duration,1);
+        const eased=1-Math.pow(1-t,4);
+        el.textContent=Math.round(target*eased).toLocaleString('es-ES');
+        if(t<1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  });
+},{threshold:.55});
+const statGrid=document.querySelector('.stat-grid');
+if(statGrid) statObserver.observe(statGrid);
+
+const popular=document.querySelector('.price-card.popular');
+if(popular){
+  const priceObserver=new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){popular.classList.add('highlight');priceObserver.unobserve(popular)}
+    });
+  },{threshold:.6});
+  priceObserver.observe(popular);
+}
+
+window.addEventListener('scroll',()=>{
+  const scrollable=document.documentElement.scrollHeight-window.innerHeight;
+  const progress=scrollable>0?window.scrollY/scrollable:0;
+  document.body.style.setProperty('--page-progress',progress);
+  const rootStyle=document.documentElement.style;
+  rootStyle.setProperty('--scroll-progress',progress);
+  document.body.style.setProperty('background-position',`0 ${progress*40}px`);
+},{passive:true});
+
+/* ---------------------------------------------------------
+   Scroll-driven product story
+--------------------------------------------------------- */
+const stage=document.querySelector('.scroll-experience');
+const phone=document.getElementById('scrollPhone');
+const copy=document.getElementById('scrollCopy');
+const joyPill=document.getElementById('joyPill');
+const hint=document.getElementById('scrollCaption');
+let ticking=false;
+function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
+function updateScrollExperience(){
+  if(!stage) return;
+  const rect=stage.getBoundingClientRect();
+  const max=rect.height-window.innerHeight;
+  const p=clamp(-rect.top/max,0,1);
+  const phase=clamp(p/.78,0,1);
+  const scale=.84+(.1*phase)+(.14*phase);
+  const rotate=-4+(4*phase);
+  const moveX=40-(40*phase);
+  const moveY=14-(14*phase);
+  phone.style.transform=`translate(-50%,-50%) translate(${moveX}px,${moveY}px) scale(${scale}) rotateY(${rotate}deg) rotateZ(${rotate*.35}deg)`;
+  copy.style.transform=`translateY(${14-(14*phase)}px)`;
+  joyPill.style.opacity=phase>.52?'1':'0';
+  joyPill.style.transform=phase>.52?'translateY(0)':'translateY(10px)';
+  hint.style.opacity=phase>.14?'0':'1';
+}
+window.addEventListener('scroll',()=>{if(!ticking){requestAnimationFrame(()=>{updateScrollExperience();ticking=false});ticking=true}},{passive:true});
+window.addEventListener('resize',updateScrollExperience);
+updateScrollExperience();
 </script>
 </body>
 </html>
