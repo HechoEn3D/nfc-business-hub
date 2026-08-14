@@ -256,6 +256,13 @@ main,.nav,.footer{position:relative;z-index:1}
 .public-error{width:min(620px,calc(100% - 24px));margin:100px auto;text-align:center;background:#fff;border:1px solid var(--line);border-radius:24px;padding:32px;box-shadow:var(--shadow)}
 @media(max-width:620px){.public-actions{grid-template-columns:repeat(2,1fr)}.public-cover{padding:30px 22px}.public-content{padding:18px}}
 
+.menu-item-card{padding:14px;border:1px solid var(--line);border-radius:16px;background:#faf9f5;display:flex;justify-content:space-between;gap:18px;align-items:center;margin-top:10px}
+.menu-item-card h4{margin:0;font-size:15px}.menu-item-meta{font-size:12px;color:#8a877f;margin-top:4px;line-height:1.5}
+.menu-item-actions{display:flex;gap:8px;flex-wrap:wrap}.menu-item-actions .btn{padding:9px 11px;font-size:12px}
+.menu-category-title{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#8b7a59;font-weight:900;margin:18px 0 8px}
+.public-menu-card.is-unavailable{opacity:.45}
+select{font:inherit}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -302,9 +309,7 @@ main,.nav,.footer{position:relative;z-index:1}
         <div id="publicCity" style="color:#66645e;line-height:1.6">—</div>
         <div style="height:22px"></div>
         <div class="public-section-title">Carta</div>
-        <div class="public-menu-card"><div><b>Ensalada burrata</b><span>Tomate, pesto, rúcula</span></div><strong>14,50 €</strong></div>
-        <div class="public-menu-card"><div><b>Arroz mediterráneo</b><span>Verduras, gambón, azafrán</span></div><strong>22,90 €</strong></div>
-        <div class="public-menu-card"><div><b>Tarta de limón</b><span>Merengue tostado</span></div><strong>7,50 €</strong></div>
+        <div id="publicMenuList"><div style="color:#8a877f">Cargando carta…</div></div>
       </div>
       <div class="public-footer">Powered by NFC Business Hub</div>
     </div>
@@ -466,10 +471,16 @@ main,.nav,.footer{position:relative;z-index:1}
         </div>
 
         <div class="dash-view" data-dash-view="carta">
-          <div class="dash-view-head"><div><h3>Carta</h3><p>Aquí gestionaremos platos, precios y categorías. La base de datos de platos será el siguiente bloque que conectaremos.</p></div><button class="btn primary" onclick="notify('Editor de carta listo para conectar ✓')">Añadir plato</button></div>
+          <div class="dash-view-head">
+            <div><h3>Carta</h3><p>Gestiona tus platos. Los cambios aparecerán automáticamente en tu página pública.</p></div>
+            <button class="btn primary" type="button" onclick="openMenuEditor()">Añadir plato</button>
+          </div>
           <div class="panel">
-            <table class="mini-table"><tr><td>Ensalada burrata</td><td>14,50 €</td></tr><tr><td>Arroz mediterráneo</td><td>22,90 €</td></tr><tr><td>Tarta de limón</td><td>7,50 €</td></tr></table>
-            <div class="empty-panel" style="margin-top:10px"><strong>Próximo paso: carta real</strong>Conectaremos esta sección a <code>menu_items</code> para que cada negocio pueda añadir, editar y borrar sus platos.</div>
+            <div id="menuLoading" class="empty-panel"><strong>Cargando carta…</strong>Estamos leyendo tus platos.</div>
+            <div id="menuEmpty" class="empty-panel" style="display:none">
+              <strong>Tu carta está vacía</strong>Añade tu primer plato para empezar.
+            </div>
+            <div id="menuList" style="display:none"></div>
           </div>
         </div>
 
@@ -521,6 +532,26 @@ main,.nav,.footer{position:relative;z-index:1}
     <div class="login-error" id="loginError"></div>
     <button class="btn primary" style="width:100%" onclick="loginBusiness()">Entrar</button>
     <button class="btn" style="width:100%;margin-top:10px" onclick="closeLogin()">Cancelar</button>
+  </div>
+</div>
+
+<div class="modal" id="menuModal">
+  <div class="modal-box">
+    <button class="close" onclick="closeMenuEditor()">×</button>
+    <h3 id="menuModalTitle" style="font-size:25px;letter-spacing:-.04em;margin-top:0">Añadir plato</h3>
+    <div class="field"><label>Nombre</label><input id="menuName" placeholder="Ej. Croquetas de jamón"></div>
+    <div class="field"><label>Descripción</label><textarea id="menuDescription" placeholder="Descripción breve del plato"></textarea></div>
+    <div class="field"><label>Precio (€)</label><input id="menuPrice" type="number" min="0" step="0.01" placeholder="12.50"></div>
+    <div class="field"><label>Categoría</label><input id="menuCategory" placeholder="Entrantes"></div>
+    <div class="field"><label>Disponible</label>
+      <select id="menuAvailable" style="width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:12px;background:#faf9f5;outline:none">
+        <option value="true">Sí</option>
+        <option value="false">No</option>
+      </select>
+    </div>
+    <div id="menuError" class="login-error"></div>
+    <button class="btn primary" style="width:100%" onclick="saveMenuItem()">Guardar plato</button>
+    <button class="btn" style="width:100%;margin-top:10px" onclick="closeMenuEditor()">Cancelar</button>
   </div>
 </div>
 
@@ -724,6 +755,7 @@ function applyBusinessToUI(data){
 
   currentBusiness=data;
   updateViewPublicButton();
+  if(document.getElementById('menuList')) loadOwnerMenu();
 }
 
 function getBusinessSlugFromPath(){
@@ -798,6 +830,7 @@ async function loadPublicBusiness(){
   }
 
   renderPublicBusiness(data);
+  await loadPublicMenu(data.id);
   return data;
 }
 
@@ -995,6 +1028,232 @@ async function saveDemo(){
   notify('Guardado en Supabase ✓');
 }
 
+let menuItems=[];
+let editingMenuItemId=null;
+
+function showMenuError(message){
+  const el=document.getElementById('menuError');
+  if(!el) return;
+  el.textContent=message;
+  el.classList.add('show');
+}
+function clearMenuError(){
+  const el=document.getElementById('menuError');
+  if(!el) return;
+  el.textContent='';
+  el.classList.remove('show');
+}
+
+function openMenuEditor(item=null){
+  clearMenuError();
+  editingMenuItemId=item ? item.id : null;
+  document.getElementById('menuModalTitle').textContent=item ? 'Editar plato' : 'Añadir plato';
+  document.getElementById('menuName').value=item?.name || '';
+  document.getElementById('menuDescription').value=item?.description || '';
+  document.getElementById('menuPrice').value=item?.price ?? '';
+  document.getElementById('menuCategory').value=item?.category || '';
+  document.getElementById('menuAvailable').value=String(item?.available ?? true);
+  document.getElementById('menuModal').classList.add('show');
+}
+function closeMenuEditor(){
+  document.getElementById('menuModal').classList.remove('show');
+  editingMenuItemId=null;
+}
+
+function formatPrice(value){
+  return `${Number(value||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})} €`;
+}
+function escapeHtml(value){
+  return String(value ?? '').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]));
+}
+
+function renderOwnerMenu(){
+  const loading=document.getElementById('menuLoading');
+  const empty=document.getElementById('menuEmpty');
+  const list=document.getElementById('menuList');
+  if(!loading||!empty||!list) return;
+  loading.style.display='none';
+  if(!menuItems.length){
+    empty.style.display='block';
+    list.style.display='none';
+    return;
+  }
+  empty.style.display='none';
+  list.style.display='block';
+  const groups={};
+  menuItems.forEach(item=>{
+    const cat=item.category || 'Sin categoría';
+    (groups[cat] ||= []).push(item);
+  });
+  list.innerHTML=Object.entries(groups).map(([cat,items])=>`
+    <div class="menu-category-title">${escapeHtml(cat)}</div>
+    ${items.map(item=>`
+      <div class="menu-item-card">
+        <div>
+          <h4>${escapeHtml(item.name)}</h4>
+          <div class="menu-item-meta">${escapeHtml(item.description || '')}${item.available===false?' · No disponible':''}</div>
+        </div>
+        <div style="text-align:right">
+          <strong>${formatPrice(item.price)}</strong>
+          <div class="menu-item-actions" style="margin-top:8px;justify-content:flex-end">
+            <button class="btn" onclick="editMenuItem(${item.id})">Editar</button>
+            <button class="btn" onclick="deleteMenuItem(${item.id})">Borrar</button>
+          </div>
+        </div>
+      </div>
+    `).join('')}
+  `).join('');
+}
+
+function renderPublicMenu(items){
+  const box=document.getElementById('publicMenuList');
+  if(!box) return;
+  if(!items.length){
+    box.innerHTML='<div style="color:#8a877f">Carta próximamente.</div>';
+    return;
+  }
+  const groups={};
+  items.filter(x=>x.available!==false).forEach(item=>{
+    const cat=item.category || 'Carta';
+    (groups[cat] ||= []).push(item);
+  });
+  if(!Object.keys(groups).length){
+    box.innerHTML='<div style="color:#8a877f">No hay platos disponibles ahora mismo.</div>';
+    return;
+  }
+  box.innerHTML=Object.entries(groups).map(([cat,items])=>`
+    <div class="menu-category-title">${escapeHtml(cat)}</div>
+    ${items.map(item=>`
+      <div class="public-menu-card">
+        <div><b>${escapeHtml(item.name)}</b><span>${escapeHtml(item.description || '')}</span></div>
+        <strong>${formatPrice(item.price)}</strong>
+      </div>
+    `).join('')}
+  `).join('');
+}
+
+async function loadOwnerMenu(){
+  const client=await initSupabase();
+  if(!client || !currentBusiness){
+    renderOwnerMenu();
+    return [];
+  }
+  const {data,error}=await client.from('menu_items')
+    .select('id,business_id,name,description,price,category,available,position')
+    .eq('business_id',currentBusiness.id)
+    .order('position',{ascending:true})
+    .order('id',{ascending:true});
+  if(error){
+    console.error('Owner menu:',error.message);
+    const loading=document.getElementById('menuLoading');
+    if(loading) loading.innerHTML='<strong>No se pudo cargar la carta</strong>Comprueba que la tabla menu_items esté creada.';
+    return [];
+  }
+  menuItems=data || [];
+  renderOwnerMenu();
+  return menuItems;
+}
+
+function editMenuItem(id){
+  const item=menuItems.find(x=>x.id===id);
+  if(item) openMenuEditor(item);
+}
+
+async function saveMenuItem(){
+  clearMenuError();
+  const client=await initSupabase();
+  if(!client || !currentBusiness){
+    showMenuError('Inicia sesión para gestionar tu carta.');
+    return;
+  }
+  const {data:{user}}=await client.auth.getUser();
+  if(!user){
+    showMenuError('Tu sesión ha caducado.');
+    return;
+  }
+
+  const name=document.getElementById('menuName').value.trim();
+  const description=document.getElementById('menuDescription').value.trim();
+  const price=Number(document.getElementById('menuPrice').value);
+  const category=document.getElementById('menuCategory').value.trim() || 'Carta';
+  const available=document.getElementById('menuAvailable').value==='true';
+
+  if(!name || !Number.isFinite(price) || price<0){
+    showMenuError('Completa al menos nombre y precio.');
+    return;
+  }
+
+  const payload={business_id:currentBusiness.id,name,description,price,category,available};
+  let result;
+
+  if(editingMenuItemId){
+    result=await client.from('menu_items')
+      .update(payload)
+      .eq('id',editingMenuItemId)
+      .eq('business_id',currentBusiness.id)
+      .select()
+      .maybeSingle();
+  }else{
+    const nextPosition=menuItems.length ? Math.max(...menuItems.map(x=>Number(x.position||0)))+1 : 1;
+    result=await client.from('menu_items')
+      .insert({...payload,position:nextPosition})
+      .select()
+      .single();
+  }
+
+  if(result.error){
+    console.error('Save menu item:',result.error.message);
+    showMenuError('No se pudo guardar el plato.');
+    return;
+  }
+
+  closeMenuEditor();
+  notify(editingMenuItemId ? 'Plato actualizado ✓' : 'Plato añadido ✓');
+  await loadOwnerMenu();
+}
+
+async function deleteMenuItem(id){
+  const client=await initSupabase();
+  if(!client || !currentBusiness) return;
+
+  if(!confirm('¿Borrar este plato?')) return;
+
+  const {error}=await client.from('menu_items')
+    .delete()
+    .eq('id',id)
+    .eq('business_id',currentBusiness.id);
+
+  if(error){
+    console.error('Delete menu item:',error.message);
+    notify('No se pudo borrar el plato');
+    return;
+  }
+
+  menuItems=menuItems.filter(item=>item.id!==id);
+  renderOwnerMenu();
+  notify('Plato borrado ✓');
+}
+
+async function loadPublicMenu(businessId){
+  const client=await initSupabase();
+  if(!client) return [];
+  const {data,error}=await client.from('menu_items')
+    .select('id,name,description,price,category,available,position')
+    .eq('business_id',businessId)
+    .eq('available',true)
+    .order('position',{ascending:true})
+    .order('id',{ascending:true});
+
+  if(error){
+    console.error('Public menu:',error.message);
+    renderPublicMenu([]);
+    return [];
+  }
+
+  renderPublicMenu(data||[]);
+  return data||[];
+}
+
 function switchDashboardSection(section){
   const items=document.querySelectorAll('.side-item[data-dash-section]');
   const views=document.querySelectorAll('.dash-view[data-dash-view]');
@@ -1043,9 +1302,6 @@ window.NFCBusinessHub={supabaseClient,loadPublicBusiness,loadOwnerBusiness};
     }
   });
 })();
-</script>
-</body>
-</html>
 </script>
 </body>
 </html>
