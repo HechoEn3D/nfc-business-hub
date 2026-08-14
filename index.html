@@ -182,6 +182,11 @@ main,.nav,.footer{position:relative;z-index:1}
   .auth-actions{margin-left:0}.auth-user-badge{display:none!important}.nav-inner{gap:10px}
 }
 
+
+.dashboard-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.dashboard-actions .btn{white-space:nowrap}
+@media(max-width:620px){.dashboard-actions{width:100%}.dashboard-actions .btn{flex:1}}
+
 @media(max-width:900px){body::after{display:none}.scroll-phone::before,.scroll-phone::after{display:none}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.reveal,.reveal-left,.reveal-right,.stagger>*{opacity:1!important;transform:none!important}}
 @media(max-width:900px){.scroll-copy{left:50%;top:9%;transform:translateX(-50%);width:90%;text-align:center}.scroll-copy p{margin-left:auto;margin-right:auto}.joy-pill{margin-left:auto;margin-right:auto}.scroll-phone{left:50%;top:59%;width:250px;height:495px}}
@@ -390,7 +395,7 @@ main,.nav,.footer{position:relative;z-index:1}
     <div class="dashboard-wrap reveal-right">
       <aside class="sidebar"><div class="side-brand">NFC Business Hub</div><div class="side-item active">Resumen</div><div class="side-item">Mi negocio</div><div class="side-item">Carta</div><div class="side-item">Promociones</div><div class="side-item">Placas NFC</div><div class="side-item">Analítica</div></aside>
       <div class="dash-main">
-        <div class="dash-top"><div><div style="color:#7d7970;font-size:12px">NEGOCIO</div><h3 style="margin:4px 0;font-size:22px">MEDITERRÁNEO</h3></div><button class="btn primary" onclick="saveDemo()">Guardar cambios</button></div>
+        <div class="dash-top"><div><div style="color:#7d7970;font-size:12px">NEGOCIO</div><h3 style="margin:4px 0;font-size:22px">MEDITERRÁNEO</h3></div><div class="dashboard-actions"><button class="btn" id="viewPublicBtn" type="button" onclick="openBusinessPage()" style="display:none">Ver mi página ↗</button><button class="btn primary" onclick="saveDemo()">Guardar cambios</button></div></div>
         <div class="stat-grid"><div class="stat"><span class="small">Visitas</span><b class="counter" data-target="1284">0</b><span style="font-size:11px;color:#1d7b57">+18,4%</span></div><div class="stat"><span class="small">Carta</span><b class="counter" data-target="723">0</b><span class="small">clics</span></div><div class="stat"><span class="small">Reservas</span><b class="counter" data-target="86">0</b><span class="small">clics</span></div><div class="stat"><span class="small">WhatsApp</span><b class="counter" data-target="142">0</b><span class="small">clics</span></div></div>
         <div class="chart reveal" data-chart><strong>Interacciones · últimos 30 días</strong><div class="bars"><div class="bar" style="height:42%"></div><div class="bar" style="height:58%"></div><div class="bar" style="height:48%"></div><div class="bar" style="height:70%"></div><div class="bar" style="height:61%"></div><div class="bar" style="height:83%"></div><div class="bar" style="height:92%"></div><div class="bar" style="height:74%"></div><div class="bar" style="height:88%"></div><div class="bar" style="height:96%"></div></div></div>
         <div class="editor stagger reveal">
@@ -612,6 +617,7 @@ function applyBusinessToUI(data){
   }
 
   currentBusiness=data;
+  updateViewPublicButton();
 }
 
 function getBusinessSlugFromPath(){
@@ -740,6 +746,24 @@ function closeLogin(){
   document.getElementById('loginModal').classList.remove('show');
 }
 
+function updateViewPublicButton(){
+  const btn=document.getElementById('viewPublicBtn');
+  if(!btn) return;
+  if(currentBusiness && currentBusiness.slug){
+    btn.style.display='inline-flex';
+  }else{
+    btn.style.display='none';
+  }
+}
+
+function openBusinessPage(){
+  if(!currentBusiness || !currentBusiness.slug){
+    notify('No se ha cargado tu negocio todavía');
+    return;
+  }
+  window.open(`/b/${encodeURIComponent(currentBusiness.slug)}`,'_blank','noopener');
+}
+
 function setAuthUI(user){
   const loginBtn=document.getElementById('loginBtn');
   const logoutBtn=document.getElementById('logoutBtn');
@@ -804,6 +828,7 @@ async function logoutBusiness(){
     return;
   }
   currentBusiness=null;
+  updateViewPublicButton();
   setAuthUI(null);
   notify('Sesión cerrada');
   setTimeout(()=>window.location.reload(),500);
