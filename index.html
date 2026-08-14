@@ -197,6 +197,7 @@ main,.nav,.footer{position:relative;z-index:1}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.nfc-base{animation:none}.btn,.feature,.price-card{transition:none}.scroll-experience{height:auto}.scroll-sticky{position:relative;height:auto;padding:80px 0}.scroll-phone{position:relative;left:auto;top:auto;transform:none!important;margin:120px auto 80px}.scroll-orbit,.scroll-part,.scroll-side-copy,.scroll-progress,.scroll-hint{display:none}.scroll-copy{position:relative;left:auto;top:auto;transform:none!important;width:auto;text-align:center}.scroll-copy p{margin-inline:auto}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <header class="nav">
@@ -478,5 +479,79 @@ window.addEventListener('scroll',()=>{if(!ticking){requestAnimationFrame(()=>{up
 window.addEventListener('resize',updateScrollExperience);
 updateScrollExperience();
 </script>
+
+<script>
+/* =========================================================
+   SUPABASE — REAL BUSINESS DATA
+   Paste ONLY your public API URL and Publishable key here.
+   Never paste a Secret key or service_role key.
+========================================================= */
+const NFC_SUPABASE_URL = 'https://znegwqcdaxqfzbjyzija.supabase.co/rest/v1/';
+const NFC_SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_OxUV1v29_QwhZQyy7Skg3w_-f1gTcre';
+
+(async function loadBusinessFromSupabase(){
+  const isConfigured =
+    NFC_SUPABASE_URL.startsWith('http') &&
+    NFC_SUPABASE_PUBLISHABLE_KEY.startsWith('sb_');
+
+  if (!isConfigured || !window.supabase) return;
+
+  const client = window.supabase.createClient(
+    NFC_SUPABASE_URL,
+    NFC_SUPABASE_PUBLISHABLE_KEY
+  );
+
+  const { data, error } = await client
+    .from('businesses')
+    .select('name, slug, description, instagram, whatsapp, phone, city')
+    .eq('slug', 'mediterraneo')
+    .maybeSingle();
+
+  if (error) {
+    console.error('Supabase:', error.message);
+    return;
+  }
+
+  if (!data) return;
+
+  const name = (data.name || 'MEDITERRÁNEO').toUpperCase();
+  const description = data.description || 'Cocina mediterránea · Madrid';
+
+  // Update visible demo elements without changing the visual design.
+  const map = {
+    '#bizName': name,
+    '#nfcName': name,
+    '#phoneName': name,
+    '#phoneTop': name
+  };
+
+  Object.entries(map).forEach(([selector, value])=>{
+    const el=document.querySelector(selector);
+    if(el) el.textContent=value;
+  });
+
+  const bizMeta=document.querySelector('.biz-meta');
+  if(bizMeta) bizMeta.textContent=description;
+
+  const scrollCoverSmall=document.querySelector('.scroll-phone-cover small');
+  if(scrollCoverSmall) scrollCoverSmall.textContent=description;
+
+  const editName=document.querySelector('#editName');
+  if(editName) editName.value=data.name || '';
+
+  const editDesc=document.querySelector('#editDesc');
+  if(editDesc) editDesc.value=description;
+
+  const instagramInputs=document.querySelectorAll('input');
+  instagramInputs.forEach(input=>{
+    if(input.value.includes('mediterraneo_demo') && data.instagram){
+      input.value=data.instagram;
+    }
+  });
+
+  console.log('NFC Business Hub · negocio cargado desde Supabase ✓');
+})();
+</script>
+
 </body>
 </html>
