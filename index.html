@@ -230,6 +230,12 @@ main,.nav,.footer{position:relative;z-index:1}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.nfc-base{animation:none}.btn,.feature,.price-card{transition:none}.scroll-experience{height:auto}.scroll-sticky{position:relative;height:auto;padding:80px 0}.scroll-phone{position:relative;left:auto;top:auto;transform:none!important;margin:120px auto 80px}.scroll-copy{position:relative;left:auto;top:auto;transform:none!important;width:auto;text-align:center}.scroll-copy p{margin-inline:auto}}
 
 /* =========================================================
+   PROMOTIONS UI
+========================================================= */
+.promo-card{padding:16px;border:1px solid var(--line);border-radius:18px;background:#faf9f5;margin-top:10px;display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.promo-card h4{margin:0 0 5px;font-size:16px}.promo-card p{margin:0;color:#77746d;font-size:12px;line-height:1.5}.promo-badge{display:inline-flex;padding:6px 9px;border-radius:999px;background:#171714;color:#fff;font-size:10px;font-weight:900;margin-bottom:8px}.promo-products{font-size:12px;color:#8a877f;margin-top:8px}.promo-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}.promo-product-picker{display:grid;gap:8px;max-height:180px;overflow:auto;padding:4px}.promo-product-option{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#faf9f5}.promo-product-option input{accent-color:#171714}.public-promo-card{padding:16px;border:1px solid #eadfc9;border-radius:18px;background:linear-gradient(135deg,#fffaf0,#fff);margin-top:10px}.public-promo-card strong{display:block;font-size:18px}.public-promo-card p{color:#6f6c64;margin:6px 0 0;line-height:1.5}.public-promo-meta{font-size:11px;color:#8a877f;margin-top:7px}
+
+/* =========================================================
    PUBLIC BUSINESS PAGE — /b/:slug
 ========================================================= */
 .public-business-page{display:none;min-height:100vh;background:var(--bg);padding-bottom:80px}
@@ -308,6 +314,7 @@ select{font:inherit}
         <div class="public-section-title">Información</div>
         <div id="publicCity" style="color:#66645e;line-height:1.6">—</div>
         <div style="height:22px"></div>
+        <div id="publicPromotionsSection" style="display:none"><div class="public-section-title">🔥 Promociones</div><div id="publicPromotionList"></div><div style="height:22px"></div></div>
         <div class="public-section-title">Carta</div>
         <div id="publicMenuList"><div style="color:#8a877f">Cargando carta…</div></div>
       </div>
@@ -431,7 +438,7 @@ select{font:inherit}
 
       <div class="dash-main">
         <div class="dash-top">
-          <div><div style="color:#7d7970;font-size:12px">NEGOCIO</div><h3 id="dashboardBusinessName" style="margin:4px 0;font-size:22px">MEDITERRÁNEO</h3></div>
+          <div><div style="color:#7d7970;font-size:12px">NEGOCIO</div><h3 id="dashboardBusinessName" style="margin:4px 0;font-size:22px">TU NEGOCIO AQUÍ</h3></div>
           <div class="dashboard-actions">
             <button class="btn" id="viewPublicBtn" type="button" onclick="openBusinessPage()" style="display:none">Ver mi página ↗</button>
             <button class="btn primary" type="button" onclick="saveDemo()">Guardar cambios</button>
@@ -457,8 +464,8 @@ select{font:inherit}
           <div class="editor" style="margin-top:0">
             <div class="panel">
               <h3 style="margin-top:0">Información</h3>
-              <div class="field"><label>Nombre</label><input id="editName" value="MEDITERRÁNEO" /></div>
-              <div class="field"><label>Descripción</label><textarea id="editDesc">Cocina mediterránea · Madrid</textarea></div>
+              <div class="field"><label>Nombre</label><input id="editName" value="TU NEGOCIO AQUÍ" /></div>
+              <div class="field"><label>Descripción</label><textarea id="editDesc">Añade aquí una descripción de tu negocio</textarea></div>
               <div class="field"><label>Instagram</label><input id="editInstagram" value="@mediterraneo_demo" /></div>
             </div>
             <div class="panel">
@@ -485,8 +492,8 @@ select{font:inherit}
         </div>
 
         <div class="dash-view" data-dash-view="promociones">
-          <div class="dash-view-head"><div><h3>Promociones</h3><p>Gestiona ofertas que aparecerán en la página pública.</p></div><button class="btn primary" onclick="notify('Creación de promociones: siguiente bloque ✓')">Nueva promoción</button></div>
-          <div class="empty-panel"><strong>Aún no hay promociones</strong>La estructura del panel ya está lista. Después conectaremos las promociones a Supabase.</div>
+          <div class="dash-view-head"><div><h3>Promociones</h3><p>Crea ofertas a partir de los productos que ya tienes en tu carta.</p></div><button class="btn primary" type="button" onclick="openPromotionEditor()">Nueva promoción</button></div>
+          <div class="panel"><div id="promotionLoading" class="empty-panel"><strong>Cargando promociones…</strong>Estamos leyendo tus ofertas.</div><div id="promotionEmpty" class="empty-panel" style="display:none"><strong>Aún no hay promociones</strong>Crea tu primera oferta y aparecerá automáticamente en tu página pública.</div><div id="promotionList" style="display:none"></div></div>
         </div>
 
         <div class="dash-view" data-dash-view="placas">
@@ -554,6 +561,8 @@ select{font:inherit}
     <button class="btn" style="width:100%;margin-top:10px" onclick="closeMenuEditor()">Cancelar</button>
   </div>
 </div>
+
+<div class="modal" id="promotionModal"><div class="modal-box" style="max-height:90vh;overflow:auto"><button class="close" onclick="closePromotionEditor()">×</button><h3 id="promotionModalTitle" style="font-size:25px;letter-spacing:-.04em;margin-top:0">Nueva promoción</h3><div class="field"><label>Título</label><input id="promoTitle" placeholder="Ej. 2x1 en croquetas"></div><div class="field"><label>Descripción</label><textarea id="promoDescription" placeholder="Ej. Lleva 2 y paga 1"></textarea></div><div class="field"><label>Tipo</label><select id="promoType" style="width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:12px;background:#faf9f5;outline:none" onchange="updatePromotionFields()"><option value="2x1">2x1</option><option value="discount">Descuento %</option><option value="special_price">Precio especial</option><option value="buy_x_get_y">Lleva X, paga Y</option><option value="custom">Personalizada</option></select></div><div class="field"><label>Productos de tu carta</label><div id="promoProducts" class="promo-product-picker"><div class="empty-panel">Cargando productos…</div></div></div><div id="promoValueWrap" class="field" style="display:none"><label id="promoValueLabel">Valor</label><input id="promoValue" type="number" min="0" step="0.01" placeholder="10"></div><div class="dashboard-grid-2"><div class="field"><label>Desde</label><input id="promoStarts" type="date"></div><div class="field"><label>Hasta</label><input id="promoEnds" type="date"></div></div><div class="field"><label>Activa</label><select id="promoActive" style="width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:12px;background:#faf9f5;outline:none"><option value="true">Sí</option><option value="false">No</option></select></div><div id="promotionError" class="login-error"></div><button class="btn primary" style="width:100%" onclick="savePromotion()">Guardar promoción</button><button class="btn" style="width:100%;margin-top:10px" onclick="closePromotionEditor()">Cancelar</button></div></div>
 
 <div class="toast" id="toast"></div>
 
@@ -756,6 +765,7 @@ function applyBusinessToUI(data){
   currentBusiness=data;
   updateViewPublicButton();
   if(document.getElementById('menuList')) loadOwnerMenu();
+  if(document.getElementById('promotionList')) loadOwnerPromotions();
 }
 
 function getBusinessSlugFromPath(){
@@ -831,6 +841,7 @@ async function loadPublicBusiness(){
 
   renderPublicBusiness(data);
   await loadPublicMenu(data.id);
+  await loadPublicPromotions(data.id);
   return data;
 }
 
@@ -1254,11 +1265,31 @@ async function loadPublicMenu(businessId){
   return data||[];
 }
 
+let promotions=[];
+let editingPromotionId=null;
+function showPromotionError(message){const el=document.getElementById('promotionError');if(!el)return;el.textContent=message;el.classList.add('show')}
+function clearPromotionError(){const el=document.getElementById('promotionError');if(!el)return;el.textContent='';el.classList.remove('show')}
+function updatePromotionFields(){const type=document.getElementById('promoType')?.value,wrap=document.getElementById('promoValueWrap'),label=document.getElementById('promoValueLabel'),input=document.getElementById('promoValue');if(!wrap||!label||!input)return;if(type==='discount'){wrap.style.display='block';label.textContent='Descuento (%)';input.placeholder='20';input.step='1'}else if(type==='special_price'){wrap.style.display='block';label.textContent='Precio especial (€)';input.placeholder='9.99';input.step='0.01'}else if(type==='buy_x_get_y'){wrap.style.display='block';label.textContent='Paga Y unidades';input.placeholder='1';input.step='1'}else{wrap.style.display='none';input.value=''}}
+function openPromotionEditor(item=null){clearPromotionError();editingPromotionId=item?item.id:null;document.getElementById('promotionModalTitle').textContent=item?'Editar promoción':'Nueva promoción';document.getElementById('promoTitle').value=item?.title||'';document.getElementById('promoDescription').value=item?.description||'';document.getElementById('promoType').value=item?.promo_type||'2x1';document.getElementById('promoValue').value=item?.value??'';document.getElementById('promoStarts').value=item?.starts_at?String(item.starts_at).slice(0,10):'';document.getElementById('promoEnds').value=item?.ends_at?String(item.ends_at).slice(0,10):'';document.getElementById('promoActive').value=String(item?.active??true);renderPromotionProductPicker(item?.product_ids||[]);updatePromotionFields();document.getElementById('promotionModal').classList.add('show')}
+function closePromotionEditor(){document.getElementById('promotionModal').classList.remove('show');editingPromotionId=null}
+function renderPromotionProductPicker(selectedIds=[]){const box=document.getElementById('promoProducts');if(!box)return;if(!menuItems.length){box.innerHTML='<div class="empty-panel"><strong>Añade primero productos a tu carta</strong>Después podrás seleccionarlos aquí.</div>';return}const ids=new Set((selectedIds||[]).map(Number));box.innerHTML=menuItems.map(item=>`<label class="promo-product-option"><input type="checkbox" value="${item.id}" ${ids.has(Number(item.id))?'checked':''}><span><strong>${escapeHtml(item.name)}</strong> · ${formatPrice(item.price)}</span></label>`).join('')}
+function getSelectedPromotionProductIds(){return [...document.querySelectorAll('#promoProducts input[type="checkbox"]:checked')].map(x=>Number(x.value))}
+function promoTypeLabel(type,value){if(type==='2x1')return '2x1';if(type==='discount')return `${value??0}% descuento`;if(type==='special_price')return `Precio especial ${formatPrice(value)}`;if(type==='buy_x_get_y')return `Lleva X · paga ${value??1}`;return 'Oferta personalizada'}
+function renderOwnerPromotions(){const loading=document.getElementById('promotionLoading'),empty=document.getElementById('promotionEmpty'),list=document.getElementById('promotionList');if(!loading||!empty||!list)return;loading.style.display='none';if(!promotions.length){empty.style.display='block';list.style.display='none';return}empty.style.display='none';list.style.display='block';list.innerHTML=promotions.map(p=>`<div class="promo-card"><div><div class="promo-badge">${escapeHtml(promoTypeLabel(p.promo_type,p.value))}</div><h4>${escapeHtml(p.title)}</h4><p>${escapeHtml(p.description||'')}</p><div class="promo-products">${escapeHtml((p.product_names||[]).join(' · ')||'Productos seleccionados')}</div></div><div><div style="font-size:11px;color:${p.active?'#1d7b57':'#a04a3f'};font-weight:800;margin-bottom:9px">${p.active?'ACTIVA':'INACTIVA'}</div><div class="promo-actions"><button class="btn" onclick="editPromotion(${p.id})">Editar</button><button class="btn" onclick="deletePromotion(${p.id})">Borrar</button></div></div></div>`).join('')}
+async function loadOwnerPromotions(){const client=await initSupabase();if(!client||!currentBusiness){renderOwnerPromotions();return[]}const {data,error}=await client.from('business_promotions').select('id,business_id,title,description,promo_type,value,starts_at,ends_at,active').eq('business_id',currentBusiness.id).order('id',{ascending:false});if(error){console.error('Owner promos:',error.message);const el=document.getElementById('promotionLoading');if(el)el.innerHTML='<strong>No se pudieron cargar las promociones</strong>Ejecuta promotions.sql en Supabase.';return[]}const enriched=[];for(const p of data||[]){const {data:links}=await client.from('promotion_items').select('menu_item_id').eq('promotion_id',p.id);const selected=(links||[]).map(x=>x.menu_item_id);const names=menuItems.filter(m=>selected.includes(m.id)).map(m=>m.name);enriched.push({...p,product_ids:selected,product_names:names})}promotions=enriched;renderOwnerPromotions();return promotions}
+async function savePromotion(){clearPromotionError();const client=await initSupabase();if(!client||!currentBusiness){showPromotionError('Inicia sesión para gestionar promociones.');return}const {data:{user}}=await client.auth.getUser();if(!user){showPromotionError('Tu sesión ha caducado.');return}const title=document.getElementById('promoTitle').value.trim(),description=document.getElementById('promoDescription').value.trim(),promo_type=document.getElementById('promoType').value,value=document.getElementById('promoValue').value===''?null:Number(document.getElementById('promoValue').value),starts_at=document.getElementById('promoStarts').value||null,ends_at=document.getElementById('promoEnds').value||null,active=document.getElementById('promoActive').value==='true',product_ids=getSelectedPromotionProductIds();if(!title){showPromotionError('Ponle un título a la promoción.');return}if(!product_ids.length){showPromotionError('Selecciona al menos un producto de tu carta.');return}if(promo_type==='discount'&&!(value>0&&value<=100)){showPromotionError('El descuento debe estar entre 1 y 100%.');return}if(promo_type==='special_price'&&!(value>=0)){showPromotionError('Pon un precio especial válido.');return}const payload={business_id:currentBusiness.id,title,description,promo_type,value,starts_at,ends_at,active};let result;if(editingPromotionId)result=await client.from('business_promotions').update(payload).eq('id',editingPromotionId).eq('business_id',currentBusiness.id).select().maybeSingle();else result=await client.from('business_promotions').insert(payload).select().single();if(result.error){console.error('Save promotion:',result.error.message);showPromotionError('No se pudo guardar la promoción.');return}const promoId=result.data.id;await client.from('promotion_items').delete().eq('promotion_id',promoId);const linkResult=await client.from('promotion_items').insert(product_ids.map(menu_item_id=>({promotion_id:promoId,menu_item_id})));if(linkResult.error){console.error('Promotion links:',linkResult.error.message);showPromotionError('La promoción se guardó, pero no pudieron vincularse los productos.');return}closePromotionEditor();notify(editingPromotionId?'Promoción actualizada ✓':'Promoción creada ✓');await loadOwnerPromotions()}
+async function deletePromotion(id){const client=await initSupabase();if(!client||!currentBusiness)return;if(!confirm('¿Borrar esta promoción?'))return;const {error}=await client.from('business_promotions').delete().eq('id',id).eq('business_id',currentBusiness.id);if(error){notify('No se pudo borrar la promoción');return}promotions=promotions.filter(p=>p.id!==id);renderOwnerPromotions();notify('Promoción borrada ✓')}
+function editPromotion(id){const p=promotions.find(x=>x.id===id);if(p)openPromotionEditor(p)}
+async function loadPublicPromotions(businessId){const client=await initSupabase();if(!client)return[];const {data,error}=await client.from('business_promotions').select('id,title,description,promo_type,value,starts_at,ends_at,active').eq('business_id',businessId).eq('active',true).order('id',{ascending:false});if(error){console.error('Public promos:',error.message);return[]}const out=[];for(const p of data||[]){const startOk=!p.starts_at||new Date(p.starts_at+'T00:00:00')<=new Date();const endOk=!p.ends_at||new Date(p.ends_at+'T23:59:59')>=new Date();if(!startOk||!endOk)continue;const {data:links}=await client.from('promotion_items').select('menu_item_id').eq('promotion_id',p.id);const names=menuItems.filter(m=>(links||[]).map(x=>x.menu_item_id).includes(m.id)).map(m=>m.name);out.push({...p,product_names:names})}renderPublicPromotions(out);return out}
+function renderPublicPromotions(promos){const section=document.getElementById('publicPromotionsSection'),box=document.getElementById('publicPromotionList');if(!section||!box)return;if(!promos.length){section.style.display='none';return}section.style.display='block';box.innerHTML=promos.map(p=>`<div class="public-promo-card"><strong>${escapeHtml(p.title)}</strong><p>${escapeHtml(p.description||promoTypeLabel(p.promo_type,p.value))}</p><div class="public-promo-meta">${escapeHtml(promoTypeLabel(p.promo_type,p.value))}${p.product_names?.length?' · '+escapeHtml(p.product_names.join(', ')):''}</div></div>`).join('')}
+
 function switchDashboardSection(section){
   const items=document.querySelectorAll('.side-item[data-dash-section]');
   const views=document.querySelectorAll('.dash-view[data-dash-view]');
   items.forEach(item=>item.classList.toggle('active',item.dataset.dashSection===section));
   views.forEach(view=>view.classList.toggle('active',view.dataset.dashView===section));
+  if(section==='carta') loadOwnerMenu();
+  if(section==='promociones') loadOwnerMenu().then(()=>loadOwnerPromotions());
 }
 
 document.querySelectorAll('.side-item[data-dash-section]').forEach(item=>{
