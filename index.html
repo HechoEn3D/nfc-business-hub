@@ -164,6 +164,27 @@ main,.nav,.footer{position:relative;z-index:1}
 .cta-shine .btn{position:relative;z-index:2}
 .footer{background:linear-gradient(180deg,transparent,rgba(20,20,16,.018))}
 
+/* DASHBOARD NAVIGATION */
+.dashboard-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.side-item{user-select:none}
+.dash-view{display:none;animation:dashViewIn .35s cubic-bezier(.2,.8,.2,1)}
+.dash-view.active{display:block}
+.dash-view-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:16px}
+.dash-view-head h3{margin:0;font-size:24px;letter-spacing:-.04em}
+.dash-view-head p{margin:6px 0 0;color:#77746d;font-size:13px;line-height:1.5}
+.dashboard-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.info-list{display:grid;gap:10px}
+.info-row{display:flex;justify-content:space-between;gap:14px;padding:12px 14px;background:#faf9f5;border:1px solid var(--line);border-radius:12px;font-size:13px}
+.info-row span{color:#8a877f}
+.mini-table{width:100%;border-collapse:separate;border-spacing:0 8px;font-size:13px}
+.mini-table td{padding:12px 14px;background:#faf9f5;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.mini-table td:first-child{border-left:1px solid var(--line);border-radius:12px 0 0 12px;font-weight:800}
+.mini-table td:last-child{border-right:1px solid var(--line);border-radius:0 12px 12px 0;text-align:right;font-weight:800}
+.empty-panel{padding:26px;border:1px dashed #d8d2c5;border-radius:18px;background:#fbfaf7;text-align:center;color:#77746d}
+.empty-panel strong{display:block;color:#171714;font-size:16px;margin-bottom:6px}
+@keyframes dashViewIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(max-width:900px){.dashboard-grid-2{grid-template-columns:1fr}.dashboard-actions{justify-content:flex-start}}
+
 /* AUTH UI — añadido sin cambiar el diseño general */
 .auth-actions{display:flex;align-items:center;gap:10px;margin-left:12px}
 .auth-status{font-size:12px;color:#6f6c64;display:none}
@@ -391,16 +412,90 @@ main,.nav,.footer{position:relative;z-index:1}
 
 <section class="section" id="dashboard">
   <div class="container">
-    <div class="section-head reveal-left"><div class="kicker">Dashboard</div><h2>El negocio puede editarlo sin saber programar.</h2><p>Este es un prototipo de lo que después podría ser el panel real del cliente.</p></div>
+    <div class="section-head reveal-left"><div class="kicker">Dashboard</div><h2>El negocio puede editarlo sin saber programar.</h2><p>Tu panel privado: cada sección cambia aquí mismo sin salir de tu cuenta.</p></div>
     <div class="dashboard-wrap reveal-right">
-      <aside class="sidebar"><div class="side-brand">NFC Business Hub</div><div class="side-item active">Resumen</div><div class="side-item">Mi negocio</div><div class="side-item">Carta</div><div class="side-item">Promociones</div><div class="side-item">Placas NFC</div><div class="side-item">Analítica</div></aside>
+      <aside class="sidebar">
+        <div class="side-brand">NFC Business Hub</div>
+        <div class="side-item active" data-dash-section="resumen">Resumen</div>
+        <div class="side-item" data-dash-section="negocio">Mi negocio</div>
+        <div class="side-item" data-dash-section="carta">Carta</div>
+        <div class="side-item" data-dash-section="promociones">Promociones</div>
+        <div class="side-item" data-dash-section="placas">Placas NFC</div>
+        <div class="side-item" data-dash-section="analitica">Analítica</div>
+      </aside>
+
       <div class="dash-main">
-        <div class="dash-top"><div><div style="color:#7d7970;font-size:12px">NEGOCIO</div><h3 style="margin:4px 0;font-size:22px">MEDITERRÁNEO</h3></div><div class="dashboard-actions"><button class="btn" id="viewPublicBtn" type="button" onclick="openBusinessPage()" style="display:none">Ver mi página ↗</button><button class="btn primary" onclick="saveDemo()">Guardar cambios</button></div></div>
-        <div class="stat-grid"><div class="stat"><span class="small">Visitas</span><b class="counter" data-target="1284">0</b><span style="font-size:11px;color:#1d7b57">+18,4%</span></div><div class="stat"><span class="small">Carta</span><b class="counter" data-target="723">0</b><span class="small">clics</span></div><div class="stat"><span class="small">Reservas</span><b class="counter" data-target="86">0</b><span class="small">clics</span></div><div class="stat"><span class="small">WhatsApp</span><b class="counter" data-target="142">0</b><span class="small">clics</span></div></div>
-        <div class="chart reveal" data-chart><strong>Interacciones · últimos 30 días</strong><div class="bars"><div class="bar" style="height:42%"></div><div class="bar" style="height:58%"></div><div class="bar" style="height:48%"></div><div class="bar" style="height:70%"></div><div class="bar" style="height:61%"></div><div class="bar" style="height:83%"></div><div class="bar" style="height:92%"></div><div class="bar" style="height:74%"></div><div class="bar" style="height:88%"></div><div class="bar" style="height:96%"></div></div></div>
-        <div class="editor stagger reveal">
-          <div class="panel"><h3 style="margin-top:0">Editar negocio</h3><div class="field"><label>Nombre</label><input id="editName" value="MEDITERRÁNEO" /></div><div class="field"><label>Descripción</label><textarea id="editDesc">Cocina mediterránea · Madrid</textarea></div><div class="field"><label>Instagram</label><input id="editInstagram" value="@mediterraneo_demo" /></div></div>
-          <div class="panel"><h3 style="margin-top:0">Placa NFC</h3><div style="background:#1a1a17;color:#fff;border-radius:16px;padding:20px;text-align:center"><div style="font-size:11px;letter-spacing:.1em;color:#aaa79e">NFC ACTIVO</div><div style="font-size:28px;font-weight:900;margin:8px 0" id="nfcName">MEDITERRÁNEO</div><div style="font-size:11px;color:#aaa79e">/b/mediterraneo · MESA-01</div></div><p class="small" style="margin-top:12px">La URL puede quedarse igual aunque cambies la carta o las redes.</p></div>
+        <div class="dash-top">
+          <div><div style="color:#7d7970;font-size:12px">NEGOCIO</div><h3 id="dashboardBusinessName" style="margin:4px 0;font-size:22px">MEDITERRÁNEO</h3></div>
+          <div class="dashboard-actions">
+            <button class="btn" id="viewPublicBtn" type="button" onclick="openBusinessPage()" style="display:none">Ver mi página ↗</button>
+            <button class="btn primary" type="button" onclick="saveDemo()">Guardar cambios</button>
+          </div>
+        </div>
+
+        <div class="dash-view active" data-dash-view="resumen">
+          <div class="stat-grid">
+            <div class="stat"><span class="small">Visitas</span><b class="counter" data-target="1284">0</b><span style="font-size:11px;color:#1d7b57">+18,4%</span></div>
+            <div class="stat"><span class="small">Carta</span><b class="counter" data-target="723">0</b><span class="small">clics</span></div>
+            <div class="stat"><span class="small">Reservas</span><b class="counter" data-target="86">0</b><span class="small">clics</span></div>
+            <div class="stat"><span class="small">WhatsApp</span><b class="counter" data-target="142">0</b><span class="small">clics</span></div>
+          </div>
+          <div class="chart reveal" data-chart><strong>Interacciones · últimos 30 días</strong><div class="bars"><div class="bar" style="height:42%"></div><div class="bar" style="height:58%"></div><div class="bar" style="height:48%"></div><div class="bar" style="height:70%"></div><div class="bar" style="height:61%"></div><div class="bar" style="height:83%"></div><div class="bar" style="height:92%"></div><div class="bar" style="height:74%"></div><div class="bar" style="height:88%"></div><div class="bar" style="height:96%"></div></div></div>
+          <div class="dashboard-grid-2" style="margin-top:14px">
+            <div class="panel"><h3 style="margin-top:0">Acciones rápidas</h3><div class="actions" style="margin-top:14px"><button class="btn" onclick="switchDashboardSection('negocio')">Editar negocio</button><button class="btn" onclick="switchDashboardSection('carta')">Gestionar carta</button><button class="btn" onclick="switchDashboardSection('placas')">Ver placas</button></div></div>
+            <div class="panel"><h3 style="margin-top:0">Página pública</h3><p class="small">Tu URL pública aparece aquí cuando inicias sesión.</p><button class="btn primary" type="button" onclick="openBusinessPage()">Abrir página ↗</button></div>
+          </div>
+        </div>
+
+        <div class="dash-view" data-dash-view="negocio">
+          <div class="dash-view-head"><div><h3>Mi negocio</h3><p>Edita los datos básicos que aparecen en tu página pública.</p></div></div>
+          <div class="editor" style="margin-top:0">
+            <div class="panel">
+              <h3 style="margin-top:0">Información</h3>
+              <div class="field"><label>Nombre</label><input id="editName" value="MEDITERRÁNEO" /></div>
+              <div class="field"><label>Descripción</label><textarea id="editDesc">Cocina mediterránea · Madrid</textarea></div>
+              <div class="field"><label>Instagram</label><input id="editInstagram" value="@mediterraneo_demo" /></div>
+            </div>
+            <div class="panel">
+              <h3 style="margin-top:0">Contacto</h3>
+              <div class="field"><label>WhatsApp</label><input id="editWhatsapp" placeholder="612345678" /></div>
+              <div class="field"><label>Teléfono</label><input id="editPhone" placeholder="912345678" /></div>
+              <div class="field"><label>Ciudad</label><input id="editCity" placeholder="Madrid" /></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-view" data-dash-view="carta">
+          <div class="dash-view-head"><div><h3>Carta</h3><p>Aquí gestionaremos platos, precios y categorías. La base de datos de platos será el siguiente bloque que conectaremos.</p></div><button class="btn primary" onclick="notify('Editor de carta listo para conectar ✓')">Añadir plato</button></div>
+          <div class="panel">
+            <table class="mini-table"><tr><td>Ensalada burrata</td><td>14,50 €</td></tr><tr><td>Arroz mediterráneo</td><td>22,90 €</td></tr><tr><td>Tarta de limón</td><td>7,50 €</td></tr></table>
+            <div class="empty-panel" style="margin-top:10px"><strong>Próximo paso: carta real</strong>Conectaremos esta sección a <code>menu_items</code> para que cada negocio pueda añadir, editar y borrar sus platos.</div>
+          </div>
+        </div>
+
+        <div class="dash-view" data-dash-view="promociones">
+          <div class="dash-view-head"><div><h3>Promociones</h3><p>Gestiona ofertas que aparecerán en la página pública.</p></div><button class="btn primary" onclick="notify('Creación de promociones: siguiente bloque ✓')">Nueva promoción</button></div>
+          <div class="empty-panel"><strong>Aún no hay promociones</strong>La estructura del panel ya está lista. Después conectaremos las promociones a Supabase.</div>
+        </div>
+
+        <div class="dash-view" data-dash-view="placas">
+          <div class="dash-view-head"><div><h3>Placas NFC</h3><p>Gestiona las placas asociadas a tu negocio.</p></div><button class="btn primary" onclick="notify('Gestión de placas: siguiente bloque ✓')">Añadir placa</button></div>
+          <div class="panel">
+            <div class="info-list">
+              <div class="info-row"><span>Mesa 1</span><strong>MESA-01</strong></div>
+              <div class="info-row"><span>Estado</span><strong style="color:#1d7b57">Activa</strong></div>
+              <div class="info-row"><span>URL</span><strong id="dashboardNfcUrl">/b/mediterraneo</strong></div>
+            </div>
+            <div class="empty-panel" style="margin-top:14px"><strong>Próximo paso: nfc_tags</strong>Conectaremos esta sección a la tabla de placas y a las estadísticas por placa.</div>
+          </div>
+        </div>
+
+        <div class="dash-view" data-dash-view="analitica">
+          <div class="dash-view-head"><div><h3>Analítica</h3><p>Resumen de las interacciones de tu negocio.</p></div></div>
+          <div class="dashboard-grid-2">
+            <div class="panel"><h3 style="margin-top:0">Resumen</h3><div class="info-list"><div class="info-row"><span>Visitas</span><strong>1.284</strong></div><div class="info-row"><span>WhatsApp</span><strong>142</strong></div><div class="info-row"><span>Reservas</span><strong>86</strong></div></div></div>
+            <div class="panel"><h3 style="margin-top:0">Próximo paso</h3><p class="small" style="line-height:1.7">Sustituiremos estos números de demo por eventos reales: visitas, WhatsApp, Instagram, Maps, reservas y clics en la carta.</p><button class="btn" onclick="notify('Analítica real: siguiente bloque ✓')">Preparar analítica</button></div>
+          </div>
         </div>
       </div>
     </div>
@@ -588,7 +683,8 @@ function applyBusinessToUI(data){
     '.scroll-phone-top strong':name,
     '.nfc-disc strong':name,
     '.scroll-phone-cover strong':name,
-    '.dash-top h3':name
+    '.dash-top h3':name,
+    '#dashboardBusinessName':name
   };
 
   Object.entries(textMap).forEach(([selector,value])=>{
@@ -605,6 +701,16 @@ function applyBusinessToUI(data){
   if(editDesc) editDesc.value=data.description || '';
   const editInstagram=document.getElementById('editInstagram');
   if(editInstagram) editInstagram.value=data.instagram || '';
+  const editWhatsapp=document.getElementById('editWhatsapp');
+  if(editWhatsapp) editWhatsapp.value=data.whatsapp || '';
+  const editPhone=document.getElementById('editPhone');
+  if(editPhone) editPhone.value=data.phone || '';
+  const editCity=document.getElementById('editCity');
+  if(editCity) editCity.value=data.city || '';
+  const dashboardNfcUrl=document.getElementById('dashboardNfcUrl');
+  if(dashboardNfcUrl && data.slug) dashboardNfcUrl.textContent=`/b/${data.slug}`;
+  const viewPublicBtn=document.getElementById('viewPublicBtn');
+  if(viewPublicBtn) viewPublicBtn.style.display=data.slug ? 'inline-flex' : 'none';
 
   const nfcUrl=document.querySelector('.panel .small');
   if(nfcUrl && data.slug){
@@ -856,6 +962,9 @@ async function saveDemo(){
   const name=document.getElementById('editName').value.trim() || 'MEDITERRÁNEO';
   const description=document.getElementById('editDesc').value.trim() || 'Cocina mediterránea · Madrid';
   const instagram=document.getElementById('editInstagram')?.value.trim() || '';
+  const whatsapp=document.getElementById('editWhatsapp')?.value.trim() || '';
+  const phone=document.getElementById('editPhone')?.value.trim() || '';
+  const city=document.getElementById('editCity')?.value.trim() || '';
   const upper=name.toUpperCase();
 
   document.querySelectorAll('#bizName,#nfcName,#scrollPhoneName,.phone-top strong,.scroll-phone-top strong,.nfc-disc strong,.scroll-phone-cover strong,.dash-top h3').forEach(el=>el.textContent=upper);
@@ -865,7 +974,7 @@ async function saveDemo(){
 
   const {data,error}=await client
     .from('businesses')
-    .update({name,description,instagram})
+    .update({name,description,instagram,whatsapp,phone,city})
     .eq('id',currentBusiness.id)
     .eq('owner_id',user.id)
     .select('id,name,slug,description,instagram,whatsapp,phone,city,owner_id')
@@ -884,6 +993,25 @@ async function saveDemo(){
 
   applyBusinessToUI(data);
   notify('Guardado en Supabase ✓');
+}
+
+function switchDashboardSection(section){
+  const items=document.querySelectorAll('.side-item[data-dash-section]');
+  const views=document.querySelectorAll('.dash-view[data-dash-view]');
+  items.forEach(item=>item.classList.toggle('active',item.dataset.dashSection===section));
+  views.forEach(view=>view.classList.toggle('active',view.dataset.dashView===section));
+}
+
+document.querySelectorAll('.side-item[data-dash-section]').forEach(item=>{
+  item.addEventListener('click',()=>switchDashboardSection(item.dataset.dashSection));
+});
+
+function openBusinessPage(){
+  if(!currentBusiness || !currentBusiness.slug){
+    notify('Inicia sesión para ver tu página');
+    return;
+  }
+  window.open(`/b/${encodeURIComponent(currentBusiness.slug)}`,'_blank','noopener');
 }
 
 window.NFCBusinessHub={supabaseClient,loadPublicBusiness,loadOwnerBusiness};
