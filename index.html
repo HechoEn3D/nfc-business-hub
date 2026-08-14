@@ -320,7 +320,7 @@ main,.nav,.footer{position:relative;z-index:1}
         <div class="stat-grid"><div class="stat"><span class="small">Visitas</span><b class="counter" data-target="1284">0</b><span style="font-size:11px;color:#1d7b57">+18,4%</span></div><div class="stat"><span class="small">Carta</span><b class="counter" data-target="723">0</b><span class="small">clics</span></div><div class="stat"><span class="small">Reservas</span><b class="counter" data-target="86">0</b><span class="small">clics</span></div><div class="stat"><span class="small">WhatsApp</span><b class="counter" data-target="142">0</b><span class="small">clics</span></div></div>
         <div class="chart reveal" data-chart><strong>Interacciones · últimos 30 días</strong><div class="bars"><div class="bar" style="height:42%"></div><div class="bar" style="height:58%"></div><div class="bar" style="height:48%"></div><div class="bar" style="height:70%"></div><div class="bar" style="height:61%"></div><div class="bar" style="height:83%"></div><div class="bar" style="height:92%"></div><div class="bar" style="height:74%"></div><div class="bar" style="height:88%"></div><div class="bar" style="height:96%"></div></div></div>
         <div class="editor stagger reveal">
-          <div class="panel"><h3 style="margin-top:0">Editar negocio</h3><div class="field"><label>Nombre</label><input id="editName" value="MEDITERRÁNEO" /></div><div class="field"><label>Descripción</label><textarea id="editDesc">Cocina mediterránea · Madrid</textarea></div><div class="field"><label>Instagram</label><input value="@mediterraneo_demo" /></div></div>
+          <div class="panel"><h3 style="margin-top:0">Editar negocio</h3><div class="field"><label>Nombre</label><input id="editName" value="MEDITERRÁNEO" /></div><div class="field"><label>Descripción</label><textarea id="editDesc">Cocina mediterránea · Madrid</textarea></div><div class="field"><label>Instagram</label><input id="editInstagram" value="@mediterraneo_demo" /></div></div>
           <div class="panel"><h3 style="margin-top:0">Placa NFC</h3><div style="background:#1a1a17;color:#fff;border-radius:16px;padding:20px;text-align:center"><div style="font-size:11px;letter-spacing:.1em;color:#aaa79e">NFC ACTIVO</div><div style="font-size:28px;font-weight:900;margin:8px 0" id="nfcName">MEDITERRÁNEO</div><div style="font-size:11px;color:#aaa79e">/b/mediterraneo · MESA-01</div></div><p class="small" style="margin-top:12px">La URL puede quedarse igual aunque cambies la carta o las redes.</p></div>
         </div>
       </div>
@@ -355,15 +355,47 @@ function sendLead(){
   if(!biz||!contact){notify('Completa los dos campos');return}
   closeContact(); notify('Solicitud guardada en la demo ✓');
 }
-function saveDemo(){
+async function saveDemo(){
   const name=document.getElementById('editName').value.trim()||'MEDITERRÁNEO';
+  const description=document.getElementById('editDesc').value.trim()||'Cocina mediterránea · Madrid';
+  const instagramInput=document.getElementById('editInstagram');
+  const instagram=instagramInput ? instagramInput.value.trim() : '';
   const upper=name.toUpperCase();
 
+  // Update the UI immediately so the demo feels instant.
   document.querySelectorAll('#bizName,#nfcName,#scrollPhoneName,.phone-top strong,.scroll-phone-top strong,.nfc-disc strong,.scroll-phone-cover strong,.dash-top h3').forEach(el=>{
     el.textContent=upper;
   });
+  document.querySelectorAll('.biz-meta').forEach(el=>el.textContent=description);
+  const scrollCoverSmall=document.querySelector('.scroll-phone-cover small');
+  if(scrollCoverSmall) scrollCoverSmall.textContent=description;
 
-  notify('Cambios reflejados en la demo ✓');
+  if(!supabaseClient){
+    notify('Conectando con Supabase…');
+    await loadBusinessFromSupabase();
+  }
+
+  if(!supabaseClient){
+    notify('No se pudo conectar con la base de datos');
+    return;
+  }
+
+  const { error } = await supabaseClient
+    .from('businesses')
+    .update({
+      name,
+      description,
+      ...(instagram ? {instagram} : {})
+    })
+    .eq('slug','mediterraneo');
+
+  if(error){
+    console.error('Supabase update:', error.message);
+    notify('No se pudo guardar en Supabase');
+    return;
+  }
+
+  notify('Guardado en Supabase ✓');
 }
 
 /* ---------------------------------------------------------
@@ -553,11 +585,8 @@ async function loadBusinessFromSupabase(){
     const editDesc = document.querySelector('#editDesc');
     if (editDesc) editDesc.value = description;
 
-    document.querySelectorAll('input').forEach(input=>{
-      if (input.value.includes('mediterraneo_demo') && data.instagram) {
-        input.value = data.instagram;
-      }
-    });
+    const editInstagram = document.getElementById('editInstagram');
+    if (editInstagram && data.instagram) editInstagram.value = data.instagram;
 
     console.log('NFC Business Hub · negocio cargado desde Supabase ✓');
   } catch (err) {
