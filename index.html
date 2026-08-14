@@ -520,6 +520,21 @@ select{font:inherit}
   .scroll-caption{bottom:12px;font-size:8px}
 }
 
+
+/* v4 — onboarding + dashboard adaptativo */
+.setup-modal .modal-box{max-width:720px;padding:28px}
+.setup-kicker{font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:#9a7940}
+.setup-title{font-size:32px;line-height:1.05;letter-spacing:-.045em;margin:8px 0}
+.setup-subtitle{color:#77746d;line-height:1.6;margin:0 0 20px}
+.setup-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.setup-card{border:1px solid var(--line);background:#fff;border-radius:17px;padding:15px;text-align:left;cursor:pointer;transition:.2s;min-height:105px}
+.setup-card:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(20,20,16,.08)}
+.setup-card.active{border:2px solid var(--accent);background:#faf8f2;box-shadow:0 0 0 3px rgba(28,28,26,.05)}
+.setup-card .icon{font-size:26px;margin-bottom:8px}.setup-card strong{display:block;font-size:13px}.setup-card small{display:block;color:#858179;line-height:1.35;margin-top:4px}
+.setup-summary{margin-top:16px;padding:14px 16px;border-radius:15px;background:#f7f5ef;border:1px solid var(--line);font-size:13px;color:#625f58}
+.dashboard-type-badge{display:inline-flex;align-items:center;gap:6px;margin-top:4px;padding:5px 9px;border-radius:999px;background:#f3f1eb;color:#77746d;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.07em}
+.side-item[data-hidden=true]{display:none!important}
+@media(max-width:760px){.setup-grid{grid-template-columns:repeat(2,1fr)}.setup-title{font-size:27px}.setup-modal .modal-box{padding:22px}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -704,14 +719,14 @@ select{font:inherit}
     <div class="section-head reveal-left"><div class="kicker">Dashboard</div><h2>El negocio puede editarlo sin saber programar.</h2><p>Tu panel privado: cada sección cambia aquí mismo sin salir de tu cuenta.</p></div>
     <div class="dashboard-wrap reveal-right">
       <aside class="sidebar">
-        <div class="side-brand">NFC Business Hub</div>
+        <div class="side-brand">NFC Business Hub</div><div class="dashboard-type-badge" id="dashboardTypeBadge">Configurando…</div>
         <div class="side-item active" data-dash-section="resumen">Resumen</div>
         <div class="side-item" data-dash-section="negocio">Mi negocio</div>
-        <div class="side-item" data-dash-section="carta">Carta</div>
-        <div class="side-item" data-dash-section="promociones">Promociones</div>
+        <div class="side-item" data-dash-section="carta" data-module="catalog">Carta / Servicios</div>
+        <div class="side-item" data-dash-section="promociones" data-module="promos">Promociones</div>
         <div class="side-item" data-dash-section="diseno">Diseño</div>
-        <div class="side-item" data-dash-section="enlaces">Enlaces</div>
-        <div class="side-item" data-dash-section="horarios">Horarios</div>
+        <div class="side-item" data-dash-section="enlaces" data-module="links">Enlaces</div>
+        <div class="side-item" data-dash-section="horarios" data-module="hours">Horarios</div>
         <div class="side-item" data-dash-section="placas">Placas NFC</div>
         <div class="side-item" data-dash-section="analitica">Analítica</div>
       </aside>
@@ -929,6 +944,30 @@ select{font:inherit}
 </div>
 
 <div class="modal" id="promotionModal"><div class="modal-box" style="max-height:90vh;overflow:auto"><button class="close" onclick="closePromotionEditor()">×</button><h3 id="promotionModalTitle" style="font-size:25px;letter-spacing:-.04em;margin-top:0">Nueva promoción</h3><div class="field"><label>Título</label><input id="promoTitle" placeholder="Ej. 2x1 en croquetas"></div><div class="field"><label>Descripción</label><textarea id="promoDescription" placeholder="Ej. Lleva 2 y paga 1"></textarea></div><div class="field"><label>Tipo</label><select id="promoType" style="width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:12px;background:#faf9f5;outline:none" onchange="updatePromotionFields()"><option value="2x1">2x1</option><option value="discount">Descuento %</option><option value="special_price">Precio especial</option><option value="buy_x_get_y">Lleva X, paga Y</option><option value="custom">Personalizada</option></select></div><div class="field"><label>Productos de tu carta</label><div id="promoProducts" class="promo-product-picker"><div class="empty-panel">Cargando productos…</div></div></div><div id="promoValueWrap" class="field" style="display:none"><label id="promoValueLabel">Valor</label><input id="promoValue" type="number" min="0" step="0.01" placeholder="10"></div><div class="dashboard-grid-2"><div class="field"><label>Desde</label><input id="promoStarts" type="date"></div><div class="field"><label>Hasta</label><input id="promoEnds" type="date"></div></div><div class="field"><label>Activa</label><select id="promoActive" style="width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:12px;background:#faf9f5;outline:none"><option value="true">Sí</option><option value="false">No</option></select></div><div id="promotionError" class="login-error"></div><button class="btn primary" style="width:100%" onclick="savePromotion()">Guardar promoción</button><button class="btn" style="width:100%;margin-top:10px" onclick="closePromotionEditor()">Cancelar</button></div></div>
+
+
+<div class="modal setup-modal" id="setupModal">
+  <div class="modal-box">
+    <div class="setup-kicker">Configuración inicial</div>
+    <h3 class="setup-title">Primero: ¿qué tipo de negocio tienes?</h3>
+    <p class="setup-subtitle">NFC Business Hub se adapta a cada negocio. Elige una categoría y prepararemos automáticamente el panel con las herramientas que tienen sentido para ti. Después podrás cambiarla cuando quieras.</p>
+    <div class="setup-grid" id="setupGrid">
+      <button class="setup-card" data-setup-type="restaurant" onclick="chooseSetupType('restaurant')"><div class="icon">🍽️</div><strong>Restaurante</strong><small>Carta, reservas, promociones</small></button>
+      <button class="setup-card" data-setup-type="gym" onclick="chooseSetupType('gym')"><div class="icon">🏋️</div><strong>Gimnasio</strong><small>Clases, planes, entrenadores</small></button>
+      <button class="setup-card" data-setup-type="barbershop" onclick="chooseSetupType('barbershop')"><div class="icon">💈</div><strong>Barbería</strong><small>Servicios, citas, equipo</small></button>
+      <button class="setup-card" data-setup-type="beauty" onclick="chooseSetupType('beauty')"><div class="icon">✨</div><strong>Estética</strong><small>Tratamientos, citas, ofertas</small></button>
+      <button class="setup-card" data-setup-type="shop" onclick="chooseSetupType('shop')"><div class="icon">🛍️</div><strong>Tienda</strong><small>Catálogo, novedades, ofertas</small></button>
+      <button class="setup-card" data-setup-type="bazaar" onclick="chooseSetupType('bazaar')"><div class="icon">🏪</div><strong>Bazar / Comercio</strong><small>Productos, horarios, contacto</small></button>
+      <button class="setup-card" data-setup-type="hotel" onclick="chooseSetupType('hotel')"><div class="icon">🏨</div><strong>Hotel</strong><small>Alojamiento, servicios, reservas</small></button>
+      <button class="setup-card" data-setup-type="other" onclick="chooseSetupType('other')"><div class="icon">➕</div><strong>Otro negocio</strong><small>Configuración flexible</small></button>
+    </div>
+    <div class="setup-summary" id="setupSummary">Selecciona una opción para continuar.</div>
+    <div class="actions" style="margin-top:16px">
+      <button class="btn primary" id="setupContinue" disabled onclick="finishBusinessSetup()">Continuar →</button>
+      <button class="btn" onclick="closeSetupModal()">Ahora no</button>
+    </div>
+  </div>
+</div>
 
 <div class="toast" id="toast"></div>
 
@@ -1332,6 +1371,7 @@ async function loginBusiness(){
   document.getElementById('loginPassword').value='';
   notify('Sesión iniciada ✓');
   document.getElementById('dashboard')?.scrollIntoView({behavior:'smooth'});
+  setTimeout(()=>ensureBusinessSetup(),500);
 }
 
 async function logoutBusiness(){
@@ -1677,8 +1717,11 @@ const BUSINESS_MODULES = {
     ['📄','Información','Contenido personalizado'],['🔥','Promociones','Ofertas'],['🔗','Enlaces','Redes y contacto'],['📍','Ubicación','Cómo llegar'],['📅','Reservas','Preparado para reservas'],['📊','Analítica','Visitas e interacciones']
   ]
 };
-let selectedBusinessType = localStorage.getItem('nfcBusinessType') || 'restaurant';
+let selectedBusinessType = localStorage.getItem('nfcBusinessType') || null;
+let pendingSetupType = selectedBusinessType;
 
+
+const BUSINESS_LABELS={restaurant:'Restaurante',gym:'Gimnasio',barbershop:'Barbería / Peluquería',beauty:'Estética',shop:'Tienda',bazaar:'Bazar / Comercio',hotel:'Hotel / Alojamiento',other:'Otro negocio'};\nconst BUSINESS_SIDEBAR={\n restaurant:{catalog:'Carta',promos:'Promociones',hours:'Horarios',links:'Enlaces'},\n gym:{catalog:'Clases y servicios',promos:'Promociones',hours:'Horarios',links:'Enlaces'},\n barbershop:{catalog:'Servicios',promos:'Promociones',hours:'Horarios',links:'Enlaces'},\n beauty:{catalog:'Tratamientos',promos:'Promociones',hours:'Horarios',links:'Enlaces'},\n shop:{catalog:'Catálogo',promos:'Ofertas',hours:'Horarios',links:'Enlaces'},\n bazaar:{catalog:'Productos',promos:'Ofertas',hours:'Horarios',links:'Enlaces'},\n hotel:{catalog:'Alojamiento y servicios',promos:'Ofertas',hours:'Horarios',links:'Enlaces'},\n other:{catalog:'Contenido',promos:'Promociones',hours:'Horarios',links:'Enlaces'}\n};\nfunction openSetupModal(){\n const m=document.getElementById('setupModal'); if(!m)return;\n pendingSetupType=selectedBusinessType||null;\n document.querySelectorAll('#setupGrid .setup-card').forEach(c=>c.classList.toggle('active',c.dataset.setupType===pendingSetupType));\n const btn=document.getElementById('setupContinue'); if(btn)btn.disabled=!pendingSetupType;\n const summary=document.getElementById('setupSummary'); if(summary)summary.textContent=pendingSetupType?`Has elegido ${BUSINESS_LABELS[pendingSetupType]}. Prepararemos tu panel para ese tipo de negocio.`:'Selecciona una opción para continuar.';\n m.classList.add('show');\n}\nfunction closeSetupModal(){document.getElementById('setupModal')?.classList.remove('show')}\nfunction chooseSetupType(type){\n pendingSetupType=type;\n document.querySelectorAll('#setupGrid .setup-card').forEach(c=>c.classList.toggle('active',c.dataset.setupType===type));\n const btn=document.getElementById('setupContinue');if(btn)btn.disabled=false;\n const summary=document.getElementById('setupSummary');if(summary)summary.textContent=`Has elegido ${BUSINESS_LABELS[type]}. El panel mostrará las herramientas más útiles para este negocio.`;\n}\nfunction finishBusinessSetup(){\n if(!pendingSetupType)return;\n selectedBusinessType=pendingSetupType;\n localStorage.setItem('nfcBusinessType',selectedBusinessType);\n applyBusinessTypeToDashboard();\n if(selectedBusinessType){selectBusinessType(selectedBusinessType);applyBusinessTypeToDashboard();}\n closeSetupModal();\n notify(`${BUSINESS_LABELS[selectedBusinessType]} configurado ✓`);\n}\nfunction applyBusinessTypeToDashboard(){\n const type=selectedBusinessType||'other', cfg=BUSINESS_SIDEBAR[type]||BUSINESS_SIDEBAR.other;\n document.querySelectorAll('.side-item[data-module]').forEach(item=>{const key=item.dataset.module; item.dataset.hidden=cfg[key]?'false':'true'; if(cfg[key])item.textContent=cfg[key]});\n const badge=document.getElementById('dashboardTypeBadge');if(badge)badge.textContent=BUSINESS_LABELS[type]||'Negocio';\n const catalogBtn=document.querySelector('[data-dash-section="carta"]');if(catalogBtn)catalogBtn.textContent=cfg.catalog||'Contenido';\n const catalogHead=document.querySelector('[data-dash-view="carta"] .dash-view-head h3');if(catalogHead)catalogHead.textContent=cfg.catalog||'Contenido';\n const catalogDesc=document.querySelector('[data-dash-view="carta"] .dash-view-head p');if(catalogDesc)catalogDesc.textContent=type==='restaurant'?'Gestiona tus platos. Los cambios aparecerán automáticamente en tu página pública.':`Gestiona el contenido de tu ${cfg.catalog?.toLowerCase()||'negocio'}. Los cambios aparecerán automáticamente en tu página pública.`;\n const addBtn=document.querySelector('[data-dash-view="carta"] .dash-view-head .btn.primary');if(addBtn)addBtn.textContent=type==='restaurant'?'Añadir plato':'Añadir elemento';\n const menuTitle=document.getElementById('menuModalTitle');if(menuTitle)menuTitle.textContent=type==='restaurant'?'Añadir plato':'Añadir elemento';\n}\nfunction ensureBusinessSetup(){ if(!selectedBusinessType){openSetupModal();return false;} applyBusinessTypeToDashboard(); return true; }\n
 function selectBusinessType(type){
   selectedBusinessType=type;
   document.querySelectorAll('.business-type-card').forEach(c=>c.classList.toggle('active',c.dataset.businessType===type));
@@ -1687,7 +1730,7 @@ function selectBusinessType(type){
     box.innerHTML=(BUSINESS_MODULES[type]||BUSINESS_MODULES.other).map(m=>`<div class="module-chip">${m[0]} ${m[1]}<span>${m[2]}</span></div>`).join('');
   }
   localStorage.setItem('nfcBusinessType',type);
-  const labels={restaurant:'Restaurante',gym:'Gimnasio',barbershop:'Barbería / Peluquería',beauty:'Estética',shop:'Tienda',bazaar:'Bazar / Comercio',hotel:'Hotel / Alojamiento',other:'Otro negocio'};
+  const labels=BUSINESS_LABELS;
   const welcome=document.getElementById('publicWelcomeTitle');
   if(welcome) welcome.textContent=(labels[type]||'Negocio')+' · todo en un toque';
 }
