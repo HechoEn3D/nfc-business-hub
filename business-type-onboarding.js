@@ -1,4 +1,4 @@
-/* NFC Business Hub — Business Type Onboarding V1 */
+/* NFC Business Hub — Business Type Onboarding V2 */
 (function () {
   const TYPES = {
     restaurant: { icon: '🍽️', name: 'Restaurante', description: 'Carta, promociones, reservas y horarios.' },
@@ -11,18 +11,17 @@
     other: { icon: '➕', name: 'Otro negocio', description: 'Configuración flexible para cualquier actividad.' }
   };
 
-  const MODULES = {
-    restaurant: ['🍽️ Carta','🔥 Promociones','📅 Reservas','⭐ Reseñas','📍 Ubicación','📊 Analítica'],
-    gym: ['🏋️ Clases','👤 Entrenadores','💳 Planes','🔥 Promociones','📍 Ubicación','📊 Analítica'],
-    barbershop: ['✂️ Servicios','📅 Reservas','👤 Profesionales','🔥 Promociones','📍 Ubicación','📊 Analítica'],
-    beauty: ['✨ Tratamientos','📅 Reservas','👤 Profesionales','🔥 Promociones','📍 Ubicación','📊 Analítica'],
-    shop: ['🛍️ Catálogo','🔥 Ofertas','🆕 Novedades','📍 Ubicación','💬 Contacto','📊 Analítica'],
-    bazaar: ['🏪 Productos','🔥 Ofertas','🕐 Horarios','📍 Ubicación','💬 Contacto','📊 Analítica'],
-    hotel: ['🛏️ Alojamiento','🍽️ Servicios','📅 Reservas','📍 Ubicación','💬 Recepción','📊 Analítica'],
-    other: ['📄 Información','🔥 Promociones','🔗 Enlaces','📍 Ubicación','📅 Reservas','📊 Analítica']
-  };
-
-  function client() { return window.NFCBusinessHub?.supabaseClient || window.supabaseClient || null; }
+  function getClient() {
+    if (!window.supabase) return null;
+    if (!window.__nfcBusinessTypeClient) {
+      window.__nfcBusinessTypeClient = window.supabase.createClient(
+        'https://znegwqcdaxqfzbjyzija.supabase.co',
+        'sb_publishable_OxUV1v29_QwhZQyy7Skg3w_-f1gTcre',
+        { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }
+      );
+    }
+    return window.__nfcBusinessTypeClient;
+  }
 
   function styles() {
     if (document.getElementById('nfc-type-onboarding-css')) return;
@@ -32,7 +31,7 @@
       #nfcTypeOnboarding{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(20,20,16,.58);backdrop-filter:blur(16px)}
       #nfcTypeOnboarding.show{display:flex}
       .nfc-type-modal{width:min(760px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:28px;padding:30px;box-shadow:0 35px 100px rgba(0,0,0,.25)}
-      .nfc-type-modal h2{margin:10px 0 8px;font-size:clamp(30px,5vw,48px)}
+      .nfc-type-modal h2{margin:10px 0 8px;font-size:clamp(30px,5vw,48px);letter-spacing:-.05em}
       .nfc-type-modal p{color:#77746d;line-height:1.55;margin-top:0}
       .nfc-type-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:22px 0 16px}
       .nfc-type-option{border:1px solid #e6e3db;background:#fff;border-radius:16px;padding:15px;text-align:left;cursor:pointer;transition:.2s}
@@ -46,44 +45,69 @@
     document.head.appendChild(s);
   }
 
-  function modal() {
+  function createModal(business) {
     if (document.getElementById('nfcTypeOnboarding')) return;
     const el = document.createElement('div');
     el.id = 'nfcTypeOnboarding';
     el.innerHTML = `<div class="nfc-type-modal"><div style="font-size:10px;font-weight:900;letter-spacing:.12em;color:#8b7a59">NFC BUSINESS HUB</div><h2>¿Qué tipo de negocio tienes?</h2><p>Elige tu tipo de negocio y prepararemos tu dashboard con las herramientas más útiles para ti.</p><div class="nfc-type-grid">${Object.entries(TYPES).map(([id,t])=>`<button type="button" class="nfc-type-option" data-type="${id}"><span class="ico">${t.icon}</span><strong>${t.name}</strong><small>${t.description}</small></button>`).join('')}</div><button id="nfcTypeContinue" type="button" disabled>Continuar</button><div id="nfcTypeError"></div></div>`;
     document.body.appendChild(el);
+
     let selected = null;
     el.querySelectorAll('.nfc-type-option').forEach(btn => btn.addEventListener('click', () => {
       el.querySelectorAll('.nfc-type-option').forEach(x => x.classList.remove('selected'));
-      btn.classList.add('selected'); selected = btn.dataset.type;
+      btn.classList.add('selected');
+      selected = btn.dataset.type;
       el.querySelector('#nfcTypeContinue').disabled = false;
     }));
+
     el.querySelector('#nfcTypeContinue').addEventListener('click', async () => {
       if (!selected) return;
-      const c = client();
-      const business = window.NFCBusinessHub?.currentBusiness || null;
-      if (!c || !business?.id) { el.querySelector('#nfcTypeError').textContent = 'No se ha podido localizar tu negocio.'; return; }
-      const b = el.querySelector('#nfcTypeContinue'); b.disabled = true; b.textContent = 'Guardando…';
-      const { data, error } = await c.from('businesses').update({business_type:selected}).eq('id',business.id).select('id,business_type').maybeSingle();
-      if (error || !data) { console.error(error); b.disabled = false; b.textContent = 'Reintentar'; el.querySelector('#nfcTypeError').textContent = 'No se pudo guardar. Comprueba los permisos de Supabase.'; return; }
-      window.NFCBusinessHub.currentBusiness.business_type = selected;
+      const c = getClient();
+      const b = el.querySelector('#nfcTypeContinue');
+      const errorBox = el.querySelector('#nfcTypeError');
+      if (!c || !business?.id) { errorBox.textContent = 'No se ha podido localizar tu negocio.'; return; }
+
+      b.disabled = true;
+      b.textContent = 'Guardando…';
+      errorBox.textContent = '';
+
+      const { data, error } = await c
+        .from('businesses')
+        .update({ business_type: selected })
+        .eq('id', business.id)
+        .eq('owner_id', business.owner_id)
+        .select('id,business_type')
+        .maybeSingle();
+
+      if (error || !data) {
+        console.error('Business type save:', error);
+        b.disabled = false;
+        b.textContent = 'Reintentar';
+        errorBox.textContent = 'No se pudo guardar. Comprueba las políticas de Supabase.';
+        return;
+      }
+
+      business.business_type = selected;
       localStorage.setItem('nfcBusinessType', selected);
       el.remove();
-      window.dispatchEvent(new CustomEvent('nfc:business-type-changed',{detail:{type:selected}}));
       if (typeof window.selectBusinessType === 'function') window.selectBusinessType(selected);
+      if (typeof window.notify === 'function') window.notify('Tipo de negocio guardado ✓');
     });
+
     el.classList.add('show');
   }
 
-  function init() {
+  async function init() {
     styles();
-    const b = window.NFCBusinessHub?.currentBusiness;
-    if (!b) return;
-    if (!b.business_type) modal();
-    else if (typeof window.selectBusinessType === 'function') window.selectBusinessType(b.business_type);
+    if (window.location.pathname.match(/^\/b\//i)) return;
+    const hub = window.NFCBusinessHub;
+    if (!hub || typeof hub.loadOwnerBusiness !== 'function') return;
+    const business = await hub.loadOwnerBusiness();
+    if (!business) return;
+    if (!business.business_type) createModal(business);
+    else if (typeof window.selectBusinessType === 'function') window.selectBusinessType(business.business_type);
   }
 
-  window.NFCBusinessTypeOnboarding = { init, TYPES, MODULES };
-  window.addEventListener('nfc:business-loaded', init);
-  setTimeout(init, 1200);
+  window.NFCBusinessTypeOnboarding = { init, TYPES };
+  setTimeout(init, 1600);
 })();
