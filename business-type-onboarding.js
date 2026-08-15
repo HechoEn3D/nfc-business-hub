@@ -44,7 +44,7 @@
   }
   function loadAppearance(){
     if(document.getElementById('nfc-appearance-editor-script'))return;
-    const s=document.createElement('script');s.id='nfc-appearance-editor-script';s.src='/appearance-editor.js';s.onload=()=>window.NFCAppearanceEditor?.init?.();document.head.appendChild(s);
+    const s=document.createElement('script');s.id='nfc-appearance-editor-script';s.src='/appearance-editor-v4.js';s.onload=()=>window.NFCAppearanceEditor?.init?.();document.head.appendChild(s);
   }
   function makeTypeModal(business,change=false){
     if(document.getElementById('nfcTypeOnboarding'))return;
@@ -97,6 +97,6 @@
     if(menuList){let html='';if(type==='gym'){const {data}=await c.from('classes').select('id,name,start_time,end_time,day_of_week,active').eq('business_id',biz.id).order('day_of_week').order('start_time');html=(data||[]).map(x=>`<div class="public-menu-card"><div><b>${esc(x.name)}</b><span>Clase y actividad</span></div><strong>${x.start_time?String(x.start_time).slice(0,5):'—'}</strong></div>`).join('');}else{const {data}=await c.from('services').select('id,name,description,price,active').eq('business_id',biz.id).order('name');html=(data||[]).map(x=>`<div class="public-menu-card"><div><b>${esc(x.name)}</b><span>${esc(x.description||'')}</span></div><strong>${x.price!=null?Number(x.price).toFixed(2)+' €':''}</strong></div>`).join('');}menuList.innerHTML=html||'<div style="color:#8a877f">Contenido próximamente.</div>';}
     if(menuSection)menuSection.style.display='block';return true;
   }
-  async function init(){styles();if(/^\/b\//i.test(location.pathname)){await loadPublic();return;}let tries=0;const timer=setInterval(async()=>{tries++;try{if(!document.querySelector('.dash-main')){if(tries>=40)clearInterval(timer);return;}const b=await loadOwner();if(b){clearInterval(timer);}}catch(e){console.error('Business onboarding',e);if(tries>=40)clearInterval(timer);}},500);}
+  async function init(){styles();if(/^\/b\//i.test(location.pathname)){loadAppearance();await loadPublic();return;}let tries=0;const timer=setInterval(async()=>{tries++;try{if(!document.querySelector('.dash-main')){if(tries>=40)clearInterval(timer);return;}const b=await loadOwner();if(b){clearInterval(timer);}}catch(e){console.error('Business onboarding',e);if(tries>=40)clearInterval(timer);}},500);}
   window.NFCBusinessTypeOnboarding={init,TYPES,MODULES,applyDashboardType:applyDashboard,showSettings};init();
 })();
