@@ -1,4 +1,4 @@
-/* NFC Business Hub — Business Type Onboarding V2 */
+/* NFC Business Hub — Business Type Onboarding V3 */
 (function () {
   const TYPES = {
     restaurant: { icon: '🍽️', name: 'Restaurante', description: 'Carta, promociones, reservas y horarios.' },
@@ -66,19 +66,10 @@
       const b = el.querySelector('#nfcTypeContinue');
       const errorBox = el.querySelector('#nfcTypeError');
       if (!c || !business?.id) { errorBox.textContent = 'No se ha podido localizar tu negocio.'; return; }
-
       b.disabled = true;
       b.textContent = 'Guardando…';
       errorBox.textContent = '';
-
-      const { data, error } = await c
-        .from('businesses')
-        .update({ business_type: selected })
-        .eq('id', business.id)
-        .eq('owner_id', business.owner_id)
-        .select('id,business_type')
-        .maybeSingle();
-
+      const { data, error } = await c.from('businesses').update({ business_type: selected }).eq('id', business.id).eq('owner_id', business.owner_id).select('id,business_type').maybeSingle();
       if (error || !data) {
         console.error('Business type save:', error);
         b.disabled = false;
@@ -86,28 +77,42 @@
         errorBox.textContent = 'No se pudo guardar. Comprueba las políticas de Supabase.';
         return;
       }
-
       business.business_type = selected;
       localStorage.setItem('nfcBusinessType', selected);
       el.remove();
       if (typeof window.selectBusinessType === 'function') window.selectBusinessType(selected);
       if (typeof window.notify === 'function') window.notify('Tipo de negocio guardado ✓');
     });
-
     el.classList.add('show');
   }
 
-  async function init() {
+  async function tryInit() {
     styles();
-    if (window.location.pathname.match(/^\/b\//i)) return;
+    if (window.location.pathname.match(/^\/b\//i)) return true;
     const hub = window.NFCBusinessHub;
-    if (!hub || typeof hub.loadOwnerBusiness !== 'function') return;
+    if (!hub || typeof hub.loadOwnerBusiness !== 'function') return false;
     const business = await hub.loadOwnerBusiness();
-    if (!business) return;
+    if (!business) return false;
     if (!business.business_type) createModal(business);
     else if (typeof window.selectBusinessType === 'function') window.selectBusinessType(business.business_type);
+    return true;
+  }
+
+  async function init() {
+    let attempts = 0;
+    const maxAttempts = 40;
+    const timer = setInterval(async () => {
+      attempts++;
+      try {
+        const done = await tryInit();
+        if (done || attempts >= maxAttempts) clearInterval(timer);
+      } catch (err) {
+        console.error('Business type onboarding init:', err);
+        if (attempts >= maxAttempts) clearInterval(timer);
+      }
+    }, 500);
   }
 
   window.NFCBusinessTypeOnboarding = { init, TYPES };
-  setTimeout(init, 1600);
+  init();
 })();
