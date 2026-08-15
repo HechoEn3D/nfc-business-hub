@@ -1,4 +1,4 @@
-/* NFC Business Hub — Business Type Onboarding V5 */
+/* NFC Business Hub — Business Type Onboarding V6 */
 (function(){
   const URL='https://znegwqcdaxqfzbjyzija.supabase.co';
   const KEY='sb_publishable_OxUV1v29_QwhZQyy7Skg3w_-f1gTcre';
@@ -22,50 +22,37 @@
     hotel:[['🛏️','Alojamiento','Habitaciones y servicios'],['🍽️','Servicios','Extras y atención'],['📅','Reservas','Solicitudes'],['📍','Ubicación','Cómo llegar'],['💬','Recepción','Contacto'],['📊','Analítica','Visitas e interacciones']],
     other:[['📄','Información','Contenido del negocio'],['🔥','Promociones','Ofertas'],['🔗','Enlaces','Redes y contacto'],['📍','Ubicación','Cómo llegar'],['📅','Reservas','Solicitudes'],['📊','Analítica','Visitas e interacciones']]
   };
-  let client=null;
-  let currentType=null;
-  let currentBusiness=null;
-
+  let client=null,currentType=null,currentBusiness=null;
   function getClient(){
-    if(client) return client;
-    if(!window.supabase) return null;
+    if(client)return client;
+    if(!window.supabase)return null;
     client=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
     return client;
   }
   function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
   function ownerKey(ownerId){return `nfcBusinessType:${ownerId}`;}
-
   function styles(){
-    if(document.getElementById('nfc-type-v5-css')) return;
-    const s=document.createElement('style');s.id='nfc-type-v5-css';s.textContent=`
+    if(document.getElementById('nfc-type-v6-css'))return;
+    const s=document.createElement('style');s.id='nfc-type-v6-css';s.textContent=`
       #nfcTypeOnboarding{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(20,20,16,.58);backdrop-filter:blur(16px)}
-      #nfcTypeOnboarding.show{display:flex}
-      .nfc-v5-modal{width:min(760px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:28px;padding:26px;box-shadow:0 35px 100px rgba(0,0,0,.25)}
-      .nfc-v5-modal h2{margin:8px 0;font-size:clamp(30px,5vw,46px);letter-spacing:-.05em}.nfc-v5-modal p{color:#77746d;line-height:1.5}
-      .nfc-v5-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:20px 0}.nfc-v5-option{border:1px solid #e6e3db;background:#fff;border-radius:16px;padding:14px;text-align:left;cursor:pointer}.nfc-v5-option.selected{border:2px solid #171714;background:#faf9f5}.nfc-v5-option .ico{font-size:24px;display:block;margin-bottom:7px}.nfc-v5-option strong{display:block}.nfc-v5-option small{display:block;color:#77746d;margin-top:4px}
-      .nfc-v5-primary{width:100%;border:0;border-radius:14px;padding:14px;background:#171714;color:#fff;font-weight:900;cursor:pointer}.nfc-v5-primary:disabled{opacity:.4}
-      .nfc-v5-warning{padding:14px;border:1px solid #eadfc9;background:#fff8e9;border-radius:14px;color:#6f5b37;font-size:13px;line-height:1.5;margin:14px 0}
-      #nfcBusinessSector{margin-top:14px}.nfc-sector-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.nfc-sector-card{border:1px solid #e6e3db;background:#fff;border-radius:16px;padding:14px;text-align:left}.nfc-sector-card b{display:block}.nfc-sector-card small{display:block;color:#77746d;margin-top:5px;line-height:1.4}
-      .nfc-sector-stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}.nfc-sector-stat{padding:12px;border:1px solid #e6e3db;border-radius:14px;background:#faf9f5}.nfc-sector-stat small{display:block;color:#8a877f}.nfc-sector-stat strong{display:block;font-size:20px;margin-top:4px}
-      @media(max-width:620px){.nfc-v5-grid,.nfc-sector-grid{grid-template-columns:1fr}.nfc-sector-stat-grid{grid-template-columns:1fr 1fr}.nfc-v5-modal{padding:20px;border-radius:22px}}
+      #nfcTypeOnboarding.show{display:flex}.nfc-v6-modal{width:min(760px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:28px;padding:26px;box-shadow:0 35px 100px rgba(0,0,0,.25)}
+      .nfc-v6-modal h2{margin:8px 0;font-size:clamp(30px,5vw,46px);letter-spacing:-.05em}.nfc-v6-modal p{color:#77746d;line-height:1.5}
+      .nfc-v6-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:20px 0}.nfc-v6-option{border:1px solid #e6e3db;background:#fff;border-radius:16px;padding:14px;text-align:left;cursor:pointer}.nfc-v6-option.selected{border:2px solid #171714;background:#faf9f5}.nfc-v6-option .ico{font-size:24px;display:block;margin-bottom:7px}.nfc-v6-option strong{display:block}.nfc-v6-option small{display:block;color:#77746d;margin-top:4px}
+      .nfc-v6-primary{width:100%;border:0;border-radius:14px;padding:14px;background:#171714;color:#fff;font-weight:900;cursor:pointer}.nfc-v6-primary:disabled{opacity:.4}.nfc-v6-warning{padding:14px;border:1px solid #eadfc9;background:#fff8e9;border-radius:14px;color:#6f5b37;font-size:13px;line-height:1.5;margin:14px 0}
+      @media(max-width:620px){.nfc-v6-grid{grid-template-columns:1fr}.nfc-v6-modal{padding:20px;border-radius:22px}}
     `;document.head.appendChild(s);
   }
-
+  function loadAppearance(){
+    if(document.getElementById('nfc-appearance-editor-script'))return;
+    const s=document.createElement('script');s.id='nfc-appearance-editor-script';s.src='/appearance-editor.js';s.onload=()=>window.NFCAppearanceEditor?.init?.();document.head.appendChild(s);
+  }
   function makeTypeModal(business,change=false){
-    if(document.getElementById('nfcTypeOnboarding')) return;
+    if(document.getElementById('nfcTypeOnboarding'))return;
     const el=document.createElement('div');el.id='nfcTypeOnboarding';
-    el.innerHTML=`<div class="nfc-v5-modal">
-      <div style="font-size:10px;font-weight:900;letter-spacing:.12em;color:#8b7a59">NFC BUSINESS HUB</div>
-      <h2>${change?'Cambiar tipo de negocio':'Cuéntanos sobre tu negocio'}</h2>
-      <p>${change?'El tipo de negocio controla las herramientas y la estructura de tu dashboard.':'Elige tu tipo de negocio. Más adelante convertiremos esto en un onboarding mucho más completo.'}</p>
-      ${change?'<div class="nfc-v5-warning"><strong>⚠️ Este cambio es permanente.</strong><br>Al cambiar el tipo de negocio, la estructura y las herramientas de tu dashboard se adaptarán al nuevo sector. No se puede deshacer automáticamente.</div>':''}
-      <div class="nfc-v5-grid">${Object.entries(TYPES).map(([id,t])=>`<button type="button" class="nfc-v5-option" data-type="${id}"><span class="ico">${t.icon}</span><strong>${t.name}</strong><small>${t.description}</small></button>`).join('')}</div>
-      <button id="nfcTypeContinue" class="nfc-v5-primary" type="button" disabled>${change?'Cambiar tipo de negocio':'Continuar'}</button>
-      <div id="nfcTypeError" style="color:#b34d40;font-size:12px;font-weight:700;text-align:center;min-height:18px;margin-top:8px"></div>
-    </div>`;
+    el.innerHTML=`<div class="nfc-v6-modal"><div style="font-size:10px;font-weight:900;letter-spacing:.12em;color:#8b7a59">NFC BUSINESS HUB</div><h2>${change?'Cambiar tipo de negocio':'Cuéntanos sobre tu negocio'}</h2><p>${change?'El tipo de negocio controla las herramientas y la estructura de tu dashboard.':'Elige tu tipo de negocio. Más adelante convertiremos esto en un onboarding mucho más completo.'}</p>${change?'<div class="nfc-v6-warning"><strong>⚠️ Este cambio es permanente.</strong><br>Al cambiar el tipo de negocio, la estructura y las herramientas de tu dashboard se adaptarán al nuevo sector. No se puede deshacer automáticamente.</div>':''}<div class="nfc-v6-grid">${Object.entries(TYPES).map(([id,t])=>`<button type="button" class="nfc-v6-option" data-type="${id}"><span class="ico">${t.icon}</span><strong>${t.name}</strong><small>${t.description}</small></button>`).join('')}</div><button id="nfcTypeContinue" class="nfc-v6-primary" type="button" disabled>${change?'Cambiar tipo de negocio':'Continuar'}</button><div id="nfcTypeError" style="color:#b34d40;font-size:12px;font-weight:700;text-align:center;min-height:18px;margin-top:8px"></div></div>`;
     document.body.appendChild(el);
     let selected=currentType||null;
-    el.querySelectorAll('.nfc-v5-option').forEach(btn=>btn.addEventListener('click',()=>{el.querySelectorAll('.nfc-v5-option').forEach(x=>x.classList.remove('selected'));btn.classList.add('selected');selected=btn.dataset.type;el.querySelector('#nfcTypeContinue').disabled=false;}));
+    el.querySelectorAll('.nfc-v6-option').forEach(btn=>btn.addEventListener('click',()=>{el.querySelectorAll('.nfc-v6-option').forEach(x=>x.classList.remove('selected'));btn.classList.add('selected');selected=btn.dataset.type;el.querySelector('#nfcTypeContinue').disabled=false;}));
     el.querySelector('#nfcTypeContinue').addEventListener('click',async()=>{
       const c=getClient();if(!c||!business?.id||!selected)return;
       const b=el.querySelector('#nfcTypeContinue'),err=el.querySelector('#nfcTypeError');b.disabled=true;b.textContent='Guardando…';err.textContent='';
@@ -76,82 +63,40 @@
     if(change&&currentType){const cur=el.querySelector(`[data-type="${currentType}"]`);if(cur){cur.classList.add('selected');el.querySelector('#nfcTypeContinue').disabled=false;}}
     el.classList.add('show');
   }
-
   function addSettingsEntry(){
-    const sidebar=document.querySelector('.sidebar');if(!sidebar||sidebar.querySelector('[data-nfc-v5-settings]'))return;
-    const item=document.createElement('div');item.className='side-item';item.dataset.nfcV5Settings='1';item.textContent='⚙️ Configuración';
-    sidebar.appendChild(item);item.addEventListener('click',showSettings);
+    const sidebar=document.querySelector('.sidebar');if(!sidebar||sidebar.querySelector('[data-nfc-v6-settings]'))return;
+    const item=document.createElement('div');item.className='side-item';item.dataset.nfcV6Settings='1';item.textContent='⚙️ Configuración';sidebar.appendChild(item);item.addEventListener('click',showSettings);
   }
   function showSettings(){
     const main=document.querySelector('.dash-main');if(!main)return;
     let v=document.getElementById('nfcBusinessSettings');
     if(!v){v=document.createElement('div');v.id='nfcBusinessSettings';v.className='dash-view';v.innerHTML=`<div class="dash-view-head"><div><h3>Configuración</h3><p>Gestiona la configuración principal de tu negocio.</p></div></div><div class="panel"><h3 style="margin-top:0">Tipo de negocio</h3><p class="small" id="nfcSettingsTypeText"></p><button class="btn primary" type="button" id="nfcChangeTypeBtn">Cambiar tipo de negocio</button></div>`;main.appendChild(v);v.querySelector('#nfcChangeTypeBtn').addEventListener('click',()=>makeTypeModal(currentBusiness,true));}
-    document.querySelectorAll('.dash-view[data-dash-view]').forEach(x=>x.classList.remove('active'));v.classList.add('active');document.querySelectorAll('.side-item').forEach(x=>x.classList.remove('active'));document.querySelector('[data-nfc-v5-settings]')?.classList.add('active');
+    document.querySelectorAll('.dash-view[data-dash-view],.dash-view').forEach(x=>x.classList.remove('active'));v.classList.add('active');document.querySelectorAll('.side-item').forEach(x=>x.classList.remove('active'));document.querySelector('[data-nfc-v6-settings]')?.classList.add('active');
     const cfg=TYPES[currentType]||TYPES.other;v.querySelector('#nfcSettingsTypeText').textContent=`${cfg.icon} ${cfg.name} · ${currentBusiness?.name||''}`;
   }
-
   function applyDashboard(type,business){
-    if(!type)return;currentType=type;currentBusiness=business;
-    localStorage.setItem(ownerKey(business.owner_id),type);localStorage.setItem('nfcBusinessType',type);
-    addSettingsEntry();
+    if(!type)return;currentType=type;currentBusiness=business;localStorage.setItem(ownerKey(business.owner_id),type);localStorage.setItem('nfcBusinessType',type);addSettingsEntry();loadAppearance();
     if(typeof window.selectBusinessType==='function')window.selectBusinessType(type);
-    const side=document.querySelector('.sidebar');if(side){
-      const carta=side.querySelector('[data-dash-section="carta"]');if(carta)carta.style.display=['restaurant','shop','bazaar'].includes(type)?'':'none';
-      const promo=side.querySelector('[data-dash-section="promociones"]');if(promo)promo.style.display=['restaurant','gym','barbershop','beauty','shop','bazaar'].includes(type)?'':'none';
-      const head=document.getElementById('dashboardBusinessName');if(head)head.textContent=(business.name||'TU NEGOCIO AQUÍ').toUpperCase();
-    }
-    if(type!=='restaurant'&&type!=='shop'&&type!=='bazaar'){
-      const menu=document.getElementById('menuList');const promos=document.getElementById('promotionList');if(menu)menu.innerHTML='';if(promos)promos.innerHTML='';
-    }
+    const side=document.querySelector('.sidebar');if(side){const carta=side.querySelector('[data-dash-section="carta"]');if(carta)carta.style.display=['restaurant','shop','bazaar'].includes(type)?'':'none';const promo=side.querySelector('[data-dash-section="promociones"]');if(promo)promo.style.display=['restaurant','gym','barbershop','beauty','shop','bazaar'].includes(type)?'':'none';const head=document.getElementById('dashboardBusinessName');if(head)head.textContent=(business.name||'TU NEGOCIO AQUÍ').toUpperCase();}
+    if(type!=='restaurant'&&type!=='shop'&&type!=='bazaar'){const menu=document.getElementById('menuList');const promos=document.getElementById('promotionList');if(menu)menu.innerHTML='';if(promos)promos.innerHTML='';}
   }
-
   async function loadOwner(){
     const c=getClient();if(!c)return null;const {data:{user}}=await c.auth.getUser();if(!user)return null;
-    const {data,error}=await c.from('businesses').select('id,name,slug,description,instagram,whatsapp,phone,city,owner_id,business_type').eq('owner_id',user.id).maybeSingle();
-    if(error||!data)return null;
-    let type=data.business_type;
-    const saved=localStorage.getItem(ownerKey(user.id));
+    const {data,error}=await c.from('businesses').select('id,name,slug,description,instagram,whatsapp,phone,city,owner_id,business_type').eq('owner_id',user.id).maybeSingle();if(error||!data)return null;
+    let type=data.business_type;const saved=localStorage.getItem(ownerKey(user.id));
     if(!type&&saved){const r=await c.from('businesses').update({business_type:saved}).eq('id',data.id).eq('owner_id',user.id).select('business_type').maybeSingle();if(!r.error&&r.data)type=saved;}
-    if(type){data.business_type=type;applyDashboard(type,data);return data;}
-    makeTypeModal(data,false);return data;
+    if(type){data.business_type=type;applyDashboard(type,data);return data;}makeTypeModal(data,false);return data;
   }
-
   async function loadPublic(){
-    const slug=location.pathname.match(/^\/b\/([^/]+)\/?$/i)?.[1];if(!slug)return false;
-    const c=getClient();if(!c)return false;
-    const {data:biz}=await c.from('businesses').select('id,slug,name,description,city,business_type').eq('slug',decodeURIComponent(slug)).maybeSingle();
-    if(!biz)return false;
-    const type=biz.business_type||'other';const cfg=TYPES[type]||TYPES.other;
-    const menuSection=document.getElementById('publicMenuList')?.closest('.public-content');
-    const publicTitle=document.getElementById('publicWelcomeTitle');const publicText=document.getElementById('publicWelcomeText');
-    if(publicTitle)publicTitle.textContent=`${cfg.icon} ${cfg.name} · todo en un toque`;
-    if(publicText)publicText.textContent=cfg.description;
-    const menuList=document.getElementById('publicMenuList');
-    const menuTitle=[...document.querySelectorAll('#publicBusinessPage .public-section-title')].find(x=>x.textContent.includes('Carta / Servicios'));
-    const promo=document.getElementById('publicPromotionsSection');
-    if(type==='restaurant'||type==='shop'||type==='bazaar')return true;
-    if(promo)promo.style.display='none';
-    if(menuTitle)menuTitle.textContent=type==='gym'?'Clases y actividades':type==='hotel'?'Servicios del alojamiento':type==='barbershop'||type==='beauty'?'Servicios':'Información';
-    if(menuList){
-      let html='';
-      if(type==='gym'){
-        const {data}=await c.from('classes').select('id,name,start_time,end_time,day_of_week,active').eq('business_id',biz.id).order('day_of_week').order('start_time');
-        html=(data||[]).map(x=>`<div class="public-menu-card"><div><b>${esc(x.name)}</b><span>Clase y actividad</span></div><strong>${x.start_time?String(x.start_time).slice(0,5):'—'}</strong></div>`).join('');
-      }else{
-        const {data}=await c.from('services').select('id,name,description,price,active').eq('business_id',biz.id).order('name');
-        html=(data||[]).map(x=>`<div class="public-menu-card"><div><b>${esc(x.name)}</b><span>${esc(x.description||'')}</span></div><strong>${x.price!=null?Number(x.price).toFixed(2)+' €':''}</strong></div>`).join('');
-      }
-      menuList.innerHTML=html||'<div style="color:#8a877f">Contenido próximamente.</div>';
-    }
-    if(menuSection)menuSection.style.display='block';
-    return true;
+    const slug=location.pathname.match(/^\/b\/([^/]+)\/?$/i)?.[1];if(!slug)return false;const c=getClient();if(!c)return false;
+    const {data:biz}=await c.from('businesses').select('id,slug,name,description,city,business_type').eq('slug',decodeURIComponent(slug)).maybeSingle();if(!biz)return false;
+    const type=biz.business_type||'other';const cfg=TYPES[type]||TYPES.other;const menuSection=document.getElementById('publicMenuList')?.closest('.public-content');const publicTitle=document.getElementById('publicWelcomeTitle');const publicText=document.getElementById('publicWelcomeText');
+    if(publicTitle)publicTitle.textContent=`${cfg.icon} ${cfg.name} · todo en un toque`;if(publicText)publicText.textContent=cfg.description;
+    const menuList=document.getElementById('publicMenuList');const menuTitle=[...document.querySelectorAll('#publicBusinessPage .public-section-title')].find(x=>x.textContent.includes('Carta / Servicios'));const promo=document.getElementById('publicPromotionsSection');
+    if(type==='restaurant'||type==='shop'||type==='bazaar')return true;if(promo)promo.style.display='none';if(menuTitle)menuTitle.textContent=type==='gym'?'Clases y actividades':type==='hotel'?'Servicios del alojamiento':type==='barbershop'||type==='beauty'?'Servicios':'Información';
+    if(menuList){let html='';if(type==='gym'){const {data}=await c.from('classes').select('id,name,start_time,end_time,day_of_week,active').eq('business_id',biz.id).order('day_of_week').order('start_time');html=(data||[]).map(x=>`<div class="public-menu-card"><div><b>${esc(x.name)}</b><span>Clase y actividad</span></div><strong>${x.start_time?String(x.start_time).slice(0,5):'—'}</strong></div>`).join('');}else{const {data}=await c.from('services').select('id,name,description,price,active').eq('business_id',biz.id).order('name');html=(data||[]).map(x=>`<div class="public-menu-card"><div><b>${esc(x.name)}</b><span>${esc(x.description||'')}</span></div><strong>${x.price!=null?Number(x.price).toFixed(2)+' €':''}</strong></div>`).join('');}menuList.innerHTML=html||'<div style="color:#8a877f">Contenido próximamente.</div>';}
+    if(menuSection)menuSection.style.display='block';return true;
   }
-
-  async function init(){
-    styles();
-    if(/^\/b\//i.test(location.pathname)){await loadPublic();return;}
-    let tries=0;const timer=setInterval(async()=>{tries++;try{if(!document.querySelector('.dash-main')){if(tries>=40)clearInterval(timer);return;}const b=await loadOwner();if(b){clearInterval(timer);}}catch(e){console.error('Business onboarding',e);if(tries>=40)clearInterval(timer);}},500);
-  }
-  window.NFCBusinessTypeOnboarding={init,TYPES,MODULES,applyDashboardType:applyDashboard,showSettings};
-  init();
+  async function init(){styles();if(/^\/b\//i.test(location.pathname)){await loadPublic();return;}let tries=0;const timer=setInterval(async()=>{tries++;try{if(!document.querySelector('.dash-main')){if(tries>=40)clearInterval(timer);return;}const b=await loadOwner();if(b){clearInterval(timer);}}catch(e){console.error('Business onboarding',e);if(tries>=40)clearInterval(timer);}},500);}
+  window.NFCBusinessTypeOnboarding={init,TYPES,MODULES,applyDashboardType:applyDashboard,showSettings};init();
 })();
