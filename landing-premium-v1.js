@@ -1,7 +1,12 @@
-/* NFC Business Hub — Landing base disabled.
-   The active landing is loaded by landing-premium-v2-polish.js.
-   Kept as a compatibility stub so previous visual systems cannot stack. */
+/* NFC Business Hub — Original landing loader */
 (function(){
   'use strict';
-  if(/^\/b\//i.test(location.pathname)) return;
+  if(location.pathname && /^\/b\//i.test(location.pathname)) return;
+  if(window.__nfcOriginalLandingLoader)return;
+  window.__nfcOriginalLandingLoader=true;
+  if(document.getElementById('nfc-original-landing'))return;
+  const s=document.createElement('script');
+  s.id='nfc-original-landing';
+  s.src='/landing-premium-v2.js';
+  document.head.appendChild(s);
 })();
