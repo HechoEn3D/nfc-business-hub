@@ -1,5 +1,6 @@
 {
   "rewrites": [
-    { "source": "/b/:slug", "destination": "/" }
+    { "source": "/b/:slug", "destination": "/" },
+    { "source": "/public-experience-v2.js", "destination": "/public-experience-v3.js" }
   ]
 }
