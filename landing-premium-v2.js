@@ -1,0 +1,200 @@
+/* NFC Business Hub — Landing Premium V2
+   Full landing architecture + motion layer. Functional markup remains intact. */
+(function(){
+  'use strict';
+  if(location.pathname && /^\/b\//i.test(location.pathname)) return;
+
+  const css = `
+  :root{
+    --p2-bg:#eeeae1;
+    --p2-ink:#151513;
+    --p2-muted:#69675f;
+    --p2-line:rgba(21,21,19,.13);
+    --p2-card:#f8f6f1;
+    --p2-paper:#fbfaf7;
+    --p2-gold:#b89459;
+    --p2-dark:#11110f;
+    --p2-radius:28px;
+    --p2-ease:cubic-bezier(.2,.82,.2,1);
+  }
+  html.p2-ready{scroll-behavior:smooth}
+  body.p2-body{background:var(--p2-bg)!important;color:var(--p2-ink)!important}
+  body.p2-body::before{display:none!important}
+  body.p2-body *{scrollbar-color:rgba(21,21,19,.28) transparent}
+  .p2-shell{position:relative;overflow:clip}
+  .p2-grid{background-image:linear-gradient(to right,rgba(21,21,19,.055) 1px,transparent 1px),linear-gradient(to bottom,rgba(21,21,19,.04) 1px,transparent 1px);background-size:84px 84px;mask-image:linear-gradient(to bottom,black 0%,rgba(0,0,0,.7) 55%,transparent 100%);pointer-events:none;position:absolute;inset:0;opacity:.35}
+  .nav.p2-nav{background:rgba(238,234,225,.68)!important;border-bottom:1px solid rgba(21,21,19,.08)!important;backdrop-filter:blur(24px) saturate(125%);transition:background .45s ease,box-shadow .45s ease,transform .45s var(--p2-ease)}
+  .nav.p2-nav.p2-scrolled{background:rgba(250,249,246,.94)!important;box-shadow:0 16px 50px rgba(21,21,19,.08)}
+  .p2-nav .container{max-width:1280px!important}
+  .p2-nav .brand{letter-spacing:-.045em;font-size:14px}
+  .p2-nav .brand-mark{width:40px;height:40px;border-radius:13px;background:#151513;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),0 10px 24px rgba(21,21,19,.14)}
+  .p2-nav .nav-links a{position:relative;padding:10px 0;transition:color .25s ease}
+  .p2-nav .nav-links a::after{content:"";position:absolute;left:0;right:100%;bottom:4px;height:1px;background:var(--p2-gold);transition:right .35s var(--p2-ease)}
+  .p2-nav .nav-links a:hover{color:#151513}.p2-nav .nav-links a:hover::after{right:0}
+  .p2-nav .nav-cta{border-radius:12px!important;padding:12px 16px!important;background:#151513!important;box-shadow:0 10px 28px rgba(21,21,19,.16);transition:transform .35s var(--p2-ease),box-shadow .35s var(--p2-ease)}
+  .p2-nav .nav-cta:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(21,21,19,.2)}
+
+  .p2-hero{position:relative;min-height:calc(100svh - 76px);padding:clamp(42px,6vw,96px) 0 70px;display:grid;align-items:center}
+  .p2-hero-inner{position:relative;z-index:2;width:min(1280px,calc(100% - 48px));margin:auto;display:grid;grid-template-columns:minmax(0,1.04fr) minmax(420px,.96fr);gap:clamp(42px,6vw,108px);align-items:center}
+  .p2-kicker{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:900;color:#7a756a}
+  .p2-kicker i{display:block;width:34px;height:1px;background:var(--p2-gold)}
+  .p2-title{font-size:clamp(58px,7.6vw,120px);line-height:.88;letter-spacing:-.075em;margin:22px 0 28px;max-width:880px}
+  .p2-title .line{display:block;overflow:hidden}.p2-title .word{display:inline-block;transform:translateY(115%);opacity:0;animation:p2-rise 1s var(--p2-ease) forwards}.p2-title .line:nth-child(2) .word{animation-delay:.08s}.p2-title .line:nth-child(3) .word{animation-delay:.16s}.p2-title em{font-style:normal;color:var(--p2-gold)}
+  @keyframes p2-rise{to{transform:none;opacity:1}}
+  .p2-lead{font-size:clamp(16px,1.45vw,20px);line-height:1.58;color:var(--p2-muted);max-width:650px;margin:0}
+  .p2-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:34px}.p2-actions .btn{min-height:52px;padding:14px 18px;border-radius:14px!important;transition:transform .35s var(--p2-ease),box-shadow .35s ease,border-color .3s ease,background .3s ease}
+  .p2-actions .btn:hover{transform:translateY(-3px)!important;box-shadow:0 18px 40px rgba(21,21,19,.12)!important}
+  .p2-footnote{display:flex;align-items:center;gap:10px;margin-top:18px;font-size:11px;color:#87837a}.p2-footnote span{width:6px;height:6px;border-radius:50%;background:#2d7b59;box-shadow:0 0 0 6px rgba(45,123,89,.09)}
+
+  .p2-hero-stage{position:relative;min-height:590px;display:grid;place-items:center;perspective:1400px}
+  .p2-stage-halo{position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(184,148,89,.19),rgba(184,148,89,.05) 45%,transparent 72%);filter:blur(14px);animation:p2-breathe 6s ease-in-out infinite}
+  @keyframes p2-breathe{0%,100%{transform:scale(1);opacity:.72}50%{transform:scale(1.1);opacity:1}}
+  .p2-frame{position:relative;width:min(470px,90%);aspect-ratio:4/5.25;border:1px solid rgba(21,21,19,.16);background:rgba(251,250,247,.62);padding:14px;box-shadow:0 40px 100px rgba(21,21,19,.16),inset 0 0 0 1px rgba(255,255,255,.7);transform:rotate(4deg);transition:transform .8s var(--p2-ease),box-shadow .8s ease}
+  .p2-hero-stage:hover .p2-frame{transform:rotate(0deg) translateY(-8px);box-shadow:0 48px 120px rgba(21,21,19,.2),inset 0 0 0 1px rgba(255,255,255,.75)}
+  .p2-frame::before,.p2-frame::after{content:"";position:absolute;inset:11px;border:1px solid rgba(21,21,19,.08);pointer-events:none}.p2-frame::after{inset:auto 14px 14px auto;width:70px;height:70px;border-left:0;border-top:0}
+  .p2-device{width:100%;height:100%;border-radius:28px;background:#151513;padding:9px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),0 34px 70px rgba(21,21,19,.3);transform:translateZ(40px)}
+  .p2-device-screen{height:100%;border-radius:22px;background:#f8f6f1;overflow:hidden;position:relative}
+  .p2-device-screen::before{content:"";position:absolute;left:50%;top:8px;transform:translateX(-50%);width:82px;height:22px;border-radius:99px;background:#090908;z-index:5}
+  .p2-phone-head{height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 17px;background:#fff;border-bottom:1px solid #e7e2d8;font-size:9px}.p2-phone-head strong{font-size:10px;letter-spacing:-.03em}.p2-phone-head span{color:#27805d}
+  .p2-phone-hero{height:180px;position:relative;background:linear-gradient(145deg,#22221e,#6d675a);display:flex;align-items:flex-end;padding:20px;color:#fff;overflow:hidden}.p2-phone-hero::before{content:"";position:absolute;inset:-30%;background:radial-gradient(circle at 20% 30%,rgba(255,255,255,.23),transparent 24%),radial-gradient(circle at 80% 75%,rgba(184,148,89,.38),transparent 28%);transform:rotate(-12deg)}
+  .p2-phone-hero-copy{position:relative;z-index:1}.p2-phone-hero-copy small{font-size:8px;text-transform:uppercase;letter-spacing:.14em;opacity:.75}.p2-phone-hero-copy strong{display:block;font-size:27px;letter-spacing:-.05em;margin-top:5px}
+  .p2-phone-actions{padding:12px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.p2-phone-action{padding:10px 4px;background:#fff;border:1px solid #e7e2d8;border-radius:11px;text-align:center;font-size:13px;transition:transform .3s ease,box-shadow .3s ease}.p2-phone-action:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(21,21,19,.08)}.p2-phone-action span{display:block;font-size:8px;font-weight:800;margin-top:3px}
+  .p2-phone-list{padding:0 12px 12px}.p2-phone-row{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fff;border:1px solid #e7e2d8;border-radius:13px;padding:11px;margin-top:7px;font-size:8px}.p2-phone-row b{font-size:9px}.p2-phone-row strong{color:#b28b4e;font-size:9px}
+  .p2-floating-tag{position:absolute;z-index:5;padding:11px 13px;border:1px solid rgba(21,21,19,.15);background:rgba(251,250,247,.84);backdrop-filter:blur(15px);font-size:10px;font-weight:900;letter-spacing:.04em;box-shadow:0 18px 40px rgba(21,21,19,.12)}
+  .p2-tag-a{left:-26px;top:16%;transform:rotate(-6deg)}.p2-tag-b{right:-26px;bottom:17%;transform:rotate(6deg)}
+  .p2-tag-a::before,.p2-tag-b::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--p2-gold);margin-right:7px}
+
+  .p2-proof{width:min(1280px,calc(100% - 48px));margin:0 auto;padding:18px 0 0}.p2-proof-inner{border-top:1px solid var(--p2-line);border-bottom:1px solid var(--p2-line);display:grid;grid-template-columns:1.1fr repeat(3,1fr);align-items:center}.p2-proof-cell{padding:18px 22px;border-left:1px solid var(--p2-line);min-height:78px;display:flex;align-items:center;gap:12px}.p2-proof-cell:first-child{border-left:0}.p2-proof-eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:9px;font-weight:900;color:#8c867c}.p2-proof-value{font-size:17px;font-weight:900;letter-spacing:-.03em}.p2-proof-small{font-size:10px;color:#8a857c;margin-top:2px}
+
+  .p2-section{position:relative;padding:120px 0}.p2-section.alt{background:#f7f5ef}.p2-section.dark{background:#151513;color:#f4f1e9}.p2-section-inner{width:min(1280px,calc(100% - 48px));margin:auto}.p2-section-head{display:grid;grid-template-columns:.8fr 1.2fr;gap:30px;align-items:end;margin-bottom:48px}.p2-index{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--p2-gold);font-weight:900}.p2-section.dark .p2-section-head p{color:rgba(244,241,233,.62)}.p2-section-head h2{font-size:clamp(44px,5.6vw,82px)!important;line-height:.94!important;letter-spacing:-.065em!important;margin:0!important}.p2-section-head p{font-size:17px;line-height:1.65;color:var(--p2-muted);max-width:610px;margin:0}.p2-section.dark .p2-index{color:#d6b47b}
+
+  .como-section{padding-top:130px!important;padding-bottom:110px!important}.como-section .features{display:grid;grid-template-columns:1.15fr .92fr .92fr;gap:1px!important;background:var(--p2-line);border:1px solid var(--p2-line);overflow:hidden;border-radius:22px}.como-section .feature{background:var(--p2-paper)!important;border:0!important;border-radius:0!important;padding:38px!important;min-height:280px;position:relative;overflow:hidden;transition:transform .5s var(--p2-ease),background .35s ease}.como-section .feature::after{content:"";position:absolute;inset:auto -30px -70px auto;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(184,148,89,.18),transparent 65%);transition:transform .5s var(--p2-ease)}.como-section .feature:hover{transform:translateY(-5px);background:#fdfcf9!important}.como-section .feature:hover::after{transform:scale(1.35) translate(-10px,-10px)}.como-section .feature .icon{width:45px;height:45px;border:1px solid var(--p2-line);border-radius:14px;display:grid;place-items:center;background:#fff;margin-bottom:60px}.como-section .feature h3{font-size:27px;letter-spacing:-.045em;margin:0 0 12px}.como-section .feature p{font-size:13px;line-height:1.65;color:var(--p2-muted);max-width:340px}
+
+  .demo-section{padding-top:120px!important}.demo-section .demo-shell{border-radius:0!important;padding:0!important;background:transparent!important;box-shadow:none!important;display:grid;grid-template-columns:.85fr 1.15fr;gap:40px;align-items:center}.demo-section .demo-shell::before{content:"LIVE PREVIEW";font-size:10px;letter-spacing:.18em;font-weight:900;color:#8d887f;align-self:start}.demo-section .demo-phone{grid-column:2;width:min(390px,100%);justify-self:center;transform:rotate(4deg);transition:transform .8s var(--p2-ease),box-shadow .6s ease;box-shadow:0 40px 100px rgba(21,21,19,.14)!important}.demo-section .demo-phone:hover{transform:rotate(0deg) translateY(-8px);box-shadow:0 55px 120px rgba(21,21,19,.18)!important}.demo-section .section-head{grid-column:1;grid-row:1;margin:0}.demo-section .section-head h2{font-size:clamp(45px,5vw,72px)!important}.demo-section .quick .qbtn{transition:transform .3s var(--p2-ease),box-shadow .3s ease}.demo-section .quick .qbtn:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(21,21,19,.1)}
+
+  .dashboard-section{padding-top:135px!important}.dashboard-section .dashboard-wrap{border:1px solid rgba(21,21,19,.12)!important;background:#181816!important;box-shadow:0 40px 110px rgba(21,21,19,.16)!important;border-radius:28px!important;padding:12px!important}.dashboard-section .sidebar{background:#121210!important}.dashboard-section .dash-main{background:#f8f6f1!important}.dashboard-section .side-item{transition:background .3s ease,transform .3s var(--p2-ease)}.dashboard-section .side-item:hover{transform:translateX(3px)}
+
+  .pricing-section{padding-top:125px!important}.pricing-section .pricing{display:grid;grid-template-columns:.9fr 1.05fr .9fr;gap:1px!important;background:var(--p2-line);border:1px solid var(--p2-line);border-radius:24px;overflow:hidden}.pricing-section .price-card{background:var(--p2-paper)!important;border:0!important;border-radius:0!important;position:relative;padding:36px!important;min-height:420px;transition:transform .5s var(--p2-ease),background .35s ease}.pricing-section .price-card:hover{transform:translateY(-6px);background:#fff!important}.pricing-section .price-card.popular{background:#171714!important;color:#f7f3e8!important;transform:scaleY(1.025);z-index:2;box-shadow:0 26px 80px rgba(21,21,19,.2)}.pricing-section .price-card.popular:hover{transform:translateY(-6px) scale(1.012)}.pricing-section .price-card .badge{background:#d8b675!important;color:#171714!important}.pricing-section .price-card .checks li{border-top:1px solid rgba(21,21,19,.1);padding-top:9px;margin-top:9px}.pricing-section .price-card.popular .checks li{border-color:rgba(255,255,255,.12)}
+
+  .p2-final{position:relative;margin-top:0;background:#151513;color:#f6f2e8;padding:135px 0 150px;overflow:hidden}.p2-final::before{content:"";position:absolute;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(184,148,89,.18),transparent 65%);right:-250px;top:-250px;filter:blur(12px)}.p2-final-inner{position:relative;z-index:2;width:min(1100px,calc(100% - 48px));margin:auto;text-align:center}.p2-final .p2-index{color:#d6b47b}.p2-final h2{font-size:clamp(48px,7vw,96px);line-height:.92;letter-spacing:-.07em;margin:18px auto 22px;max-width:900px}.p2-final p{max-width:620px;margin:0 auto;color:rgba(246,242,232,.64);font-size:17px;line-height:1.6}.p2-final .actions{justify-content:center;margin-top:30px}.p2-final .btn.primary{background:#f4eee2!important;color:#151513!important;border-color:#f4eee2!important}.p2-final .btn{border-color:rgba(255,255,255,.16)!important;background:transparent!important;color:#f4eee2!important}
+
+  .p2-cursor{position:fixed;z-index:10000;left:0;top:0;width:18px;height:18px;border:1px solid rgba(21,21,19,.45);border-radius:50%;pointer-events:none;transform:translate(-50%,-50%) scale(0);transition:transform .15s ease,border-color .2s ease,background .2s ease;mix-blend-mode:multiply}.p2-cursor.active{transform:translate(-50%,-50%) scale(1)}.p2-cursor.big{transform:translate(-50%,-50%) scale(2.4);background:rgba(184,148,89,.12);border-color:rgba(184,148,89,.6)}
+  .p2-reveal{opacity:0;transform:translateY(45px);transition:opacity 1s var(--p2-ease),transform 1s var(--p2-ease)}.p2-reveal.in{opacity:1;transform:none}
+  .p2-tilt{transform-style:preserve-3d;will-change:transform}
+  .p2-divider{width:min(1280px,calc(100% - 48px));height:1px;margin:auto;background:var(--p2-line)}
+  .p2-marquee{overflow:hidden;border-top:1px solid var(--p2-line);border-bottom:1px solid var(--p2-line);background:#f7f5ef}.p2-marquee-track{display:flex;width:max-content;animation:p2-marquee 28s linear infinite}.p2-marquee-item{display:flex;align-items:center;gap:22px;padding:18px 28px;font-size:10px;font-weight:900;letter-spacing:.15em;text-transform:uppercase;color:#777269}.p2-marquee-item i{width:5px;height:5px;border-radius:50%;background:var(--p2-gold)}@keyframes p2-marquee{to{transform:translateX(-50%)}}
+
+  @media(max-width:1020px){
+    .p2-hero-inner{grid-template-columns:1fr;gap:50px}.p2-hero-stage{min-height:520px}.p2-title{max-width:760px}.p2-proof-inner{grid-template-columns:1fr 1fr}.p2-proof-cell:first-child{grid-column:1/-1;border-bottom:1px solid var(--p2-line)}.p2-proof-cell:nth-child(3){border-left:0}.p2-section-head{grid-template-columns:1fr;gap:16px}.como-section .features,.pricing-section .pricing{grid-template-columns:1fr}.demo-section .demo-shell{grid-template-columns:1fr}.demo-section .demo-shell::before{display:none}.demo-section .demo-phone{grid-column:1;grid-row:2}.demo-section .section-head{grid-column:1;grid-row:1}.pricing-section .price-card.popular{transform:none}
+  }
+  @media(max-width:720px){
+    .p2-nav .nav-links{display:none}.p2-nav .nav-cta{display:none}.p2-hero{padding-top:40px}.p2-hero-inner{width:min(100% - 24px,640px)}.p2-title{font-size:clamp(46px,14vw,78px);line-height:.9}.p2-lead{font-size:15px}.p2-actions{display:grid;grid-template-columns:1fr}.p2-actions .btn{width:100%}.p2-hero-stage{min-height:470px}.p2-frame{width:min(360px,90%)}.p2-tag-a{left:-6px}.p2-tag-b{right:-6px}.p2-proof{width:calc(100% - 24px)}.p2-proof-inner{grid-template-columns:1fr 1fr}.p2-proof-cell{padding:14px}.p2-section{padding:82px 0}.p2-section-inner{width:calc(100% - 24px)}.p2-section-head{margin-bottom:32px}.p2-section-head h2{font-size:42px!important}.como-section .feature{padding:26px!important;min-height:220px}.como-section .feature .icon{margin-bottom:36px}.p2-final{padding:100px 0 110px}.p2-final-inner{width:calc(100% - 24px)}.p2-final h2{font-size:52px}.p2-final p{font-size:15px}.p2-cursor{display:none}
+  }
+  @media(prefers-reduced-motion:reduce){.p2-title .word,.p2-reveal{animation:none!important;transition:none!important;opacity:1!important;transform:none!important}.p2-marquee-track{animation:none}}
+  `;
+  const style=document.createElement('style');style.id='nfc-landing-premium-v2-css';style.textContent=css;document.head.appendChild(style);
+
+  function findSection(id){return document.getElementById(id)?.closest('section')||document.getElementById(id)}
+  function makeShell(){
+    const header=document.querySelector('.nav');
+    const hero=findSection('top');
+    if(!header||!hero||document.querySelector('.p2-shell')) return;
+    document.body.classList.add('p2-body');document.documentElement.classList.add('p2-ready');
+    header.classList.add('p2-nav');
+    const shell=document.createElement('div');shell.className='p2-shell';
+    const grid=document.createElement('div');grid.className='p2-grid';shell.appendChild(grid);
+    document.body.insertBefore(shell,header);
+    const sections=[...document.querySelectorAll('body > section')];
+    sections.forEach(s=>shell.appendChild(s));
+    shell.appendChild(makeMarquee());
+    const mainHero=findSection('top');
+    if(mainHero)decorateHero(mainHero);
+    const como=findSection('como');if(como)decorateComo(como);
+    const demo=findSection('demo');if(demo)decorateDemo(demo);
+    const dash=findSection('dashboard');if(dash)decorateDashboard(dash);
+    const plans=findSection('planes');if(plans)decoratePricing(plans);
+    shell.appendChild(makeFinal());
+    reorder(shell);
+    wireReveal(shell);
+    wireMotion(shell);
+    wireCursor();
+    header.parentElement.insertBefore(header,shell);
+  }
+
+  function decorateHero(section){
+    section.classList.add('p2-hero');
+    section.innerHTML=`
+      <div class="p2-hero-inner">
+        <div class="p2-hero-copy p2-reveal">
+          <div class="p2-kicker"><i></i>Infraestructura digital para negocios físicos</div>
+          <h1 class="p2-title"><span class="line"><span class="word">Tu negocio.</span></span><span class="line"><span class="word">Un toque.</span></span><span class="line"><span class="word"><em>Todo</em> conectado.</span></span></h1>
+          <p class="p2-lead">Una placa NFC que abre una experiencia digital propia. Menú, reservas, contacto, promociones y todo lo que tu cliente necesita, en una sola página que tú controlas.</p>
+          <div class="p2-actions"><button class="btn primary" type="button" onclick="openLogin()">Crear acceso de negocio <span>→</span></button><a class="btn" href="#demo">Ver la experiencia ↓</a></div>
+          <div class="p2-footnote"><span></span>Sin app · sin instalación · listo para móvil</div>
+        </div>
+        <div class="p2-hero-stage p2-reveal">
+          <div class="p2-stage-halo"></div>
+          <div class="p2-floating-tag p2-tag-a">01 · PLACA NFC</div>
+          <div class="p2-floating-tag p2-tag-b">EDITABLE DESDE TU DASHBOARD</div>
+          <div class="p2-frame p2-tilt">
+            <div class="p2-device">
+              <div class="p2-device-screen">
+                <div class="p2-phone-head"><strong>TU NEGOCIO AQUÍ</strong><span>● Abierto</span></div>
+                <div class="p2-phone-hero"><div class="p2-phone-hero-copy"><small>Experiencia móvil</small><strong>Todo en un toque.</strong></div></div>
+                <div class="p2-phone-actions"><div class="p2-phone-action">🍽️<span>Carta</span></div><div class="p2-phone-action">💬<span>WhatsApp</span></div><div class="p2-phone-action">📅<span>Reservar</span></div><div class="p2-phone-action">📍<span>Cómo llegar</span></div></div>
+                <div class="p2-phone-list"><div class="p2-phone-row"><div><b>Promoción</b><span> Oferta destacada</span></div><strong>2×1</strong></div><div class="p2-phone-row"><div><b>Arroz mediterráneo</b><span>Lo más pedido</span></div><strong>22,90 €</strong></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+  function decorateComo(section){
+    section.classList.add('p2-section','como-section','alt');
+    const head=section.querySelector('.section-head');if(head){head.classList.remove('section-head');head.classList.add('p2-section-head');head.innerHTML='<div><div class="p2-index">02 / La plataforma</div></div><div><h2>La placa abre la puerta. La plataforma hace el resto.</h2><p>El cliente entra por NFC. El negocio controla lo que ve, lo que hace y lo que mide. Sin depender de una agencia para cada cambio.</p></div>'}
+  }
+  function decorateDemo(section){
+    section.classList.add('p2-section','demo-section');
+    const head=section.querySelector('.section-head');if(head){head.classList.remove('section-head');head.classList.add('p2-section-head');const h=head.querySelector('h2');if(h)h.textContent='Una página que parece hecha para ese negocio.';const p=head.querySelector('p');if(p)p.textContent='No es una plantilla genérica. El negocio puede tener su identidad, sus contenidos y su forma de trabajar.'}
+  }
+  function decorateDashboard(section){
+    section.classList.add('p2-section','dashboard-section','dark');
+    const head=section.querySelector('.section-head');if(head){head.classList.remove('section-head');head.classList.add('p2-section-head');const kicker=head.querySelector('.kicker');if(kicker)kicker.textContent='04 / Control';const h=head.querySelector('h2');if(h)h.textContent='El negocio lo cambia. Tú no vuelves a tocar código.';const p=head.querySelector('p');if(p)p.textContent='Contenido, promociones, diseño y datos desde un único lugar. La web pública se actualiza con cada cambio.'}
+  }
+  function decoratePricing(section){
+    section.classList.add('p2-section','pricing-section','alt');
+    const head=section.querySelector('.section-head');if(head){head.classList.remove('section-head');head.classList.add('p2-section-head');const kicker=head.querySelector('.kicker');if(kicker)kicker.textContent='05 / Modelo';const h=head.querySelector('h2');if(h)h.textContent='Empieza pequeño. Escala cuando el negocio crece.';const p=head.querySelector('p');if(p)p.textContent='Una propuesta sencilla para vender la placa y convertirla en una relación digital a largo plazo.'}
+  }
+  function makeMarquee(){
+    const el=document.createElement('div');el.className='p2-marquee';el.innerHTML='<div class="p2-marquee-track">'+Array(2).fill(0).map(()=>['NFC BUSINESS HUB','MÓVIL FIRST','SIN APP','EDITABLE','MEDIBLE','DISEÑADO PARA NEGOCIOS'].map(t=>`<div class="p2-marquee-item"><i></i>${t}</div>`).join('')).join('')+'</div>';return el;
+  }
+  function makeFinal(){
+    const el=document.createElement('section');el.className='p2-final';el.id='contacto-final';el.innerHTML='<div class="p2-final-inner p2-reveal"><div class="p2-index">06 / Siguiente paso</div><h2>Tu negocio ya tiene puerta. Ahora dale una experiencia.</h2><p>Prueba el dashboard, enseña la demo a una tienda y construye la primera placa que tenga sentido para ese negocio.</p><div class="actions"><button class="btn primary" type="button" onclick="openLogin()">Entrar al negocio →</button><a class="btn" href="#demo">Volver a la demo</a></div></div>';return el;
+  }
+  function reorder(shell){
+    const hero=findSection('top'),como=findSection('como'),demo=findSection('demo'),dash=findSection('dashboard'),plans=findSection('planes');
+    [hero,como,demo,dash,plans].filter(Boolean).forEach(s=>shell.appendChild(s));
+    const extras=[...shell.querySelectorAll('section')].filter(s=>![hero,como,demo,dash,plans].includes(s)&&!s.classList.contains('p2-final'));
+    extras.forEach(s=>{ if(!s.classList.contains('p2-marquee')) shell.appendChild(s); });
+  }
+  function wireReveal(root){
+    root.querySelectorAll('.feature,.price-card,.dashboard-wrap,.demo-phone,.p2-section-head,.p2-proof-cell').forEach(el=>el.classList.add('p2-reveal'));
+    const io=new IntersectionObserver((entries)=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+    root.querySelectorAll('.p2-reveal').forEach(el=>io.observe(el));
+  }
+  function wireMotion(root){
+    const stage=root.querySelector('.p2-hero-stage');
+    const frame=root.querySelector('.p2-frame');
+    if(stage&&frame && matchMedia('(pointer:fine)').matches){
+      stage.addEventListener('pointermove',e=>{const r=stage.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5;const y=(e.clientY-r.top)/r.height-.5;frame.style.transform=`rotate(${4-x*10}deg) translate3d(${x*8}px,${y*8}px,0)`});
+      stage.addEventListener('pointerleave',()=>frame.style.transform='rotate(4deg)');
+    }
+    root.querySelectorAll('.btn,.qbtn,.side-item,.price-card,.feature').forEach(el=>{el.addEventListener('pointerenter',()=>document.querySelector('.p2-cursor')?.classList.add('big'));el.addEventListener('pointerleave',()=>document.querySelector('.p2-cursor')?.classList.remove('big'))});
+    const header=document.querySelector('.p2-nav');let last=0;window.addEventListener('scroll',()=>{const y=window.scrollY;header?.classList.toggle('p2-scrolled',y>20);last=y},{passive:true});
+  }
+  function wireCursor(){
+    if(!matchMedia('(pointer:fine)').matches)return;const c=document.createElement('div');c.className='p2-cursor';document.body.appendChild(c);window.addEventListener('pointermove',e=>{c.style.left=e.clientX+'px';c.style.top=e.clientY+'px';c.classList.add('active')},{passive:true});window.addEventListener('pointerleave',()=>c.classList.remove('active'));
+  }
+  function init(){makeShell()}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
