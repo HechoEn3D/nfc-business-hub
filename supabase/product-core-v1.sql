@@ -38,20 +38,40 @@ create table if not exists public.business_services (
 create index if not exists business_services_business_idx on public.business_services(business_id);
 create index if not exists business_services_active_idx on public.business_services(business_id,active,sort_order);
 
--- Safe migration from the old services table when its business_id points at owner_id (UUID).
+-- Safe migration from the old services table.
+-- The legacy schema differs between earlier versions, so this block only references
+-- optional columns after checking information_schema.
 do $$
+declare
+  v_description text := 'null::text';
+  v_price text := 'null::numeric';
+  v_active text := 'true';
+  v_created_at text := 'now()';
 begin
   if to_regclass('public.services') is not null then
-    execute $q$
+    if exists (select 1 from information_schema.columns where table_schema='public' and table_name='services' and column_name='description') then
+      v_description := 's.description';
+    end if;
+    if exists (select 1 from information_schema.columns where table_schema='public' and table_name='services' and column_name='price') then
+      v_price := 's.price';
+    end if;
+    if exists (select 1 from information_schema.columns where table_schema='public' and table_name='services' and column_name='active') then
+      v_active := 'coalesce(s.active,true)';
+    end if;
+    if exists (select 1 from information_schema.columns where table_schema='public' and table_name='services' and column_name='created_at') then
+      v_created_at := 'coalesce(s.created_at,now())';
+    end if;
+
+    execute format($q$
       insert into public.business_services (business_id,name,description,price,active,sort_order,created_at)
-      select b.id,s.name,s.description,s.price,coalesce(s.active,true),coalesce(s.sort_order,0),coalesce(s.created_at,now())
+      select b.id,s.name,%s,%s,%s,0,%s
       from public.services s
       join public.businesses b on b.owner_id = s.business_id
       where not exists (
         select 1 from public.business_services bs
         where bs.business_id=b.id and bs.name=s.name
       )
-    $q$;
+    $q$,v_description,v_price,v_active,v_created_at);
   end if;
 end $$;
 
@@ -115,25 +135,21 @@ create table if not exists public.nfc_plates (
 create index if not exists nfc_plates_business_idx on public.nfc_plates(business_id);
 create index if not exists nfc_plates_uid_idx on public.nfc_plates(uid);
 
--- RLS
 alter table public.business_services enable row level security;
 alter table public.reservations enable row level security;
 alter table public.analytics_events enable row level security;
 alter table public.business_locations enable row level security;
 alter table public.nfc_plates enable row level security;
 
--- Public pages can read active services.
 drop policy if exists business_services_public_read on public.business_services;
 create policy business_services_public_read on public.business_services
   for select using (active = true);
 
--- Owners can fully manage their services.
 drop policy if exists business_services_owner_all on public.business_services;
 create policy business_services_owner_all on public.business_services
   for all using (exists (select 1 from public.businesses b where b.id=business_id and b.owner_id=auth.uid()))
   with check (exists (select 1 from public.businesses b where b.id=business_id and b.owner_id=auth.uid()));
 
--- Anyone can submit a reservation; only the owner can read/change it.
 drop policy if exists reservations_public_insert on public.reservations;
 create policy reservations_public_insert on public.reservations for insert with check (true);
 drop policy if exists reservations_owner_all on public.reservations;
@@ -141,14 +157,12 @@ create policy reservations_owner_all on public.reservations
   for all using (exists (select 1 from public.businesses b where b.id=business_id and b.owner_id=auth.uid()))
   with check (exists (select 1 from public.businesses b where b.id=business_id and b.owner_id=auth.uid()));
 
--- Public analytics ingestion, owner analytics read.
 drop policy if exists analytics_public_insert on public.analytics_events;
 create policy analytics_public_insert on public.analytics_events for insert with check (true);
 drop policy if exists analytics_owner_read on public.analytics_events;
 create policy analytics_owner_read on public.analytics_events
   for select using (exists (select 1 from public.businesses b where b.id=business_id and b.owner_id=auth.uid()));
 
--- Locations/plates are private to owners.
 drop policy if exists locations_owner_all on public.business_locations;
 create policy locations_owner_all on public.business_locations
   for all using (exists (select 1 from public.businesses b where b.id=business_id and b.owner_id=auth.uid()))
@@ -159,7 +173,6 @@ create policy plates_owner_all on public.nfc_plates
   for all using (exists (select 1 from public.businesses b where b.id=business_id and b.owner_id=auth.uid()))
   with check (exists (select 1 from public.businesses b where b.id=business_id and b.owner_id=auth.uid()));
 
--- Updated-at helper.
 create or replace function public.touch_product_core_updated_at()
 returns trigger language plpgsql as $$
 begin
