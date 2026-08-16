@@ -1,0 +1,60 @@
+:root{--lp2-ink:#0d0d0c;--lp2-muted:#77736a;--lp2-line:rgba(15,15,13,.10);--lp2-gold:#c9a669;--lp2-paper:#f4f0e7;--lp2-paper2:#ebe5d9}
+/* PHONE — real device proportions */
+.lp-premium .demo-shell{padding:72px 8vw;background:radial-gradient(circle at 70% 18%,rgba(201,166,105,.13),transparent 28%),#11110f;border:1px solid rgba(255,255,255,.07)}
+.lp-premium .demo-phone{width:390px;max-width:100%;height:820px;margin:0 auto;border:10px solid #090909;border-radius:48px;background:#090909;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),0 45px 110px rgba(0,0,0,.38);overflow:hidden;position:relative}
+.lp-premium .demo-phone::before{content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);width:116px;height:27px;border-radius:18px;background:#050505;z-index:20;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.lp-premium .demo-phone::after{content:"";position:absolute;right:-11px;top:145px;width:4px;height:74px;background:#171717;border-radius:0 3px 3px 0;z-index:21;box-shadow:0 90px 0 #171717}
+.lp-premium .phone-top{height:54px;padding:0 18px;background:#fbfaf7;border-bottom:1px solid #e8e3d9;font-size:10px;display:flex;align-items:center;justify-content:space-between}
+.lp-premium .biz-cover{height:235px;position:relative;background:linear-gradient(155deg,#151512,#756a59 70%,#b49a6b)!important;overflow:hidden}
+.lp-premium .biz-cover::before{content:"";position:absolute;inset:-30%;background:radial-gradient(circle at 70% 25%,rgba(255,255,255,.18),transparent 18%),linear-gradient(120deg,transparent 35%,rgba(255,255,255,.07) 48%,transparent 61%);animation:lp2CoverSheen 8s ease-in-out infinite}
+.lp-premium .biz-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.48));pointer-events:none}
+.lp-premium .biz-title{position:relative;z-index:2;font-size:38px;line-height:.95!important;letter-spacing:-.06em!important;text-shadow:0 10px 30px rgba(0,0,0,.24)}
+.lp-premium .biz-meta{position:relative;z-index:2;margin-top:9px!important;font-size:11px!important;opacity:.88}
+.lp-premium .quick{padding:14px!important;grid-template-columns:repeat(4,1fr)!important;gap:8px!important;background:#fbfaf7}
+.lp-premium .qbtn{min-height:69px;border-radius:15px!important;background:#fff;border:1px solid #e8e3da!important;font-size:11px!important;box-shadow:0 6px 20px rgba(20,20,16,.04);transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
+.lp-premium .qbtn:hover{transform:translateY(-4px)!important;box-shadow:0 15px 26px rgba(20,20,16,.09)!important;border-color:rgba(201,166,105,.55)!important}
+.lp-premium .public-highlight{margin:4px 14px 0!important;border-radius:17px!important;background:linear-gradient(135deg,#fff8e8,#fff)!important;border:1px solid #eadfc8!important}
+.lp-premium .menu-preview{padding:15px 14px 86px!important;background:#fbfaf7}
+.lp-premium .menu-card{border-radius:15px!important;background:#fff!important;border:1px solid #e9e5dd!important;margin-top:9px!important;padding:13px!important}
+.lp-premium .demo-tabs{position:absolute;left:0;right:0;bottom:0;height:72px;background:rgba(255,255,255,.92);backdrop-filter:blur(18px);border-top:1px solid #e5e1d8;display:grid!important;grid-template-columns:repeat(3,1fr);align-items:center;z-index:10}
+.lp-premium .demo-tabs button{border:0;background:none;font-size:11px;font-weight:800;color:#6d695f;transition:color .2s ease,transform .2s ease}
+.lp-premium .demo-tabs button:hover{color:#111;transform:translateY(-2px)}
+@keyframes lp2CoverSheen{0%,55%{transform:translateX(-12%) rotate(10deg);opacity:.35}72%,100%{transform:translateX(26%) rotate(10deg);opacity:.65}}
+/* DASHBOARD — actual SaaS product presentation */
+.lp-premium .dashboard-wrap{background:#0f0f0e!important;padding:0!important;border:1px solid rgba(255,255,255,.08);overflow:hidden;display:grid;grid-template-columns:238px 1fr;gap:0;min-height:660px}
+.lp-premium .dashboard-wrap .sidebar{background:#151513!important;border-right:1px solid rgba(255,255,255,.08)!important;padding:22px 14px!important}
+.lp-premium .dashboard-wrap .side-brand{color:#f4efe3!important;letter-spacing:-.03em!important;padding:7px 12px 22px!important;font-size:13px!important}
+.lp-premium .dashboard-wrap .side-item{color:#8f8c84!important;border-radius:12px!important;margin:3px 0!important;padding:11px 12px!important;font-size:11px!important;transition:background .2s ease,color .2s ease,transform .2s ease}
+.lp-premium .dashboard-wrap .side-item:hover{background:#23231f!important;color:#fff!important;transform:translateX(3px)}
+.lp-premium .dashboard-wrap .side-item.active{background:#26251f!important;color:#fff!important;box-shadow:inset 0 0 0 1px rgba(201,166,105,.18)}
+.lp-premium .dashboard-wrap .dash-main{background:#f5f1e8!important;padding:30px!important;border-radius:0!important}
+.lp-premium .dashboard-wrap .dash-top{padding-bottom:22px!important;border-bottom:1px solid rgba(15,15,13,.09);margin-bottom:22px!important}
+.lp-premium .dashboard-wrap .stat{background:rgba(255,255,255,.72)!important;border:1px solid rgba(15,15,13,.08)!important;border-radius:18px!important;box-shadow:0 10px 28px rgba(20,20,16,.035)!important;padding:18px!important}
+.lp-premium .dashboard-wrap .stat b{font-family:var(--lp-serif)!important;font-size:32px!important;font-weight:400!important;letter-spacing:-.04em}
+.lp-premium .dashboard-wrap .chart{background:#fffdf9!important;border:1px solid rgba(15,15,13,.08)!important;border-radius:20px!important;padding:18px!important;box-shadow:0 12px 30px rgba(20,20,16,.035)!important}
+.lp-premium .dashboard-wrap .bar{background:#c8a668!important;border-radius:7px 7px 3px 3px!important;box-shadow:0 8px 18px rgba(201,166,105,.13)}
+.lp-premium .dashboard-wrap .panel{background:rgba(255,255,255,.72)!important;border:1px solid rgba(15,15,13,.08)!important;border-radius:18px!important}
+.lp-premium .dashboard-wrap .btn.primary{background:#11110f!important;border-color:#11110f!important}
+.lp-premium .dashboard-wrap .btn:hover{border-color:rgba(201,166,105,.5)!important}
+.lp-premium .dashboard-wrap .dashboard-grid-2{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}
+@media(max-width:900px){.lp-premium .dashboard-wrap{grid-template-columns:1fr}.lp-premium .dashboard-wrap .sidebar{display:flex;overflow:auto;border-right:0!important;border-bottom:1px solid rgba(255,255,255,.08)!important;padding:10px!important}.lp-premium .dashboard-wrap .side-item{white-space:nowrap}.lp-premium .dashboard-wrap .dash-main{padding:18px!important}.lp-premium .dashboard-wrap .dashboard-grid-2{grid-template-columns:1fr}}
+/* PRICING — editorial, not card-grid */
+.lp-premium .pricing{grid-template-columns:1fr 1.08fr 1fr;align-items:stretch;gap:0!important;border-top:1px solid var(--lp2-line);border-bottom:1px solid var(--lp2-line)}
+.lp-premium .price-card{position:relative!important;border:0!important;border-right:1px solid var(--lp2-line)!important;border-radius:0!important;box-shadow:none!important;background:transparent!important;min-height:420px;padding:42px 34px 34px!important;overflow:hidden}
+.lp-premium .price-card:first-child{border-left:1px solid var(--lp2-line)!important}
+.lp-premium .price-card:hover{transform:none!important;background:rgba(255,255,255,.38)!important}
+.lp-premium .price-card.popular{background:#171713!important;color:#f7f1e5!important;transform:translateY(-18px);border:0!important;box-shadow:0 30px 70px rgba(16,16,14,.22)!important;margin:0 14px;border-radius:24px!important;z-index:2}
+.lp-premium .price-card.popular .small,.lp-premium .price-card.popular .checks li{color:#bdb7ab!important}
+.lp-premium .price-card.popular .badge{background:#c9a669!important;color:#111!important;border-radius:999px!important;padding:7px 10px!important;display:inline-flex!important}
+.lp-premium .price-card h3{font-family:var(--lp-sans)!important;font-size:11px!important;letter-spacing:.16em!important;text-transform:uppercase!important}
+.lp-premium .price-card .price{font-size:68px!important;line-height:1!important;margin:22px 0 7px!important}
+.lp-premium .price-card.popular .price{color:#fff!important}
+.lp-premium .price-card .checks{margin-top:28px!important}
+.lp-premium .price-card .checks li{padding:8px 0!important;border-bottom:1px solid rgba(15,15,13,.07);font-size:11px!important}
+.lp-premium .price-card.popular .checks li{border-color:rgba(255,255,255,.08)!important}
+.lp-premium .pricing::before{content:"";display:none}
+@media(max-width:900px){.lp-premium .pricing{grid-template-columns:1fr}.lp-premium .price-card,.lp-premium .price-card:first-child{border-left:0!important;border-right:0!important;border-bottom:1px solid var(--lp2-line)!important;min-height:auto}.lp-premium .price-card.popular{margin:18px 0;transform:none}.lp-premium .price-card .price{font-size:58px!important}}
+/* finishing details */
+.lp-premium .dashboard-wrap,.lp-premium .demo-shell,.lp-premium .price-card{will-change:transform}
+.lp-premium .section#dashboard .section-head{margin-bottom:38px}
+.lp-premium .section#planes{background:linear-gradient(180deg,var(--lp-paper),#eee8dc)}
