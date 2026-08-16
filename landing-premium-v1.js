@@ -1,12 +1,5 @@
-/* NFC Business Hub — Original landing loader */
+/* NFC Business Hub — original design preserved.
+   Legacy premium landing injector disabled so index.html remains the source of truth. */
 (function(){
   'use strict';
-  if(location.pathname && /^\/b\//i.test(location.pathname)) return;
-  if(window.__nfcOriginalLandingLoader)return;
-  window.__nfcOriginalLandingLoader=true;
-  if(document.getElementById('nfc-original-landing'))return;
-  const s=document.createElement('script');
-  s.id='nfc-original-landing';
-  s.src='/landing-premium-v2.js';
-  document.head.appendChild(s);
 })();
