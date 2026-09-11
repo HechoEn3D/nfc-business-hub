@@ -1,0 +1,72 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NFC Business Hub — Red Edition</title><style>
+html,body{margin:0;width:100%;height:100%;background:#080708;color:#fff;overflow:hidden;font-family:Inter,system-ui,sans-serif}.loading{position:fixed;inset:0;display:grid;place-items:center;background:#080708;z-index:10;transition:opacity .5s}.loader{width:68px;height:68px;border-radius:22px;background:linear-gradient(145deg,#ff2638,#740913);box-shadow:0 0 65px rgba(255,38,56,.28);display:grid;place-items:center;font-weight:900}.loader:after{content:"";width:14px;height:14px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:r .7s linear infinite}@keyframes r{to{transform:rotate(360deg)}}iframe{display:block;width:100%;height:100%;border:0;opacity:0;transition:opacity .7s ease}.ready iframe{opacity:1}.ready .loading{opacity:0;pointer-events:none}</style></head><body><div class="loading"><div class="loader">N</div></div><iframe id="site" src="index.html"></iframe><script>
+const css=`:root{
+  --bg:#080708!important;--surface:#111011!important;--ink:#faf7f7!important;--muted:#a79597!important;--line:rgba(255,255,255,.10)!important;
+  --accent:#ff2638!important;--accent2:#a90b19!important;--success:#46c58f!important;--danger:#ff5966!important;
+  --radius:24px!important;--shadow:0 28px 90px rgba(0,0,0,.42)!important;
+}
+html,body{background:radial-gradient(circle at 15% 0%,rgba(255,38,56,.10),transparent 28%),radial-gradient(circle at 90% 18%,rgba(255,38,56,.08),transparent 25%),#080708!important;color:var(--ink)!important}
+body:before{background:linear-gradient(90deg,#ff2033,#ff7d86,#ff2033)!important}
+body:after{display:none!important}
+.nav{background:rgba(8,7,8,.72)!important;border-bottom:1px solid rgba(255,255,255,.08)!important;backdrop-filter:blur(20px)!important}
+.brand-mark{background:linear-gradient(145deg,#ff3345,#8e0916)!important;box-shadow:0 8px 30px rgba(255,38,56,.30)!important}
+.nav-links{color:#b9aaab!important}.nav-links a:hover{color:#fff!important}
+.nav-cta{background:rgba(255,255,255,.05)!important;color:#fff!important;border:1px solid rgba(255,255,255,.12)!important;box-shadow:none!important}
+.nav-cta:hover{background:#ff2638!important;border-color:#ff2638!important;box-shadow:0 12px 36px rgba(255,38,56,.22)!important}
+.hero{position:relative;background:radial-gradient(circle at 78% 45%,rgba(255,38,56,.12),transparent 30%)!important}
+.hero:before{background:radial-gradient(circle,rgba(255,38,56,.22),transparent 68%)!important}
+.eyebrow{background:rgba(255,38,56,.07)!important;border-color:rgba(255,38,56,.28)!important;color:#ff9ca4!important}
+.dot{background:#ff4555!important;box-shadow:0 0 0 6px rgba(255,69,85,.09),0 0 18px rgba(255,69,85,.8)!important}
+h1,h2,h3{color:#fff!important}
+.hero h1 span,.scroll-copy h2 span,.kicker{color:#ff5360!important}
+.hero p,.section-head p,.feature p,.small,.dash-top p,.footer,.field label,.public-content{color:#a69395!important}
+.btn{background:#f9f6f6!important;color:#120f10!important;border-color:rgba(255,255,255,.12)!important;box-shadow:none!important}
+.btn.primary,.btn.gold{background:#ff2638!important;color:#fff!important;border-color:#ff2638!important;box-shadow:0 12px 42px rgba(255,38,56,.22)!important}
+.btn:hover{transform:translateY(-3px)!important;box-shadow:0 18px 42px rgba(0,0,0,.25)!important}
+.nfc-card{background:linear-gradient(145deg,#1a1012,#090809)!important;border:1px solid rgba(255,255,255,.09)!important;box-shadow:0 30px 110px rgba(0,0,0,.50)!important}
+.nfc-card:before{background:radial-gradient(circle,#85111c 0,#31070d 44%,transparent 70%)!important}
+.nfc-base{background:linear-gradient(145deg,#18080b,#3a0a10)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.07),0 30px 80px rgba(0,0,0,.55)!important}
+.nfc-disc{background:radial-gradient(circle at 35% 28%,#8a1520,#2b070c 62%,#110204)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.10),0 0 70px rgba(255,38,56,.15)!important}
+.nfc-disc small{color:#ffbdc2!important}.nfc-disc span{color:#d4abad!important}
+.scroll-sticky{background:radial-gradient(circle at 76% 45%,rgba(255,38,56,.12),transparent 28%),#080708!important}
+.scroll-sticky:before{background:radial-gradient(circle at 75% 46%,rgba(255,38,56,.10),transparent 30%)!important}
+.scroll-phone-glow{background:radial-gradient(circle,rgba(255,38,56,.28),transparent 63%)!important}
+.scroll-phone-shell{background:#050405!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.10),0 30px 100px rgba(0,0,0,.62)!important}
+.scroll-phone-cover{background:linear-gradient(135deg,#46070d,#c31829)!important}
+.scroll-actions div,.scroll-menu-item{background:#fff!important;border-color:#eadedf!important;color:#171113!important}
+.scroll-menu-item b{color:#c01b29!important}
+.features,.pricing{gap:16px!important}
+.feature,.price-card,.panel,.stat,.chart,.demo-shell,.dashboard-wrap,.cta-shine{background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.018))!important;border-color:rgba(255,255,255,.09)!important;box-shadow:0 20px 70px rgba(0,0,0,.24)!important}
+.feature:hover,.price-card:hover,.panel:hover{border-color:rgba(255,38,56,.30)!important;box-shadow:0 28px 80px rgba(0,0,0,.34)!important}
+.feature .icon{background:rgba(255,38,56,.10)!important;border-color:rgba(255,38,56,.20)!important;color:#ff6974!important}
+.price-card.popular{border-color:#ff2638!important;box-shadow:0 20px 75px rgba(255,38,56,.10)!important}
+.badge{background:#ff2638!important}
+.dashboard-wrap{background:#0d0b0c!important}
+.sidebar{background:#111011!important;border-color:rgba(255,255,255,.07)!important}
+.side-item{color:#948789!important}.side-item.active{background:rgba(255,38,56,.12)!important;color:#ff858d!important;border:1px solid rgba(255,38,56,.17)!important}
+.dash-main{background:#f7f1f2!important;color:#160f11!important}
+.dash-top h3{color:#160f11!important}.stat{background:#fff!important;border-color:#eadedf!important}.chart{background:#fff!important;border-color:#eadedf!important}.chart .bar{background:linear-gradient(180deg,#ff5965,#9f0e1b)!important}
+.field input,.field textarea,.field select{background:#151213!important;color:#fff!important;border-color:rgba(255,255,255,.10)!important}
+.modal{background:rgba(0,0,0,.72)!important;backdrop-filter:blur(10px)}
+.modal-box{background:linear-gradient(145deg,#171214,#0e0c0d)!important;border:1px solid rgba(255,255,255,.10)!important;box-shadow:0 40px 120px rgba(0,0,0,.58)!important}.modal-box p,.modal-box label{color:#a89496!important}.close{background:#24171a!important;color:#fff!important}
+.public-business-page{background:#080708!important;color:#fff!important}.public-card{background:#0f0c0e!important;border-color:rgba(255,255,255,.09)!important;box-shadow:0 30px 100px rgba(0,0,0,.45)!important}.public-cover{background:linear-gradient(135deg,#40070d,#b91627)!important}.public-action{background:#171214!important;border-color:rgba(255,255,255,.09)!important;color:#fff!important}.public-section-title{color:#fff!important}.public-menu-card{background:#171214!important;border-color:rgba(255,255,255,.08)!important;color:#fff!important}.public-footer{color:#8d7b7d!important;border-color:rgba(255,255,255,.08)!important}
+.setup-modal .modal-box{background:linear-gradient(145deg,#171214,#0e0c0d)!important}.setup-card{background:#141113!important;border-color:rgba(255,255,255,.09)!important;color:#fff!important}.setup-card.active{border-color:#ff2638!important;box-shadow:0 0 0 3px rgba(255,38,56,.09)!important;background:#1b1113!important}.setup-card small{color:#a18e90!important}.setup-summary{background:#171113!important;border-color:rgba(255,255,255,.08)!important;color:#a18e90!important}
+.footer{border-color:rgba(255,255,255,.08)!important}
+.cta-shine{background:linear-gradient(135deg,#ff2638,#7d0915)!important;color:#fff!important;border:none!important;position:relative;overflow:hidden}
+.cta-shine:after{content:"";position:absolute;inset:-40% -10%;background:linear-gradient(100deg,transparent 38%,rgba(255,255,255,.12) 50%,transparent 62%);transform:translateX(-120%);animation:redSweep 6s ease-in-out infinite;pointer-events:none}.cta-shine .btn{position:relative;z-index:2}
+@keyframes redSweep{0%,65%{transform:translateX(-120%)}82%{transform:translateX(120%)}100%{transform:translateX(120%)}}
+.stat b,.price{color:#ff4b58!important}.public-topbar{background:rgba(8,7,8,.76)!important;border-color:rgba(255,255,255,.07)!important}.public-brand{color:#fff!important}.public-status{background:rgba(255,38,56,.10)!important;border-color:rgba(255,38,56,.22)!important;color:#ff9aa1!important}
+@media(max-width:900px){.hero-grid{padding-left:0!important}.nav-links{display:none!important}.dashboard-wrap{background:#0c0b0c!important}}
+`;
+const frame=document.getElementById('site');
+function skin(){try{const d=frame.contentDocument;if(!d||!d.head)return;const s=d.createElement('style');s.id='nfc-red-edition';s.textContent=css;d.head.appendChild(s);
+const q=(sel)=>d.querySelector(sel);
+const hero=q('.hero h1'); if(hero) hero.innerHTML='Todo tu negocio.<br><span style="color:#ff2638">En un toque.</span>';
+const eyebrow=q('.eyebrow'); if(eyebrow) eyebrow.innerHTML='<span class="dot"></span> Hardware + software para negocios';
+const cta=d.querySelector('.nav-cta'); if(cta) cta.textContent='Quiero mi NFC';
+const body=d.body; if(body) body.dataset.redEdition='true';
+if(!q('#red-cursor-style')){const x=d.createElement('style');x.id='red-cursor-style';x.textContent='body[data-red-edition=true]::selection{background:#ff2638;color:#fff} body[data-red-edition=true] .btn.primary,body[data-red-edition=true] .btn.gold{position:relative;overflow:hidden} body[data-red-edition=true] .btn.primary:after,body[data-red-edition=true] .btn.gold:after{content:"";position:absolute;inset:-30% -60%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.24),transparent);transform:translateX(-100%);animation:redBtnSweep 4.8s ease-in-out infinite}@keyframes redBtnSweep{0%,65%{transform:translateX(-110%)}80%{transform:translateX(110%)}100%{transform:translateX(110%)}}';d.head.appendChild(x)}
+d.defaultView.scrollTo(0,0);document.body.classList.add('ready');
+}catch(e){setTimeout(skin,200)}}
+frame.addEventListener('load',()=>setTimeout(skin,180));
+</script></body></html>
